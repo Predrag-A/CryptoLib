@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoWCFService", "CryptoWCFService\CryptoWCFService.csproj", "{8C37F28F-FA62-486B-8F5A-A6513C7A440B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoApp", "CryptoApp\CryptoApp.csproj", "{7E288292-8CE1-4290-BCE1-207EC2DC918E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C37F28F-FA62-486B-8F5A-A6513C7A440B} = {8C37F28F-FA62-486B-8F5A-A6513C7A440B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
