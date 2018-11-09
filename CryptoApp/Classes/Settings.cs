@@ -10,7 +10,7 @@ namespace CryptoApp.Classes
     {
         DoubleTranposition,
         XTEA,
-        CFB,
+        OFB,
         Knapsack,
         MD5
     }
