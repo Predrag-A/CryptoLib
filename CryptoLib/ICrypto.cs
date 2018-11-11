@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CryptoLib
 {
     internal interface ICrypto
     {
+
+        #region Interface Methods
+
         bool SetKey(byte[] input);
 
         byte[] GenerateRandomKey();
@@ -21,5 +20,8 @@ namespace CryptoLib
         byte[] Crypt(byte[] input);
 
         byte[] Decrypt(byte[] output);
+
+        #endregion
+
     }
 }

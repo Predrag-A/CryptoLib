@@ -3,17 +3,10 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
+using CryptoLib;
 
 namespace CryptoApp.Classes
 {
-    public enum Algorithm
-    {
-        DoubleTranposition,
-        XTEA,
-        OFB,
-        Knapsack,
-        MD5
-    }
 
     [Serializable]
     public class Settings

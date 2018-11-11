@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoubleTransposition.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="ICrypto.cs" />
     <Compile Include="Knapsack.cs" />
     <Compile Include="MD5.cs" />

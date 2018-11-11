@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryptoLib
 {
-    internal class Knapsack: ICrypto
+    public class Knapsack: ICrypto
     {
+
+        #region Interface Methods
+
         public bool SetKey(byte[] input)
         {
             throw new NotImplementedException();
@@ -42,5 +42,8 @@ namespace CryptoLib
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
     }
 }

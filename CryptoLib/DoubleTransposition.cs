@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryptoLib
 {
-    internal class DoubleTransposition: ICrypto
+    public class DoubleTransposition: ICrypto
     {
 
-        private byte[] key;
+        #region Interface Methods
 
         public bool SetKey(byte[] input)
         {
@@ -45,5 +42,7 @@ namespace CryptoLib
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

@@ -42,6 +42,11 @@
             this.mD5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fbdInput = new System.Windows.Forms.FolderBrowserDialog();
             this.fbdOutput = new System.Windows.Forms.FolderBrowserDialog();
+            this.inputText = new System.Windows.Forms.TextBox();
+            this.outputText = new System.Windows.Forms.TextBox();
+            this.encryptBtn = new System.Windows.Forms.Button();
+            this.decryptBtn = new System.Windows.Forms.Button();
+            this.swapBtn = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +57,7 @@
             this.algorithmToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(800, 24);
+            this.menu.Size = new System.Drawing.Size(804, 24);
             this.menu.TabIndex = 0;
             this.menu.Text = "menuStrip1";
             // 
@@ -70,26 +75,26 @@
             // fSWOnOffToolStripMenuItem
             // 
             this.fSWOnOffToolStripMenuItem.Name = "fSWOnOffToolStripMenuItem";
-            this.fSWOnOffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWOnOffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fSWOnOffToolStripMenuItem.Text = "FSW On/Off";
             this.fSWOnOffToolStripMenuItem.Click += new System.EventHandler(this.fSWOnOffToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 6);
             // 
             // fSWInputFolderToolStripMenuItem
             // 
             this.fSWInputFolderToolStripMenuItem.Name = "fSWInputFolderToolStripMenuItem";
-            this.fSWInputFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWInputFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fSWInputFolderToolStripMenuItem.Text = "FSW Input Folder";
             this.fSWInputFolderToolStripMenuItem.Click += new System.EventHandler(this.fSWInputFolderToolStripMenuItem_Click);
             // 
             // fSWOutputFolderToolStripMenuItem
             // 
             this.fSWOutputFolderToolStripMenuItem.Name = "fSWOutputFolderToolStripMenuItem";
-            this.fSWOutputFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWOutputFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fSWOutputFolderToolStripMenuItem.Text = "FSW Output Folder";
             this.fSWOutputFolderToolStripMenuItem.Click += new System.EventHandler(this.fSWOutputFolderToolStripMenuItem_Click);
             // 
@@ -140,11 +145,63 @@
             this.mD5ToolStripMenuItem.Text = "MD5";
             this.mD5ToolStripMenuItem.Click += new System.EventHandler(this.mD5ToolStripMenuItem_Click);
             // 
+            // inputText
+            // 
+            this.inputText.Location = new System.Drawing.Point(12, 85);
+            this.inputText.Multiline = true;
+            this.inputText.Name = "inputText";
+            this.inputText.Size = new System.Drawing.Size(326, 164);
+            this.inputText.TabIndex = 1;
+            // 
+            // outputText
+            // 
+            this.outputText.Enabled = false;
+            this.outputText.Location = new System.Drawing.Point(466, 85);
+            this.outputText.Multiline = true;
+            this.outputText.Name = "outputText";
+            this.outputText.Size = new System.Drawing.Size(326, 164);
+            this.outputText.TabIndex = 2;
+            // 
+            // encryptBtn
+            // 
+            this.encryptBtn.Location = new System.Drawing.Point(364, 98);
+            this.encryptBtn.Name = "encryptBtn";
+            this.encryptBtn.Size = new System.Drawing.Size(75, 23);
+            this.encryptBtn.TabIndex = 3;
+            this.encryptBtn.Text = "Encrypt";
+            this.encryptBtn.UseVisualStyleBackColor = true;
+            this.encryptBtn.Click += new System.EventHandler(this.encryptBtn_Click);
+            // 
+            // decryptBtn
+            // 
+            this.decryptBtn.Location = new System.Drawing.Point(364, 127);
+            this.decryptBtn.Name = "decryptBtn";
+            this.decryptBtn.Size = new System.Drawing.Size(75, 23);
+            this.decryptBtn.TabIndex = 4;
+            this.decryptBtn.Text = "Decrypt";
+            this.decryptBtn.UseVisualStyleBackColor = true;
+            this.decryptBtn.Click += new System.EventHandler(this.decryptBtn_Click);
+            // 
+            // swapBtn
+            // 
+            this.swapBtn.Location = new System.Drawing.Point(364, 157);
+            this.swapBtn.Name = "swapBtn";
+            this.swapBtn.Size = new System.Drawing.Size(75, 23);
+            this.swapBtn.TabIndex = 5;
+            this.swapBtn.Text = "Swap";
+            this.swapBtn.UseVisualStyleBackColor = true;
+            this.swapBtn.Click += new System.EventHandler(this.swapBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(804, 305);
+            this.Controls.Add(this.swapBtn);
+            this.Controls.Add(this.decryptBtn);
+            this.Controls.Add(this.encryptBtn);
+            this.Controls.Add(this.outputText);
+            this.Controls.Add(this.inputText);
             this.Controls.Add(this.menu);
             this.MainMenuStrip = this.menu;
             this.Name = "MainForm";
@@ -173,6 +230,11 @@
         private System.Windows.Forms.ToolStripMenuItem mD5ToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog fbdInput;
         private System.Windows.Forms.FolderBrowserDialog fbdOutput;
+        private System.Windows.Forms.TextBox inputText;
+        private System.Windows.Forms.TextBox outputText;
+        private System.Windows.Forms.Button encryptBtn;
+        private System.Windows.Forms.Button decryptBtn;
+        private System.Windows.Forms.Button swapBtn;
     }
 }
 

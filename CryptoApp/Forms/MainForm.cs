@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CryptoApp.Classes;
+using CryptoApp.CryptoServiceReference;
+using CryptoLib;
+using Encoding = System.Text.Encoding;
 
 namespace CryptoApp
 {
     public partial class MainForm : Form
     {
 
+        #region Fields
+
+        private ICryptoService proxy = new CryptoServiceClient();
+
+        #endregion
 
         #region Constructors
 
@@ -40,6 +41,7 @@ namespace CryptoApp
             fSWOnOffToolStripMenuItem.Checked = Settings.Instance.FswEnabled;
 
             CheckAlgo(Settings.Instance.Algo);
+            
         }
 
         private void CheckAlgo(Algorithm a)
@@ -47,22 +49,27 @@ namespace CryptoApp
             switch (a)
             {
                 case Algorithm.DoubleTranposition:
+                    decryptBtn.Enabled = true;
                     doubleTranspositionToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.OFB:
+                    decryptBtn.Enabled = true;
                     oFBToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.XTEA:
+                    decryptBtn.Enabled = true;
                     xTEAToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.MD5:
+                    decryptBtn.Enabled = false;
                     mD5ToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.Knapsack:
+                    decryptBtn.Enabled = true;
                     knapsackToolStripMenuItem.Checked = true;
                     break;
             }
@@ -141,7 +148,26 @@ namespace CryptoApp
             fSWOutputFolderToolStripMenuItem.ToolTipText = fbdOutput.SelectedPath;
         }
 
-        #endregion
+        private void swapBtn_Click(object sender, EventArgs e)
+        {
+            inputText.Text = outputText.Text;
+            outputText.Clear();
+        }
 
+        private void encryptBtn_Click(object sender, EventArgs e)
+        {
+            var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
+            var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
+            outputText.Text = BitConverter.ToString(outputBytes).Replace("-","").ToLower();
+        }
+
+        private void decryptBtn_Click(object sender, EventArgs e)
+        {
+            var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
+            var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
+            outputText.Text = BitConverter.ToString(outputBytes);
+        }
+
+        #endregion
     }
 }

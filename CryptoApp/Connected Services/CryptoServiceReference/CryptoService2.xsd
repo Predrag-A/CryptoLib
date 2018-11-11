@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CryptoLib" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CryptoLib" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="Algorithm">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DoubleTranposition" />
+      <xs:enumeration value="XTEA" />
+      <xs:enumeration value="OFB" />
+      <xs:enumeration value="Knapsack" />
+      <xs:enumeration value="MD5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Algorithm" nillable="true" type="tns:Algorithm" />
+</xs:schema>
