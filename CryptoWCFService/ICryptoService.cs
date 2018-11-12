@@ -16,6 +16,9 @@ namespace CryptoWCFService
         [OperationContract]
         byte[] DeCrypt(byte[] input, Algorithm a);
 
+        [OperationContract]
+        bool SetKey(byte[] input, Algorithm a);
+
         #endregion
 
     }

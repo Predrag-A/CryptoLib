@@ -31,4 +31,19 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="SetKey">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="input" nillable="true" type="xs:base64Binary" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CryptoLib" minOccurs="0" name="a" type="q3:Algorithm" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetKeyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SetKeyResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

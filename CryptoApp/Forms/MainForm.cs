@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using CryptoApp.Classes;
 using CryptoApp.CryptoServiceReference;
@@ -191,9 +192,12 @@ namespace CryptoApp
         {
             try
             {
+                if (!proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo))
+                    outputText.Text = "Unable to set encoding key.";
+
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
-                outputText.Text = BitConverter.ToString(outputBytes).Replace("-", "").ToLower();
+                outputText.Text = BitConverter.ToString(outputBytes);
             }
             catch (Exception exception)
             {
@@ -205,9 +209,12 @@ namespace CryptoApp
         {
             try
             {
-                var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
+                if (!proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo))
+                    outputText.Text = "Unable to set decoding key.";
+
+                var inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
                 var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
-                outputText.Text = BitConverter.ToString(outputBytes);
+                outputText.Text = Encoding.ASCII.GetString(outputBytes);
             }
             catch (Exception exception)
             {

@@ -26,6 +26,12 @@ namespace CryptoApp.CryptoServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DeCrypt", ReplyAction="http://tempuri.org/ICryptoService/DeCryptResponse")]
         System.Threading.Tasks.Task<byte[]> DeCryptAsync(byte[] input, CryptoLib.Algorithm a);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetKey", ReplyAction="http://tempuri.org/ICryptoService/SetKeyResponse")]
+        bool SetKey(byte[] input, CryptoLib.Algorithm a);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetKey", ReplyAction="http://tempuri.org/ICryptoService/SetKeyResponse")]
+        System.Threading.Tasks.Task<bool> SetKeyAsync(byte[] input, CryptoLib.Algorithm a);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +75,14 @@ namespace CryptoApp.CryptoServiceReference {
         
         public System.Threading.Tasks.Task<byte[]> DeCryptAsync(byte[] input, CryptoLib.Algorithm a) {
             return base.Channel.DeCryptAsync(input, a);
+        }
+        
+        public bool SetKey(byte[] input, CryptoLib.Algorithm a) {
+            return base.Channel.SetKey(input, a);
+        }
+        
+        public System.Threading.Tasks.Task<bool> SetKeyAsync(byte[] input, CryptoLib.Algorithm a) {
+            return base.Channel.SetKeyAsync(input, a);
         }
     }
 }

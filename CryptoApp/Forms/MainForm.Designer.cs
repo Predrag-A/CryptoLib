@@ -47,6 +47,8 @@
             this.encryptBtn = new System.Windows.Forms.Button();
             this.decryptBtn = new System.Windows.Forms.Button();
             this.swapBtn = new System.Windows.Forms.Button();
+            this.keyBox = new System.Windows.Forms.TextBox();
+            this.lblKey = new System.Windows.Forms.Label();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -192,11 +194,29 @@
             this.swapBtn.UseVisualStyleBackColor = true;
             this.swapBtn.Click += new System.EventHandler(this.swapBtn_Click);
             // 
+            // keyBox
+            // 
+            this.keyBox.Location = new System.Drawing.Point(12, 283);
+            this.keyBox.Name = "keyBox";
+            this.keyBox.Size = new System.Drawing.Size(326, 20);
+            this.keyBox.TabIndex = 7;
+            // 
+            // lblKey
+            // 
+            this.lblKey.AutoSize = true;
+            this.lblKey.Location = new System.Drawing.Point(127, 267);
+            this.lblKey.Name = "lblKey";
+            this.lblKey.Size = new System.Drawing.Size(78, 13);
+            this.lblKey.TabIndex = 8;
+            this.lblKey.Text = "Encryption Key";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 305);
+            this.ClientSize = new System.Drawing.Size(804, 315);
+            this.Controls.Add(this.lblKey);
+            this.Controls.Add(this.keyBox);
             this.Controls.Add(this.swapBtn);
             this.Controls.Add(this.decryptBtn);
             this.Controls.Add(this.encryptBtn);
@@ -235,6 +255,8 @@
         private System.Windows.Forms.Button encryptBtn;
         private System.Windows.Forms.Button decryptBtn;
         private System.Windows.Forms.Button swapBtn;
+        private System.Windows.Forms.TextBox keyBox;
+        private System.Windows.Forms.Label lblKey;
     }
 }
 

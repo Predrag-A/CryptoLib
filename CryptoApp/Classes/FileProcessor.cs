@@ -59,7 +59,11 @@ namespace CryptoApp.Classes
 
                 if (fileName != null)
                 {
-                    // Fajl se prosledjuje Cypher-u za kriptovanje
+                    // Waiting until file creation is done
+                    while(!FileCypher.IsFileReady(fileName))
+                        Thread.Sleep(50);
+
+                    // File is sent to the cypher for encryption/decryption
                     _cypher.CryptFile(fileName);
                 }
                 else

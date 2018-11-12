@@ -9,11 +9,11 @@ namespace CryptoWCFService
 
         #region Fields
 
-        private DoubleTransposition CypherDoubleTransposition;
-        private XTEA CypherXTEA;
-        private OFB CypherOFB;
-        private Knapsack CypherKnapsack;
-        private MD5 CypherMD5;
+        private static DoubleTransposition CypherDoubleTransposition;
+        private static XTEA CypherXTEA;
+        private static OFB CypherOFB;
+        private static Knapsack CypherKnapsack;
+        private static MD5 CypherMD5;
 
         #endregion
 
@@ -72,6 +72,23 @@ namespace CryptoWCFService
                     return CypherKnapsack.Decrypt(input);
                 default:
                     return CypherMD5.Decrypt(input);
+            }
+        }
+
+        public bool SetKey(byte[] input, Algorithm a)
+        {
+            switch (a)
+            {
+                case Algorithm.DoubleTranposition:
+                    return CypherDoubleTransposition.SetKey(input);
+                case Algorithm.XTEA:
+                    return CypherXTEA.SetKey(input);
+                case Algorithm.OFB:
+                    return CypherOFB.SetKey(input);
+                case Algorithm.Knapsack:
+                    return CypherKnapsack.SetKey(input);
+                default:
+                    return true;
             }
         }
 

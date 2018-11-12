@@ -47,7 +47,7 @@ namespace CryptoLib
 
         #region Methods
 
-        private uint LeftRotate(uint x, int c)
+        private static uint LeftRotate(uint x, int c)
         {
             return (x << c) | (x >> (32 - c));
         }
@@ -56,6 +56,7 @@ namespace CryptoLib
 
         #region Interface Methods
 
+        // MD5 does not use a key to encrypt data
         public bool SetKey(byte[] input)
         {
             throw new NotImplementedException();
@@ -66,6 +67,7 @@ namespace CryptoLib
             throw new NotImplementedException();
         }
 
+        // MD5 does not use an initialization vector to encrypt data
         public bool SetIV(byte[] input)
         {
             throw new NotImplementedException();
@@ -76,6 +78,7 @@ namespace CryptoLib
             throw new NotImplementedException();
         }
 
+        // No properties to set
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
             throw new NotImplementedException();
