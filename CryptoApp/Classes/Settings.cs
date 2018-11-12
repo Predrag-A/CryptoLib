@@ -26,6 +26,9 @@ namespace CryptoApp.Classes
         [XmlElement("FSW_Enabled")]
         public bool FswEnabled { get; set; }
 
+        [XmlElement("Crypt/Decrypt")]
+        public bool FswDecrypt { get; set; }
+
         [XmlElement("FSW_Input_Path")]
         public string FswInput { get; set; }
 
@@ -43,6 +46,7 @@ namespace CryptoApp.Classes
         public void Default()
         {
             FswEnabled = false;
+            FswDecrypt = false;
             FswInput = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             FswOutput = string.Copy(FswInput);
             Algo = Algorithm.DoubleTranposition;
@@ -64,6 +68,7 @@ namespace CryptoApp.Classes
             {
                 var temp = (Settings) xmlSerializer.Deserialize(fileReader);
                 FswEnabled = temp.FswEnabled;
+                FswDecrypt = temp.FswDecrypt;
                 FswInput = temp.FswInput;
                 FswOutput = temp.FswOutput;
                 Algo = temp.Algo;

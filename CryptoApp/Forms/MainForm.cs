@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using CryptoApp.Classes;
 using CryptoApp.CryptoServiceReference;
@@ -13,6 +14,8 @@ namespace CryptoApp
         #region Fields
 
         private ICryptoService proxy = new CryptoServiceClient();
+        private FileSystemWatcher _watcher;
+        private FileProcessor _processor;
 
         #endregion
 
@@ -41,7 +44,26 @@ namespace CryptoApp
             fSWOnOffToolStripMenuItem.Checked = Settings.Instance.FswEnabled;
 
             CheckAlgo(Settings.Instance.Algo);
-            
+
+            // Initialize FSW
+            _watcher = new FileSystemWatcher
+            {
+                Path = Settings.Instance.FswInput,
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName |
+                               NotifyFilters.DirectoryName,
+                IncludeSubdirectories = false
+            };
+
+            // Adding event handlers
+            _watcher.Created += new FileSystemEventHandler(watcher_Created);
+
+            // Turning on or off
+            _watcher.EnableRaisingEvents = Settings.Instance.FswEnabled;
+
+            // Initialize File Processor
+
+            _processor = new FileProcessor();
+
         }
 
         private void CheckAlgo(Algorithm a)
@@ -93,6 +115,12 @@ namespace CryptoApp
             CheckAlgo(a);
         }
 
+        // Event handler for created files
+        private void watcher_Created(object sender, FileSystemEventArgs e)
+        {
+             _processor.EnqueueFileName(e.FullPath);
+        }
+
         #endregion
 
         #region Form Methods
@@ -100,6 +128,9 @@ namespace CryptoApp
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Instance.Save("settings.xml");
+
+            _watcher?.Dispose();
+            _processor?.Dispose();
         }
         
 
@@ -107,6 +138,7 @@ namespace CryptoApp
         {
             fSWOnOffToolStripMenuItem.Checked = !fSWOnOffToolStripMenuItem.Checked;
             Settings.Instance.FswEnabled = !Settings.Instance.FswEnabled;
+            _watcher.EnableRaisingEvents = Settings.Instance.FswEnabled;
         }
         
         private void doubleTranspositionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -138,6 +170,7 @@ namespace CryptoApp
         {
             if (fbdInput.ShowDialog() != DialogResult.OK) return;
             Settings.Instance.FswInput = fbdInput.SelectedPath;
+            _watcher.Path = Settings.Instance.FswInput;
             fSWInputFolderToolStripMenuItem.ToolTipText = fbdInput.SelectedPath;
         }
 
@@ -156,16 +189,30 @@ namespace CryptoApp
 
         private void encryptBtn_Click(object sender, EventArgs e)
         {
-            var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
-            var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
-            outputText.Text = BitConverter.ToString(outputBytes).Replace("-","").ToLower();
+            try
+            {
+                var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
+                var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
+                outputText.Text = BitConverter.ToString(outputBytes).Replace("-", "").ToLower();
+            }
+            catch (Exception exception)
+            {
+                outputText.Text = exception.InnerException.Message;
+            }
         }
 
         private void decryptBtn_Click(object sender, EventArgs e)
         {
-            var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
-            var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
-            outputText.Text = BitConverter.ToString(outputBytes);
+            try
+            {
+                var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
+                var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
+                outputText.Text = BitConverter.ToString(outputBytes);
+            }
+            catch (Exception exception)
+            {
+                outputText.Text = exception.InnerException.Message;
+            }
         }
 
         #endregion

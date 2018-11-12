@@ -124,17 +124,15 @@ namespace CryptoLib
 
             for (var i = 0; i < blockNum; i++)
             {
-                var a = InitA;
-                var b = InitB;
-                var c = InitC;
-                var d = InitD;
-                uint f, g;
-
-                var index = i << 6;
+                var a = a0;
+                var b = b0;
+                var c = c0;
+                var d = d0;
+                uint f, g;                
 
                 // Dividing segment into array of sixteen 32-bit chunks
                 for (var j = 0; j < 16; j++)
-                    buffer[j] = (int)BitConverter.ToUInt32(finalArray, index + j * 4);
+                    buffer[j] = (int)BitConverter.ToUInt32(finalArray, i * 64 + j * 4);
                 
                 // Main loop
                 for (uint j = 0; j < 64; j++)

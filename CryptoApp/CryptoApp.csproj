@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\FileCypher.cs" />
+    <Compile Include="Classes\FileProcessor.cs" />
     <Compile Include="Classes\Settings.cs" />
     <Compile Include="Connected Services\CryptoServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
