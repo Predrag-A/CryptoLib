@@ -1,4 +1,7 @@
-﻿using CryptoLib;
+﻿using System;
+using System.ServiceModel;
+using System.Text;
+using CryptoLib;
 
 namespace CryptoWCFService
 {
@@ -43,52 +46,73 @@ namespace CryptoWCFService
 
         public byte[] Crypt(byte[] input, Algorithm a)
         {
-            switch (a)
+            try
             {
-                case Algorithm.DoubleTranposition:
-                    return CypherDoubleTransposition.Crypt(input);
-                case Algorithm.XTEA:
-                    return CypherXTEA.Crypt(input);
-                case Algorithm.OFB:
-                    return CypherOFB.Crypt(input);
-                case Algorithm.Knapsack:
-                    return CypherKnapsack.Crypt(input);
-                default:
-                    return CypherMD5.Crypt(input);
+                switch (a)
+                {
+                    case Algorithm.DoubleTranposition:
+                        return CypherDoubleTransposition.Crypt(input);
+                    case Algorithm.XTEA:
+                        return CypherXTEA.Crypt(input);
+                    case Algorithm.OFB:
+                        return CypherOFB.Crypt(input);
+                    case Algorithm.Knapsack:
+                        return CypherKnapsack.Crypt(input);
+                    default:
+                        return CypherMD5.Crypt(input);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
             }
         }
 
         public byte[] DeCrypt(byte[] input, Algorithm a)
         {
-            switch (a)
+            try
             {
-                case Algorithm.DoubleTranposition:
-                    return CypherDoubleTransposition.Decrypt(input);
-                case Algorithm.XTEA:
-                    return CypherXTEA.Decrypt(input);
-                case Algorithm.OFB:
-                    return CypherOFB.Decrypt(input);
-                case Algorithm.Knapsack:
-                    return CypherKnapsack.Decrypt(input);
-                default:
-                    return CypherMD5.Decrypt(input);
+                switch (a)
+                {
+                    case Algorithm.DoubleTranposition:
+                        return CypherDoubleTransposition.Decrypt(input);
+                    case Algorithm.XTEA:
+                        return CypherXTEA.Decrypt(input);
+                    case Algorithm.OFB:
+                        return CypherOFB.Decrypt(input);
+                    case Algorithm.Knapsack:
+                        return CypherKnapsack.Decrypt(input);
+                    default:
+                        return CypherMD5.Decrypt(input);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
             }
         }
 
         public bool SetKey(byte[] input, Algorithm a)
         {
-            switch (a)
+            try
             {
-                case Algorithm.DoubleTranposition:
-                    return CypherDoubleTransposition.SetKey(input);
-                case Algorithm.XTEA:
-                    return CypherXTEA.SetKey(input);
-                case Algorithm.OFB:
-                    return CypherOFB.SetKey(input);
-                case Algorithm.Knapsack:
-                    return CypherKnapsack.SetKey(input);
-                default:
-                    return true;
+                switch (a)
+                {
+                    case Algorithm.DoubleTranposition:
+                        return CypherDoubleTransposition.SetKey(input);
+                    case Algorithm.XTEA:
+                        return CypherXTEA.SetKey(input);
+                    case Algorithm.OFB:
+                        return CypherOFB.SetKey(input);
+                    case Algorithm.Knapsack:
+                        return CypherKnapsack.SetKey(input);
+                    default:
+                        return true;
+                }
+            }
+            catch (Exception exception)
+            {
+                return false;
             }
         }
 

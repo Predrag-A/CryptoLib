@@ -49,6 +49,7 @@
             this.swapBtn = new System.Windows.Forms.Button();
             this.keyBox = new System.Windows.Forms.TextBox();
             this.lblKey = new System.Windows.Forms.Label();
+            this.setKeyBtn = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -210,11 +211,22 @@
             this.lblKey.TabIndex = 8;
             this.lblKey.Text = "Encryption Key";
             // 
+            // setKeyBtn
+            // 
+            this.setKeyBtn.Location = new System.Drawing.Point(364, 283);
+            this.setKeyBtn.Name = "setKeyBtn";
+            this.setKeyBtn.Size = new System.Drawing.Size(75, 23);
+            this.setKeyBtn.TabIndex = 9;
+            this.setKeyBtn.Text = "Set Key";
+            this.setKeyBtn.UseVisualStyleBackColor = true;
+            this.setKeyBtn.Click += new System.EventHandler(this.setKeyBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 315);
+            this.Controls.Add(this.setKeyBtn);
             this.Controls.Add(this.lblKey);
             this.Controls.Add(this.keyBox);
             this.Controls.Add(this.swapBtn);
@@ -257,6 +269,7 @@
         private System.Windows.Forms.Button swapBtn;
         private System.Windows.Forms.TextBox keyBox;
         private System.Windows.Forms.Label lblKey;
+        private System.Windows.Forms.Button setKeyBtn;
     }
 }
 

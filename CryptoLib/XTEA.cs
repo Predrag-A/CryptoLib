@@ -40,28 +40,28 @@ namespace CryptoLib
         #region Methods
 
         // Encrypts a block of 64-bit data contained in 2 32-bit values
-        private void Crypt(uint[] v)
+        private void Crypt(uint[] v, uint[] key)
         {
             uint v0 = v[0], v1 = v[1], sum = 0;
             for (var i = 0; i < _rounds; i++)
             {
-                v0 += (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + _key[sum & 3]);
+                v0 += (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + key[sum & 3]);
                 sum += DELTA;
-                v1 += (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + _key[(sum >> 11) & 3]);
+                v1 += (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + key[(sum >> 11) & 3]);
             }
 
             v[0] = v0;
             v[1] = v1;
         }
 
-        private void Decrypt(uint[] v)
+        private void Decrypt(uint[] v, uint[] key)
         {
             uint v0 = v[0], v1 = v[1], sum = DELTA * _rounds;
             for (uint i = 0; i < _rounds; i++)
             {
-                v1 -= (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + _key[(sum >> 11) & 3]);
+                v1 -= (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + key[(sum >> 11) & 3]);
                 sum -= DELTA;
-                v0 -= (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + _key[sum & 3]);
+                v0 -= (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + key[sum & 3]);
             }
 
             v[0] = v0;
@@ -140,7 +140,7 @@ namespace CryptoLib
                         // First 32 bits of the block into v0, second 32 bits into v1
                         blockBuffer[0] = BitConverter.ToUInt32(result, i);
                         blockBuffer[1] = BitConverter.ToUInt32(result, i + 4);
-                        Crypt(blockBuffer);
+                        Crypt(blockBuffer, keyBuffer);
                         writer.Write(blockBuffer[0]);
                         writer.Write(blockBuffer[1]);
                     }
@@ -177,7 +177,7 @@ namespace CryptoLib
                     {
                         blockBuffer[0] = BitConverter.ToUInt32(buffer, i);
                         blockBuffer[1] = BitConverter.ToUInt32(buffer, i + 4);
-                        Decrypt(blockBuffer);
+                        Decrypt(blockBuffer, keyBuffer);
                         writer.Write(blockBuffer[0]);
                         writer.Write(blockBuffer[1]);
                     }

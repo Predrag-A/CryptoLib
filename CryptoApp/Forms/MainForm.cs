@@ -72,27 +72,25 @@ namespace CryptoApp
             switch (a)
             {
                 case Algorithm.DoubleTranposition:
-                    decryptBtn.Enabled = true;
                     doubleTranspositionToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.OFB:
-                    decryptBtn.Enabled = true;
                     oFBToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.XTEA:
-                    decryptBtn.Enabled = true;
                     xTEAToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.MD5:
                     decryptBtn.Enabled = false;
+                    setKeyBtn.Enabled = false;
+                    keyBox.Enabled = false;
                     mD5ToolStripMenuItem.Checked = true;
                     break;
 
                 case Algorithm.Knapsack:
-                    decryptBtn.Enabled = true;
                     knapsackToolStripMenuItem.Checked = true;
                     break;
             }
@@ -105,6 +103,9 @@ namespace CryptoApp
             xTEAToolStripMenuItem.Checked = false;
             mD5ToolStripMenuItem.Checked = false;
             knapsackToolStripMenuItem.Checked = false;
+            decryptBtn.Enabled = true;
+            setKeyBtn.Enabled = true;
+            keyBox.Enabled = true;
         }
 
         private void SetAlgo(Algorithm a)
@@ -192,9 +193,6 @@ namespace CryptoApp
         {
             try
             {
-                if (!proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo))
-                    outputText.Text = "Unable to set encoding key.";
-
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = BitConverter.ToString(outputBytes);
@@ -209,19 +207,32 @@ namespace CryptoApp
         {
             try
             {
-                if (!proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo))
-                    outputText.Text = "Unable to set decoding key.";
-
                 var inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
                 var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = Encoding.ASCII.GetString(outputBytes);
             }
             catch (Exception exception)
             {
-                outputText.Text = exception.InnerException.Message;
+                outputText.Text = exception.Message;
             }
         }
 
+
+        private void setKeyBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                outputText.Text = !proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo) ? 
+                    "Unable to set key." : "Key successfully set";
+            }
+            catch (Exception exception)
+            {
+                outputText.Text = exception.Message + "\r\n" + exception.InnerException.Message;
+            }
+            
+        }
+
         #endregion
+
     }
 }
