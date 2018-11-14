@@ -223,7 +223,12 @@ namespace CryptoApp
                 if (IsEmpty(inputText) && Settings.Instance.Algo != Algorithm.MD5) return;
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
-                outputText.Text = BitConverter.ToString(outputBytes);
+                if (Settings.Instance.Algo == Algorithm.DoubleTranposition)
+                    outputText.Text = Encoding.ASCII.GetString(outputBytes);
+                else
+                {
+                    outputText.Text = BitConverter.ToString(outputBytes);
+                }
             }
             catch (Exception exception)
             {
