@@ -64,7 +64,8 @@ namespace CryptoApp.Classes
                         Thread.Sleep(50);
 
                     // File is sent to the cypher for encryption/decryption
-                    _cypher.CryptFile(fileName);
+                    if (Settings.Instance.FswDecrypt) _cypher.DecryptFile(fileName);
+                    else _cypher.CryptFile(fileName);
                 }
                 else
                 {

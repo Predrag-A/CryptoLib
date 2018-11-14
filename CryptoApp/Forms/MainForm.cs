@@ -46,6 +46,9 @@ namespace CryptoApp
 
             CheckAlgo(Settings.Instance.Algo);
 
+            encryptToolStripMenuItem.Checked = !Settings.Instance.FswDecrypt;
+            decryptToolStripMenuItem.Checked = Settings.Instance.FswDecrypt;
+
             // Initialize FSW
             _watcher = new FileSystemWatcher
             {
@@ -62,9 +65,18 @@ namespace CryptoApp
             _watcher.EnableRaisingEvents = Settings.Instance.FswEnabled;
 
             // Initialize File Processor
-
             _processor = new FileProcessor();
 
+            // Process unprocessed files if any, if FSW is enabled
+            if (Settings.Instance.FswEnabled) GetFiles();
+            
+        }
+        
+        private bool IsEmpty(TextBox t)
+        {
+            if (!string.IsNullOrEmpty(t.Text)) return false;
+            MessageBox.Show("Fill out the text that you want to encrypt or decrypt.");
+            return true;
         }
 
         private void CheckAlgo(Algorithm a)
@@ -108,6 +120,7 @@ namespace CryptoApp
             keyBox.Enabled = true;
         }
 
+        // Sets the algorithm type in the Settings instance
         private void SetAlgo(Algorithm a)
         {
             if (Settings.Instance.Algo == a)
@@ -115,6 +128,18 @@ namespace CryptoApp
             Settings.Instance.Algo = a;
             UncheckAlgo();
             CheckAlgo(a);
+        }
+
+        // Gets all files that have been created in the watched folder after a certain date
+        private void GetFiles()
+        {
+            if (!Settings.Instance.FswEnabled) return;
+            var directory = new DirectoryInfo(Settings.Instance.FswInput);
+            var current = DateTime.Now;
+            var files = directory.GetFiles()
+                .Where(file => file.CreationTime >= Settings.Instance.Date && file.CreationTime <= current);
+            foreach (var file in files)
+                _processor.EnqueueFileName(file.FullName);
         }
 
         // Event handler for created files
@@ -126,11 +151,11 @@ namespace CryptoApp
         #endregion
 
         #region Form Methods
-
+        
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Settings.Instance.FswEnabled) Settings.Instance.Date = DateTime.Now;
             Settings.Instance.Save("settings.xml");
-
             _watcher?.Dispose();
             _processor?.Dispose();
         }
@@ -141,6 +166,8 @@ namespace CryptoApp
             fSWOnOffToolStripMenuItem.Checked = !fSWOnOffToolStripMenuItem.Checked;
             Settings.Instance.FswEnabled = !Settings.Instance.FswEnabled;
             _watcher.EnableRaisingEvents = Settings.Instance.FswEnabled;
+            if(Settings.Instance.FswEnabled) GetFiles();
+            else Settings.Instance.Date = DateTime.Now;
         }
         
         private void doubleTranspositionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -193,6 +220,7 @@ namespace CryptoApp
         {
             try
             {
+                if (IsEmpty(inputText) && Settings.Instance.Algo != Algorithm.MD5) return;
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = BitConverter.ToString(outputBytes);
@@ -207,6 +235,7 @@ namespace CryptoApp
         {
             try
             {
+                if (IsEmpty(inputText)) return;
                 var inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
                 var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = Encoding.ASCII.GetString(outputBytes);
@@ -223,13 +252,29 @@ namespace CryptoApp
             try
             {
                 outputText.Text = !proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo) ? 
-                    "Unable to set key." : "Key successfully set";
+                    "Unable to set key." : "Key for " + Settings.Instance.Algo + " successfully set";
             }
             catch (Exception exception)
             {
                 outputText.Text = exception.Message + "\r\n" + exception.InnerException.Message;
             }
             
+        }
+
+        private void encryptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Settings.Instance.FswDecrypt) return;
+            Settings.Instance.FswDecrypt = false;
+            encryptToolStripMenuItem.Checked = true;
+            decryptToolStripMenuItem.Checked = false;
+        }
+
+        private void decryptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Settings.Instance.FswDecrypt) return;
+            Settings.Instance.FswDecrypt = true;
+            encryptToolStripMenuItem.Checked = false;
+            decryptToolStripMenuItem.Checked = true;
         }
 
         #endregion

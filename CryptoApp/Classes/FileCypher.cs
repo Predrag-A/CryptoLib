@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using CryptoApp.CryptoServiceReference;
 
@@ -34,14 +35,35 @@ namespace CryptoApp.Classes
         {
             try
             {
-                byte[] buff = File.ReadAllBytes(filename);
+                var buff = File.ReadAllBytes(filename);
                 var outputBytes = _proxy.Crypt(buff, Settings.Instance.Algo);
-                File.WriteAllText(Settings.Instance.FswOutput + "//Test.txt", BitConverter.ToString(outputBytes).Replace("-", "").ToLower());
+                var newFileName = Path.GetFileNameWithoutExtension(filename) + "_" + Guid.NewGuid() +
+                                  Path.GetExtension(filename);
+                File.WriteAllBytes(Settings.Instance.FswOutput + "//" + newFileName, outputBytes);
                 return true;
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show("Error encrypting file " + filename + "\r\n" + exception.Message);
+                return false;
+            }
+        }
+
+        public bool DecryptFile(string filename)
+        {
+            try
+            {
+                var buff = File.ReadAllBytes(filename);
+                var outputBytes = _proxy.DeCrypt(buff, Settings.Instance.Algo);
+                var name = Path.GetFileNameWithoutExtension(filename).Split('_')[0];
+                var newFileName = name + Path.GetExtension(filename);
+                File.WriteAllText(Settings.Instance.FswOutput + "//" + newFileName,
+                    Encoding.ASCII.GetString(outputBytes));
+                return true;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Error decrypting file " + filename + "\r\n" + exception.Message);
                 return false;
             }
         }

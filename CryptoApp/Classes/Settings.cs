@@ -38,6 +38,9 @@ namespace CryptoApp.Classes
         [XmlElement("Algorithm_Type")]
         public Algorithm Algo { get; set; }
 
+        [XmlElement("Process_Closed_Date")]
+        public DateTime Date { get; set; }
+
 
         #endregion
 
@@ -50,6 +53,7 @@ namespace CryptoApp.Classes
             FswInput = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             FswOutput = string.Copy(FswInput);
             Algo = Algorithm.DoubleTranposition;
+            Date = DateTime.Now;
         }
 
         public bool Save(string path)
@@ -72,6 +76,7 @@ namespace CryptoApp.Classes
                 FswInput = temp.FswInput;
                 FswOutput = temp.FswOutput;
                 Algo = temp.Algo;
+                Date = temp.Date;
             }
 
             return true;
