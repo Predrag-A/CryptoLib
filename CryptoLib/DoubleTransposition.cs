@@ -93,8 +93,8 @@ namespace CryptoLib
             var sb = new StringBuilder();
 
             // Initialize rows and columns
-            var rows = _key[0].Length;
-            var columns = _key[1].Length;
+            var columns = _key[0].Length;
+            var rows = _key[1].Length;
 
             // Size of matrix to determine block size
             var matrixSize = rows * columns;
@@ -118,7 +118,7 @@ namespace CryptoLib
                 for (var j = 0; j < rows; j++)
                 for (var k = 0; k < columns; k++)
                 {
-                    var index = i * matrixSize + j * rows + k;
+                    var index = i * matrixSize + j * columns + k;
                     if (index > inputString.Length - 1) break;
                     _matrix[j][k] = inputString[index];
                 }
