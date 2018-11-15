@@ -241,7 +241,13 @@ namespace CryptoApp
             try
             {
                 if (IsEmpty(inputText)) return;
-                var inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
+                byte[] inputBytes;
+                if (Settings.Instance.Algo == Algorithm.DoubleTranposition)
+                    inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
+                else
+                {
+                    inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
+                }
                 var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = Encoding.ASCII.GetString(outputBytes);
             }

@@ -52,7 +52,7 @@ namespace CryptoLib
         {
             var temp = Encoding.ASCII.GetString(input);
             var keyArray = temp.Split(',');
-            if (keyArray.Length != 2) return false;
+            if (keyArray.Length != 2 || keyArray[0].Length < 2 || keyArray[1].Length < 2) return false;
             _key = keyArray;
             return true;
         }
@@ -143,24 +143,7 @@ namespace CryptoLib
                 }
 
                 // Sorting key and transposing by rows
-                for (var j = 0; j < rows - 1; j++)
-                {
-                    var min = j;
-                    for(var index = j + 1; index < rows; index++)
-                        if (rowKey[index] < rowKey[min])
-                            min = index;
-                    if (min == j) continue;
-
-                    // Swapping key characters
-                    var tempChar = rowKey[j];
-                    rowKey[j] = rowKey[min];
-                    rowKey[min] = tempChar;
-
-                    // Swapping rows
-                    var tempRow = _matrix[j];
-                    _matrix[j] = _matrix[min];
-                    _matrix[min] = tempRow;
-                }
+                Array.Sort(rowKey, _matrix);
 
                 // Forming output string
                 for (var j = 0; j < rows; j++)
@@ -175,7 +158,102 @@ namespace CryptoLib
 
         public byte[] Decrypt(byte[] output)
         {
-            throw new NotImplementedException();
+            // Get input as string without spaces
+            var inputString = Encoding.ASCII.GetString(output);
+            
+            // Initialize rows and columns
+            var columns = _key[0].Length;
+            var rows = _key[1].Length;
+
+            // Size of matrix to determine block size
+            var matrixSize = rows * columns;
+
+            if(inputString.Length % matrixSize != 0) throw 
+                new ArgumentException("Encrypted data length must be able to fix in the matrix formed by the keys of Double Transposition.");
+
+
+            // Initialize StringBuilder object to contain output string
+            var sb = new StringBuilder();
+            
+            // Determining number of blocks
+            var blockNum = inputString.Length / matrixSize;
+
+
+            // Main loop
+            for (var i = 0; i < blockNum; i++)
+            {
+                var colKey = _key[0].ToCharArray();
+                var rowKey = _key[1].ToCharArray();
+
+                // Generating temporary numeric keys
+                var colNumericKey = Enumerable.Range(1, columns).ToArray();
+                var rowNumericKey = Enumerable.Range(1, rows).ToArray();
+
+                // Initialize matrix
+                _matrix = new char[rows][];
+                for (var j = 0; j < rows; j++)
+                    _matrix[j] = new char[columns];
+
+                // Forming matrix
+                for (var j = 0; j < rows; j++)
+                    for (var k = 0; k < columns; k++)
+                    {
+                        var index = i * matrixSize + j * columns + k;
+                        if (index > inputString.Length - 1) break;
+                        _matrix[j][k] = inputString[index];
+                    }
+
+                // Sorting keys to get equivalent numeric keys
+                for (var j = 0; j < columns - 1; j++)
+                {
+                    var min = j;
+                    for(var index = j + 1; index < columns; index++)
+                        if (colKey[index] < colKey[min])
+                            min = index;
+                    if (min == j) continue;
+
+                    var temp1 = colKey[j];
+                    colKey[j] = colKey[min];
+                    colKey[min] = temp1;
+
+                    var temp2 = colNumericKey[j];
+                    colNumericKey[j] = colNumericKey[min];
+                    colNumericKey[min] = temp2;
+                }
+
+                Array.Sort(rowKey, rowNumericKey);
+
+                // Sorting numeric key and transposing by rows
+               Array.Sort(rowNumericKey, _matrix);
+
+                // Sorting numeric key and transposing by columns
+                for (var j = 0; j < columns - 1; j++)
+                {
+                    var min = j;
+
+                    for (var index = j + 1; index < columns; index++)
+                        if (colNumericKey[index] < colNumericKey[min])
+                            min = index;
+                    if (min == j) continue;
+
+                    // Swapping key characters
+                    var temp = colNumericKey[j];
+                    colNumericKey[j] = colNumericKey[min];
+                    colNumericKey[min] = temp;
+
+                    // Swaping columns
+                    SwapColumns(j, min, _matrix);
+                }
+
+                // Forming output string
+                for (var j = 0; j < rows; j++)
+                    for (var k = 0; k < columns; k++)
+                        sb.Append(_matrix[j][k]);
+            }
+
+            var outputString = sb.ToString();
+
+            return Encoding.ASCII.GetBytes(outputString.Replace(" ", ""));
         }
 
         #endregion
