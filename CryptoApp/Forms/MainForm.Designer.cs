@@ -34,6 +34,9 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.fSWInputFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fSWOutputFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.encryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.algorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doubleTranspositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xTEAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,12 +50,10 @@
             this.encryptBtn = new System.Windows.Forms.Button();
             this.decryptBtn = new System.Windows.Forms.Button();
             this.swapBtn = new System.Windows.Forms.Button();
-            this.keyBox = new System.Windows.Forms.TextBox();
-            this.lblKey = new System.Windows.Forms.Label();
-            this.setKeyBtn = new System.Windows.Forms.Button();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.encryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.decryptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.parametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblInput = new System.Windows.Forms.Label();
+            this.lblOutput = new System.Windows.Forms.Label();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,34 +79,53 @@
             this.encryptToolStripMenuItem,
             this.decryptToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
+            this.fileToolStripMenuItem.Text = "File System Watcher";
             // 
             // fSWOnOffToolStripMenuItem
             // 
             this.fSWOnOffToolStripMenuItem.Name = "fSWOnOffToolStripMenuItem";
-            this.fSWOnOffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWOnOffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fSWOnOffToolStripMenuItem.Text = "FSW On/Off";
             this.fSWOnOffToolStripMenuItem.Click += new System.EventHandler(this.fSWOnOffToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 6);
             // 
             // fSWInputFolderToolStripMenuItem
             // 
             this.fSWInputFolderToolStripMenuItem.Name = "fSWInputFolderToolStripMenuItem";
-            this.fSWInputFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWInputFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fSWInputFolderToolStripMenuItem.Text = "FSW Input Folder";
             this.fSWInputFolderToolStripMenuItem.Click += new System.EventHandler(this.fSWInputFolderToolStripMenuItem_Click);
             // 
             // fSWOutputFolderToolStripMenuItem
             // 
             this.fSWOutputFolderToolStripMenuItem.Name = "fSWOutputFolderToolStripMenuItem";
-            this.fSWOutputFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWOutputFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.fSWOutputFolderToolStripMenuItem.Text = "FSW Output Folder";
             this.fSWOutputFolderToolStripMenuItem.Click += new System.EventHandler(this.fSWOutputFolderToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(171, 6);
+            // 
+            // encryptToolStripMenuItem
+            // 
+            this.encryptToolStripMenuItem.Name = "encryptToolStripMenuItem";
+            this.encryptToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.encryptToolStripMenuItem.Text = "Encrypt";
+            this.encryptToolStripMenuItem.Click += new System.EventHandler(this.encryptToolStripMenuItem_Click);
+            // 
+            // decryptToolStripMenuItem
+            // 
+            this.decryptToolStripMenuItem.Name = "decryptToolStripMenuItem";
+            this.decryptToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.decryptToolStripMenuItem.Text = "Decrypt";
+            this.decryptToolStripMenuItem.Click += new System.EventHandler(this.decryptToolStripMenuItem_Click);
             // 
             // algorithmToolStripMenuItem
             // 
@@ -114,7 +134,9 @@
             this.xTEAToolStripMenuItem,
             this.oFBToolStripMenuItem,
             this.knapsackToolStripMenuItem,
-            this.mD5ToolStripMenuItem});
+            this.mD5ToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.parametersToolStripMenuItem});
             this.algorithmToolStripMenuItem.Name = "algorithmToolStripMenuItem";
             this.algorithmToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.algorithmToolStripMenuItem.Text = "Algorithm";
@@ -201,65 +223,52 @@
             this.swapBtn.UseVisualStyleBackColor = true;
             this.swapBtn.Click += new System.EventHandler(this.swapBtn_Click);
             // 
-            // keyBox
+            // toolStripMenuItem3
             // 
-            this.keyBox.Location = new System.Drawing.Point(12, 283);
-            this.keyBox.Name = "keyBox";
-            this.keyBox.Size = new System.Drawing.Size(326, 20);
-            this.keyBox.TabIndex = 7;
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(183, 6);
             // 
-            // lblKey
+            // parametersToolStripMenuItem
             // 
-            this.lblKey.AutoSize = true;
-            this.lblKey.Location = new System.Drawing.Point(127, 267);
-            this.lblKey.Name = "lblKey";
-            this.lblKey.Size = new System.Drawing.Size(78, 13);
-            this.lblKey.TabIndex = 8;
-            this.lblKey.Text = "Encryption Key";
+            this.parametersToolStripMenuItem.Name = "parametersToolStripMenuItem";
+            this.parametersToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.parametersToolStripMenuItem.Text = "Parameters";
+            this.parametersToolStripMenuItem.Click += new System.EventHandler(this.parametersToolStripMenuItem_Click);
             // 
-            // setKeyBtn
+            // lblInput
             // 
-            this.setKeyBtn.Location = new System.Drawing.Point(364, 283);
-            this.setKeyBtn.Name = "setKeyBtn";
-            this.setKeyBtn.Size = new System.Drawing.Size(75, 23);
-            this.setKeyBtn.TabIndex = 9;
-            this.setKeyBtn.Text = "Set Key";
-            this.setKeyBtn.UseVisualStyleBackColor = true;
-            this.setKeyBtn.Click += new System.EventHandler(this.setKeyBtn_Click);
+            this.lblInput.AutoSize = true;
+            this.lblInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInput.Location = new System.Drawing.Point(130, 56);
+            this.lblInput.Name = "lblInput";
+            this.lblInput.Size = new System.Drawing.Size(60, 26);
+            this.lblInput.TabIndex = 6;
+            this.lblInput.Text = "Input";
             // 
-            // toolStripMenuItem2
+            // lblOutput
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
-            // 
-            // encryptToolStripMenuItem
-            // 
-            this.encryptToolStripMenuItem.Name = "encryptToolStripMenuItem";
-            this.encryptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.encryptToolStripMenuItem.Text = "Encrypt";
-            this.encryptToolStripMenuItem.Click += new System.EventHandler(this.encryptToolStripMenuItem_Click);
-            // 
-            // decryptToolStripMenuItem
-            // 
-            this.decryptToolStripMenuItem.Name = "decryptToolStripMenuItem";
-            this.decryptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.decryptToolStripMenuItem.Text = "Decrypt";
-            this.decryptToolStripMenuItem.Click += new System.EventHandler(this.decryptToolStripMenuItem_Click);
+            this.lblOutput.AutoSize = true;
+            this.lblOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOutput.Location = new System.Drawing.Point(589, 56);
+            this.lblOutput.Name = "lblOutput";
+            this.lblOutput.Size = new System.Drawing.Size(77, 26);
+            this.lblOutput.TabIndex = 7;
+            this.lblOutput.Text = "Output";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 315);
-            this.Controls.Add(this.setKeyBtn);
-            this.Controls.Add(this.lblKey);
-            this.Controls.Add(this.keyBox);
+            this.ClientSize = new System.Drawing.Size(804, 265);
+            this.Controls.Add(this.lblOutput);
+            this.Controls.Add(this.lblInput);
             this.Controls.Add(this.swapBtn);
             this.Controls.Add(this.decryptBtn);
             this.Controls.Add(this.encryptBtn);
             this.Controls.Add(this.outputText);
             this.Controls.Add(this.inputText);
             this.Controls.Add(this.menu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menu;
             this.Name = "MainForm";
             this.Text = "Crypto Client";
@@ -292,12 +301,13 @@
         private System.Windows.Forms.Button encryptBtn;
         private System.Windows.Forms.Button decryptBtn;
         private System.Windows.Forms.Button swapBtn;
-        private System.Windows.Forms.TextBox keyBox;
-        private System.Windows.Forms.Label lblKey;
-        private System.Windows.Forms.Button setKeyBtn;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem encryptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decryptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem parametersToolStripMenuItem;
+        private System.Windows.Forms.Label lblInput;
+        private System.Windows.Forms.Label lblOutput;
     }
 }
 

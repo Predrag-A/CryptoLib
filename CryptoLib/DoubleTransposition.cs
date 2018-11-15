@@ -52,7 +52,9 @@ namespace CryptoLib
         {
             var temp = Encoding.ASCII.GetString(input);
             var keyArray = temp.Split(',');
-            if (keyArray.Length != 2 || keyArray[0].Length < 2 || keyArray[1].Length < 2) return false;
+            if (keyArray.Length != 2 || keyArray[0].Length < 2 || keyArray[1].Length < 2) throw
+                new ArgumentException("Key provided is too short.");
+
             _key = keyArray;
             return true;
         }
@@ -169,7 +171,7 @@ namespace CryptoLib
             var matrixSize = rows * columns;
 
             if(inputString.Length % matrixSize != 0) throw 
-                new ArgumentException("Encrypted data length must be able to fix in the matrix formed by the keys of Double Transposition.");
+                new ArgumentException("Encrypted data must be able to fit in the matrix formed by the keys of Double Transposition.");
 
 
             // Initialize StringBuilder object to contain output string

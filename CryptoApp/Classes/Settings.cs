@@ -41,6 +41,23 @@ namespace CryptoApp.Classes
         [XmlElement("Process_Closed_Date")]
         public DateTime Date { get; set; }
 
+        [XmlElement("DT_Column_Key")]
+        public string DTColKey { get; set; }
+
+        [XmlElement("DT_Row_Key")]
+        public string DTRowKey { get; set; }
+
+        [XmlElement("XTEA_Key")]
+        public string XTEAKey { get; set; }
+
+        [XmlElement("XTEA_Rounds")]
+        public int XTEARounds { get; set; }
+
+        [XmlElement("Knapsack_Public_Key")]
+        public string KSPublicKey { get; set; }
+
+        [XmlElement("Knapsack_Private_Key")]
+        public string KSPrivateKey { get; set; }
 
         #endregion
 
@@ -54,6 +71,12 @@ namespace CryptoApp.Classes
             FswOutput = string.Copy(FswInput);
             Algo = Algorithm.DoubleTranposition;
             Date = DateTime.Now;
+            DTColKey = "POTATO";
+            DTRowKey = "SPARTA";
+            XTEAKey = "a1b2c3d4e5f6g7h8";
+            XTEARounds = 32;
+            KSPublicKey = "TO DO";
+            KSPrivateKey = "TO DO";
         }
 
         public bool Save(string path)
@@ -77,6 +100,12 @@ namespace CryptoApp.Classes
                 FswOutput = temp.FswOutput;
                 Algo = temp.Algo;
                 Date = temp.Date;
+                DTColKey = temp.DTColKey;
+                DTRowKey = temp.DTRowKey;
+                XTEAKey = temp.XTEAKey;
+                XTEARounds = temp.XTEARounds;
+                KSPublicKey = temp.KSPublicKey;
+                KSPrivateKey = temp.KSPrivateKey;
             }
 
             return true;

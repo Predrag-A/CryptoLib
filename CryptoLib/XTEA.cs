@@ -75,7 +75,7 @@ namespace CryptoLib
         // Key gets converted to MD5 hash
         public bool SetKey(byte[] input)
         {
-            _key = _md5.Crypt(input);
+            _key = input.Length != 16 ? _md5.Crypt(input) : input;
             return true;
         }
 
@@ -83,7 +83,7 @@ namespace CryptoLib
         public byte[] GenerateRandomKey()
         {
             var rand = new Random();
-            var b = new byte[128];
+            var b = new byte[16];
             rand.NextBytes(b);
             return b;
         }

@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 using CryptoLib;
 
 namespace CryptoWCFService
@@ -18,6 +19,18 @@ namespace CryptoWCFService
 
         [OperationContract]
         bool SetKey(byte[] input, Algorithm a);
+
+        [OperationContract]
+        bool SetProperties(IDictionary<string, byte[]> specArguments);
+
+        [OperationContract]
+        bool SetIV(byte[] input);
+
+        [OperationContract]
+        byte[][] RandomizeKeys();
+
+        [OperationContract]
+        byte[] RandomizeIV();
 
         #endregion
 

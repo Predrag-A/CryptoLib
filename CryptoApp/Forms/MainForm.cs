@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using CryptoApp.Classes;
 using CryptoApp.CryptoServiceReference;
+using CryptoApp.Forms;
 using CryptoLib;
 using Encoding = System.Text.Encoding;
 
@@ -14,7 +16,7 @@ namespace CryptoApp
 
         #region Fields
 
-        private ICryptoService proxy = new CryptoServiceClient();
+        private readonly ICryptoService _proxy = new CryptoServiceClient();
         private FileSystemWatcher _watcher;
         private FileProcessor _processor;
 
@@ -69,7 +71,10 @@ namespace CryptoApp
 
             // Process unprocessed files if any, if FSW is enabled
             if (Settings.Instance.FswEnabled) GetFiles();
-            
+
+            // Set keys from settings
+            while(!SetKeys())
+                Thread.Sleep(100);
         }
         
         private bool IsEmpty(TextBox t)
@@ -97,8 +102,6 @@ namespace CryptoApp
 
                 case Algorithm.MD5:
                     decryptBtn.Enabled = false;
-                    setKeyBtn.Enabled = false;
-                    keyBox.Enabled = false;
                     mD5ToolStripMenuItem.Checked = true;
                     break;
 
@@ -116,8 +119,6 @@ namespace CryptoApp
             mD5ToolStripMenuItem.Checked = false;
             knapsackToolStripMenuItem.Checked = false;
             decryptBtn.Enabled = true;
-            setKeyBtn.Enabled = true;
-            keyBox.Enabled = true;
         }
 
         // Sets the algorithm type in the Settings instance
@@ -128,6 +129,25 @@ namespace CryptoApp
             Settings.Instance.Algo = a;
             UncheckAlgo();
             CheckAlgo(a);
+        }
+
+        private bool SetKeys()
+        {
+            try
+            {
+                // Set Double Transposition Key
+                var DTKey = Settings.Instance.DTColKey + "," + Settings.Instance.DTRowKey;
+                _proxy.SetKey(Encoding.ASCII.GetBytes(DTKey), Algorithm.DoubleTranposition);
+
+                // Set XTEA Key
+                _proxy.SetKey(Encoding.ASCII.GetBytes(Settings.Instance.XTEAKey), Algorithm.XTEA);
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
         }
 
         // Gets all files that have been created in the watched folder after a certain date
@@ -222,7 +242,7 @@ namespace CryptoApp
             {
                 if (IsEmpty(inputText) && Settings.Instance.Algo != Algorithm.MD5) return;
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
-                var outputBytes = proxy.Crypt(inputBytes, Settings.Instance.Algo);
+                var outputBytes = _proxy.Crypt(inputBytes, Settings.Instance.Algo);
                 if (Settings.Instance.Algo == Algorithm.DoubleTranposition)
                     outputText.Text = Encoding.ASCII.GetString(outputBytes);
                 else
@@ -248,28 +268,13 @@ namespace CryptoApp
                 {
                     inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
                 }
-                var outputBytes = proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
+                var outputBytes = _proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = Encoding.ASCII.GetString(outputBytes);
             }
             catch (Exception exception)
             {
                 outputText.Text = exception.Message;
             }
-        }
-
-
-        private void setKeyBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                outputText.Text = !proxy.SetKey(Encoding.ASCII.GetBytes(keyBox.Text), Settings.Instance.Algo) ? 
-                    "Unable to set key." : "Key for " + Settings.Instance.Algo + " successfully set";
-            }
-            catch (Exception exception)
-            {
-                outputText.Text = exception.Message + "\r\n" + exception.InnerException.Message;
-            }
-            
         }
 
         private void encryptToolStripMenuItem_Click(object sender, EventArgs e)
@@ -286,6 +291,12 @@ namespace CryptoApp
             Settings.Instance.FswDecrypt = true;
             encryptToolStripMenuItem.Checked = false;
             decryptToolStripMenuItem.Checked = true;
+        }
+
+        private void parametersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var keyForm = new KeyForm(_proxy);
+            keyForm.ShowDialog();
         }
 
         #endregion

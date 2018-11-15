@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Text;
 using CryptoLib;
@@ -114,6 +115,30 @@ namespace CryptoWCFService
             {
                 return false;
             }
+        }
+
+        public bool SetProperties(IDictionary<string, byte[]> specArguments)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetIV(byte[] input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[][] RandomizeKeys()
+        {
+            var keys = new byte[2][];
+            keys[0] = CypherDoubleTransposition.GenerateRandomKey();
+            keys[1] = CypherXTEA.GenerateRandomKey();
+
+            return keys;
+        }
+
+        public byte[] RandomizeIV()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
