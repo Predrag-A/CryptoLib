@@ -43,6 +43,8 @@
             this.oFBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.knapsackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mD5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.parametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fbdInput = new System.Windows.Forms.FolderBrowserDialog();
             this.fbdOutput = new System.Windows.Forms.FolderBrowserDialog();
             this.inputText = new System.Windows.Forms.TextBox();
@@ -50,10 +52,9 @@
             this.encryptBtn = new System.Windows.Forms.Button();
             this.decryptBtn = new System.Windows.Forms.Button();
             this.swapBtn = new System.Windows.Forms.Button();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.parametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblInput = new System.Windows.Forms.Label();
             this.lblOutput = new System.Windows.Forms.Label();
+            this.cloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,7 +62,8 @@
             // 
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.algorithmToolStripMenuItem});
+            this.algorithmToolStripMenuItem,
+            this.cloudToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Size = new System.Drawing.Size(804, 24);
@@ -85,8 +87,8 @@
             // fSWOnOffToolStripMenuItem
             // 
             this.fSWOnOffToolStripMenuItem.Name = "fSWOnOffToolStripMenuItem";
-            this.fSWOnOffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.fSWOnOffToolStripMenuItem.Text = "FSW On/Off";
+            this.fSWOnOffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWOnOffToolStripMenuItem.Text = "On/Off";
             this.fSWOnOffToolStripMenuItem.Click += new System.EventHandler(this.fSWOnOffToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
@@ -97,15 +99,15 @@
             // fSWInputFolderToolStripMenuItem
             // 
             this.fSWInputFolderToolStripMenuItem.Name = "fSWInputFolderToolStripMenuItem";
-            this.fSWInputFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.fSWInputFolderToolStripMenuItem.Text = "FSW Input Folder";
+            this.fSWInputFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWInputFolderToolStripMenuItem.Text = "Input Folder";
             this.fSWInputFolderToolStripMenuItem.Click += new System.EventHandler(this.fSWInputFolderToolStripMenuItem_Click);
             // 
             // fSWOutputFolderToolStripMenuItem
             // 
             this.fSWOutputFolderToolStripMenuItem.Name = "fSWOutputFolderToolStripMenuItem";
-            this.fSWOutputFolderToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.fSWOutputFolderToolStripMenuItem.Text = "FSW Output Folder";
+            this.fSWOutputFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fSWOutputFolderToolStripMenuItem.Text = "Output Folder";
             this.fSWOutputFolderToolStripMenuItem.Click += new System.EventHandler(this.fSWOutputFolderToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
@@ -176,6 +178,18 @@
             this.mD5ToolStripMenuItem.Text = "MD5";
             this.mD5ToolStripMenuItem.Click += new System.EventHandler(this.mD5ToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(183, 6);
+            // 
+            // parametersToolStripMenuItem
+            // 
+            this.parametersToolStripMenuItem.Name = "parametersToolStripMenuItem";
+            this.parametersToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.parametersToolStripMenuItem.Text = "Parameters";
+            this.parametersToolStripMenuItem.Click += new System.EventHandler(this.parametersToolStripMenuItem_Click);
+            // 
             // inputText
             // 
             this.inputText.Location = new System.Drawing.Point(12, 85);
@@ -223,18 +237,6 @@
             this.swapBtn.UseVisualStyleBackColor = true;
             this.swapBtn.Click += new System.EventHandler(this.swapBtn_Click);
             // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(183, 6);
-            // 
-            // parametersToolStripMenuItem
-            // 
-            this.parametersToolStripMenuItem.Name = "parametersToolStripMenuItem";
-            this.parametersToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.parametersToolStripMenuItem.Text = "Parameters";
-            this.parametersToolStripMenuItem.Click += new System.EventHandler(this.parametersToolStripMenuItem_Click);
-            // 
             // lblInput
             // 
             this.lblInput.AutoSize = true;
@@ -254,6 +256,14 @@
             this.lblOutput.Size = new System.Drawing.Size(77, 26);
             this.lblOutput.TabIndex = 7;
             this.lblOutput.Text = "Output";
+            // 
+            // cloudToolStripMenuItem
+            // 
+            this.cloudToolStripMenuItem.Name = "cloudToolStripMenuItem";
+            this.cloudToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.cloudToolStripMenuItem.Text = "Cloud";
+            this.cloudToolStripMenuItem.ToolTipText = "Cloud Client";
+            this.cloudToolStripMenuItem.Click += new System.EventHandler(this.cloudToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -308,6 +318,7 @@
         private System.Windows.Forms.ToolStripMenuItem parametersToolStripMenuItem;
         private System.Windows.Forms.Label lblInput;
         private System.Windows.Forms.Label lblOutput;
+        private System.Windows.Forms.ToolStripMenuItem cloudToolStripMenuItem;
     }
 }
 

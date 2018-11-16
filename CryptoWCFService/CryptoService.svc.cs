@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.ServiceModel;
 using System.Text;
 using CryptoLib;
@@ -18,6 +20,7 @@ namespace CryptoWCFService
         private static OFB CypherOFB;
         private static Knapsack CypherKnapsack;
         private static MD5 CypherMD5;
+        private static string StoragePath;
 
         #endregion
 
@@ -39,6 +42,10 @@ namespace CryptoWCFService
 
             if(CypherMD5 == null)
                 CypherMD5 = new MD5();
+
+            if (StoragePath != null) return;
+            StoragePath = "C:\\Remote\\";
+            Directory.CreateDirectory(StoragePath);
         }
 
         #endregion
@@ -139,6 +146,61 @@ namespace CryptoWCFService
         public byte[] RandomizeIV()
         {
             throw new NotImplementedException();
+        }
+
+        public string[] GetFileList()
+        {
+            try
+            {
+                var fileNames = Directory.GetFiles(StoragePath);
+                return fileNames;
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
+            }
+        }
+
+        public bool DeleteFile(string fileName)
+        {
+            try
+            {
+
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
+            }
+        }
+
+        public byte[] DownloadFile(string fileName)
+        {
+            try
+            {
+
+
+                return new byte[5];
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
+            }
+        }
+
+        public bool UploadFile(string fileName)
+        {
+            try
+            {
+
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
+            }
         }
 
         #endregion

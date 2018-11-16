@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://localhost:57505/CryptoService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:57505/CryptoService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:57505/CryptoService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CryptoLib" />
+      <xsd:import schemaLocation="http://localhost:57505/CryptoService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICryptoService_Crypt_InputMessage">
@@ -25,6 +26,54 @@
   <wsdl:message name="ICryptoService_SetKey_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetKeyResponse" />
   </wsdl:message>
+  <wsdl:message name="ICryptoService_SetProperties_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetProperties" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_SetProperties_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetPropertiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_SetIV_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetIV" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_SetIV_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetIVResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_RandomizeKeys_InputMessage">
+    <wsdl:part name="parameters" element="tns:RandomizeKeys" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_RandomizeKeys_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RandomizeKeysResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_RandomizeIV_InputMessage">
+    <wsdl:part name="parameters" element="tns:RandomizeIV" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_RandomizeIV_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RandomizeIVResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_GetFileList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileList" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_GetFileList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_DeleteFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFile" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_DeleteFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_DownloadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadFile" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_DownloadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_UploadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFile" />
+  </wsdl:message>
+  <wsdl:message name="ICryptoService_UploadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFileResponse" />
+  </wsdl:message>
   <wsdl:portType name="ICryptoService">
     <wsdl:operation name="Crypt">
       <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/Crypt" message="tns:ICryptoService_Crypt_InputMessage" />
@@ -37,6 +86,38 @@
     <wsdl:operation name="SetKey">
       <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/SetKey" message="tns:ICryptoService_SetKey_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/SetKeyResponse" message="tns:ICryptoService_SetKey_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetProperties">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/SetProperties" message="tns:ICryptoService_SetProperties_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/SetPropertiesResponse" message="tns:ICryptoService_SetProperties_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetIV">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/SetIV" message="tns:ICryptoService_SetIV_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/SetIVResponse" message="tns:ICryptoService_SetIV_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RandomizeKeys">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/RandomizeKeys" message="tns:ICryptoService_RandomizeKeys_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/RandomizeKeysResponse" message="tns:ICryptoService_RandomizeKeys_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RandomizeIV">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/RandomizeIV" message="tns:ICryptoService_RandomizeIV_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/RandomizeIVResponse" message="tns:ICryptoService_RandomizeIV_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/GetFileList" message="tns:ICryptoService_GetFileList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/GetFileListResponse" message="tns:ICryptoService_GetFileList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/DeleteFile" message="tns:ICryptoService_DeleteFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/DeleteFileResponse" message="tns:ICryptoService_DeleteFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/DownloadFile" message="tns:ICryptoService_DownloadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/DownloadFileResponse" message="tns:ICryptoService_DownloadFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/UploadFile" message="tns:ICryptoService_UploadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/UploadFileResponse" message="tns:ICryptoService_UploadFile_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICryptoService" type="tns:ICryptoService">
@@ -61,6 +142,78 @@
     </wsdl:operation>
     <wsdl:operation name="SetKey">
       <soap:operation soapAction="http://tempuri.org/ICryptoService/SetKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetProperties">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/SetProperties" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetIV">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/SetIV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RandomizeKeys">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/RandomizeKeys" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RandomizeIV">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/RandomizeIV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileList">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/GetFileList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFile">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/DeleteFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/DownloadFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <soap:operation soapAction="http://tempuri.org/ICryptoService/UploadFile" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

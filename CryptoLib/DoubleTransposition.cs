@@ -71,18 +71,18 @@ namespace CryptoLib
         // Double Transposition does not use an initialization vector
         public bool SetIV(byte[] input)
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("Double Transposition does not use an initialization vector.");
         }
 
         public byte[] GenerateRandomIV()
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("Double Transposition does not use an initialization vector.");
         }
 
         // Double Transposition has no properties to set
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
 

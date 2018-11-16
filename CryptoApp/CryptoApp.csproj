@@ -55,6 +55,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CloudForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CloudForm.Designer.cs">
+      <DependentUpon>CloudForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KeyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\CloudForm.resx">
+      <DependentUpon>CloudForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\KeyForm.resx">
       <DependentUpon>KeyForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -92,6 +101,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\CryptoServiceReference\CryptoService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CryptoServiceReference\CryptoService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">

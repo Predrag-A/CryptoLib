@@ -59,29 +59,29 @@ namespace CryptoLib
         // MD5 does not use a key to encrypt data
         public bool SetKey(byte[] input)
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("MD5 does not use a key.");
         }
 
         public byte[] GenerateRandomKey()
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("MD5 does not use a key.");
         }
 
         // MD5 does not use an initialization vector to encrypt data
         public bool SetIV(byte[] input)
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("MD5 does not use an initialization vector.");
         }
 
         public byte[] GenerateRandomIV()
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("MD5 does not use an initialization vector.");
         }
 
         // No properties to set
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public byte[] Crypt(byte[] input)
@@ -195,7 +195,7 @@ namespace CryptoLib
 
         public byte[] Decrypt(byte[] output)
         {
-            return Encoding.ASCII.GetBytes("Cannot decrypt data using MD5 Algorithm.");
+            throw new ArgumentException("MD5 is a hashing algorithm and cannot be decrypted.");
         }
 
         #endregion

@@ -299,7 +299,12 @@ namespace CryptoApp
             keyForm.ShowDialog();
         }
 
-        #endregion
+        private void cloudToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var cloudForm = new CloudForm(_proxy);
+            cloudForm.ShowDialog();
+        }
 
+        #endregion
     }
 }

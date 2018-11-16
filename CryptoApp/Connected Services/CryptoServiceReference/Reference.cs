@@ -32,6 +32,54 @@ namespace CryptoApp.CryptoServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetKey", ReplyAction="http://tempuri.org/ICryptoService/SetKeyResponse")]
         System.Threading.Tasks.Task<bool> SetKeyAsync(byte[] input, CryptoLib.Algorithm a);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetProperties", ReplyAction="http://tempuri.org/ICryptoService/SetPropertiesResponse")]
+        bool SetProperties(System.Collections.Generic.Dictionary<string, byte[]> specArguments);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetProperties", ReplyAction="http://tempuri.org/ICryptoService/SetPropertiesResponse")]
+        System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetIV", ReplyAction="http://tempuri.org/ICryptoService/SetIVResponse")]
+        bool SetIV(byte[] input);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetIV", ReplyAction="http://tempuri.org/ICryptoService/SetIVResponse")]
+        System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeKeys", ReplyAction="http://tempuri.org/ICryptoService/RandomizeKeysResponse")]
+        byte[][] RandomizeKeys();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeKeys", ReplyAction="http://tempuri.org/ICryptoService/RandomizeKeysResponse")]
+        System.Threading.Tasks.Task<byte[][]> RandomizeKeysAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeIV", ReplyAction="http://tempuri.org/ICryptoService/RandomizeIVResponse")]
+        byte[] RandomizeIV();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeIV", ReplyAction="http://tempuri.org/ICryptoService/RandomizeIVResponse")]
+        System.Threading.Tasks.Task<byte[]> RandomizeIVAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/GetFileList", ReplyAction="http://tempuri.org/ICryptoService/GetFileListResponse")]
+        string[] GetFileList();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/GetFileList", ReplyAction="http://tempuri.org/ICryptoService/GetFileListResponse")]
+        System.Threading.Tasks.Task<string[]> GetFileListAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DeleteFile", ReplyAction="http://tempuri.org/ICryptoService/DeleteFileResponse")]
+        bool DeleteFile(string fileName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DeleteFile", ReplyAction="http://tempuri.org/ICryptoService/DeleteFileResponse")]
+        System.Threading.Tasks.Task<bool> DeleteFileAsync(string fileName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DownloadFile", ReplyAction="http://tempuri.org/ICryptoService/DownloadFileResponse")]
+        byte[] DownloadFile(string fileName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DownloadFile", ReplyAction="http://tempuri.org/ICryptoService/DownloadFileResponse")]
+        System.Threading.Tasks.Task<byte[]> DownloadFileAsync(string fileName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/UploadFile", ReplyAction="http://tempuri.org/ICryptoService/UploadFileResponse")]
+        bool UploadFile(string fileName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/UploadFile", ReplyAction="http://tempuri.org/ICryptoService/UploadFileResponse")]
+        System.Threading.Tasks.Task<bool> UploadFileAsync(string fileName);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -83,6 +131,70 @@ namespace CryptoApp.CryptoServiceReference {
         
         public System.Threading.Tasks.Task<bool> SetKeyAsync(byte[] input, CryptoLib.Algorithm a) {
             return base.Channel.SetKeyAsync(input, a);
+        }
+        
+        public bool SetProperties(System.Collections.Generic.Dictionary<string, byte[]> specArguments) {
+            return base.Channel.SetProperties(specArguments);
+        }
+        
+        public System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments) {
+            return base.Channel.SetPropertiesAsync(specArguments);
+        }
+        
+        public bool SetIV(byte[] input) {
+            return base.Channel.SetIV(input);
+        }
+        
+        public System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input) {
+            return base.Channel.SetIVAsync(input);
+        }
+        
+        public byte[][] RandomizeKeys() {
+            return base.Channel.RandomizeKeys();
+        }
+        
+        public System.Threading.Tasks.Task<byte[][]> RandomizeKeysAsync() {
+            return base.Channel.RandomizeKeysAsync();
+        }
+        
+        public byte[] RandomizeIV() {
+            return base.Channel.RandomizeIV();
+        }
+        
+        public System.Threading.Tasks.Task<byte[]> RandomizeIVAsync() {
+            return base.Channel.RandomizeIVAsync();
+        }
+        
+        public string[] GetFileList() {
+            return base.Channel.GetFileList();
+        }
+        
+        public System.Threading.Tasks.Task<string[]> GetFileListAsync() {
+            return base.Channel.GetFileListAsync();
+        }
+        
+        public bool DeleteFile(string fileName) {
+            return base.Channel.DeleteFile(fileName);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeleteFileAsync(string fileName) {
+            return base.Channel.DeleteFileAsync(fileName);
+        }
+        
+        public byte[] DownloadFile(string fileName) {
+            return base.Channel.DownloadFile(fileName);
+        }
+        
+        public System.Threading.Tasks.Task<byte[]> DownloadFileAsync(string fileName) {
+            return base.Channel.DownloadFileAsync(fileName);
+        }
+        
+        public bool UploadFile(string fileName) {
+            return base.Channel.UploadFile(fileName);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UploadFileAsync(string fileName) {
+            return base.Channel.UploadFileAsync(fileName);
         }
     }
 }

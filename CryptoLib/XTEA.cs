@@ -91,12 +91,12 @@ namespace CryptoLib
         // XTEA does not use an initialization vector
         public bool SetIV(byte[] input)
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("XTEA does not use an initialization vector.");
         }
 
         public byte[] GenerateRandomIV()
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("XTEA does not use an initialization vector.");
         }
 
         // Can be used to set key and round numbers

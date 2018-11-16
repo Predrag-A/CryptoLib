@@ -22,11 +22,12 @@
     <MetadataSource Address="http://localhost:57505/CryptoService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="CryptoService.wsdl" MetadataType="Wsdl" ID="912f5d98-6cf0-4a5c-9c40-4122172eb65d" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?wsdl" />
     <MetadataFile FileName="CryptoService.disco" MetadataType="Disco" ID="51661cf2-f2ab-47d3-91bc-69fa3e679690" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?disco" />
+    <MetadataFile FileName="CryptoService3.xsd" MetadataType="Schema" ID="8f73cb48-079e-4d0d-b525-6f485dcdf87a" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CryptoService2.xsd" MetadataType="Schema" ID="cf0c98a3-2eac-4d3c-b811-47269302307d" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?xsd=xsd2" />
     <MetadataFile FileName="CryptoService.xsd" MetadataType="Schema" ID="7b7d1b73-65a6-455a-be3e-404880b26c5d" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?xsd=xsd1" />
     <MetadataFile FileName="CryptoService1.xsd" MetadataType="Schema" ID="482a27aa-ca56-4e98-a374-e84f533d6015" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?xsd=xsd0" />
-    <MetadataFile FileName="CryptoService2.xsd" MetadataType="Schema" ID="cf0c98a3-2eac-4d3c-b811-47269302307d" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?xsd=xsd2" />
-    <MetadataFile FileName="CryptoService.wsdl" MetadataType="Wsdl" ID="912f5d98-6cf0-4a5c-9c40-4122172eb65d" SourceId="1" SourceUrl="http://localhost:57505/CryptoService.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
