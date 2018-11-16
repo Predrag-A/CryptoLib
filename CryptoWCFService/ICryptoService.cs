@@ -42,7 +42,7 @@ namespace CryptoWCFService
         byte[] DownloadFile(string fileName);
 
         [OperationContract]
-        bool UploadFile(string fileName);
+        int UploadFile(string fileName);
 
         #endregion
 

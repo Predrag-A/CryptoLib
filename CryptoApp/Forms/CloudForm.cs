@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CryptoApp.CryptoServiceReference;
 
@@ -63,10 +59,18 @@ namespace CryptoApp.Forms
             {
                 // Getting file name for upload
                 if (ofd.ShowDialog() != DialogResult.OK) return;
-                _proxy.UploadFile(ofd.FileName);
+                var result = _proxy.UploadFile(ofd.FileName);
 
                 // Adding file name to list instead of invoking GetFileList
-                _fileList.Add(Path.GetFileName(ofd.FileName));
+                if (result > 0)
+                {
+                    var extension = Path.GetExtension(ofd.FileName);
+                    var name = Path.GetFileNameWithoutExtension(ofd.FileName);
+                    _fileList.Add(name + "(" + result + ")" + extension);
+                }
+                else
+                    _fileList.Add(Path.GetFileName(ofd.FileName));
+
                 _bindingSource.ResetBindings(false);
                 lblStatus.Text = "Status: File successfully uploaded";
             }
@@ -89,8 +93,24 @@ namespace CryptoApp.Forms
                 // Getting result from the service
                 var fileName = fileListBox.SelectedItem.ToString();
                 var result = _proxy.DownloadFile(fileName);
-                
-                // Storing file locally TO DO
+
+                // Storing file locally
+                var name = Path.GetFileNameWithoutExtension(fileName);
+                var extension = Path.GetExtension(fileName);
+                var fullPath = fbd.SelectedPath + "//" + fileName;
+                var newFullPath = fullPath;
+                var count = 1;
+
+                // Check if file exists as to not overwrite file
+                while (File.Exists(newFullPath))
+                {
+                    count++;
+                    newFullPath = fbd.SelectedPath + "//" + name + "(" + count + ")" + extension;
+                }
+
+                File.WriteAllText(newFullPath, Encoding.ASCII.GetString(result));
+
+                lblStatus.Text = "Status: File successfully downloaded";
 
             }
             catch (Exception exception)

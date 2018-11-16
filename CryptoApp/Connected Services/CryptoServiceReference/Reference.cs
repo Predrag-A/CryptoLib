@@ -76,10 +76,10 @@ namespace CryptoApp.CryptoServiceReference {
         System.Threading.Tasks.Task<byte[]> DownloadFileAsync(string fileName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/UploadFile", ReplyAction="http://tempuri.org/ICryptoService/UploadFileResponse")]
-        bool UploadFile(string fileName);
+        int UploadFile(string fileName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/UploadFile", ReplyAction="http://tempuri.org/ICryptoService/UploadFileResponse")]
-        System.Threading.Tasks.Task<bool> UploadFileAsync(string fileName);
+        System.Threading.Tasks.Task<int> UploadFileAsync(string fileName);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -189,11 +189,11 @@ namespace CryptoApp.CryptoServiceReference {
             return base.Channel.DownloadFileAsync(fileName);
         }
         
-        public bool UploadFile(string fileName) {
+        public int UploadFile(string fileName) {
             return base.Channel.UploadFile(fileName);
         }
         
-        public System.Threading.Tasks.Task<bool> UploadFileAsync(string fileName) {
+        public System.Threading.Tasks.Task<int> UploadFileAsync(string fileName) {
             return base.Channel.UploadFileAsync(fileName);
         }
     }
