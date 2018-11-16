@@ -20,12 +20,17 @@ namespace CryptoWCFService
         private static OFB CypherOFB;
         private static Knapsack CypherKnapsack;
         private static MD5 CypherMD5;
-        private static string StoragePath;
 
         // Cloud Service Variables
         private const string CloudKey = "This is the cloud server key";
-        private readonly byte[] CryptedCloudKey;
+        private static byte[] CryptedCloudKey;
         private static XTEA CloudCypherXTEA;
+        private const string StoragePath = "C://Remote//";
+        private const int Limit = 512000000;
+        private const int AlgoNumber = 5;
+
+        // Delegate Dictionary for encryption/decryption methods
+        private static Dictionary<int, Func<byte[], byte[]>> EncryptionDictionary;
 
         #endregion
 
@@ -33,33 +38,79 @@ namespace CryptoWCFService
 
         public CryptoService()
         {
-            if(CypherDoubleTransposition == null)
+            Initialize();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void Initialize()
+        {
+            // Initializing objects used for encryption
+            if (CypherDoubleTransposition == null)
                 CypherDoubleTransposition = new DoubleTransposition();
 
-            if(CypherXTEA == null)
+            if (CypherXTEA == null)
                 CypherXTEA = new XTEA();
 
             if (CloudCypherXTEA == null)
                 CloudCypherXTEA = new XTEA();
 
-            if(CypherOFB == null)
+            if (CypherOFB == null)
                 CypherOFB = new OFB();
 
-            if(CypherKnapsack == null)
+            if (CypherKnapsack == null)
                 CypherKnapsack = new Knapsack();
 
-            if(CypherMD5 == null)
+            if (CypherMD5 == null)
                 CypherMD5 = new MD5();
 
-            if (StoragePath == null)
+            // Creating cloud storage directory
+            if (!Directory.Exists(StoragePath))
             {
-                StoragePath = "C://Remote//";
-                Directory.CreateDirectory(StoragePath);
+                var dir = Directory.CreateDirectory(StoragePath);
+                dir.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
             }
 
-            if (CryptedCloudKey != null) return;
-            CryptedCloudKey = CypherMD5.Crypt(Encoding.ASCII.GetBytes(CloudKey));
-            CloudCypherXTEA.SetKey(CryptedCloudKey);
+            // Initializing cloud key
+            if (CryptedCloudKey == null)
+            {
+                CryptedCloudKey = CypherMD5.Crypt(Encoding.ASCII.GetBytes(CloudKey));
+                CloudCypherXTEA.SetKey(CryptedCloudKey);
+            }
+
+            // Initializing algorithm dictionary
+            if(EncryptionDictionary == null)
+                EncryptionDictionary
+                    = new Dictionary<int, Func<byte[], byte[]>>()
+                    {
+                        // Encryption algorithms
+                        { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.Crypt },
+                        { (int)Algorithm.XTEA, CypherXTEA.Crypt },
+                        { (int)Algorithm.OFB, CypherOFB.Crypt },
+                        { (int)Algorithm.Knapsack, CypherKnapsack.Crypt },
+                        { (int)Algorithm.MD5, CypherMD5.Crypt },
+
+                        // Decryption algorithms, enum value + number of algorithms
+                        { (int)Algorithm.DoubleTranposition + AlgoNumber, CypherDoubleTransposition.Decrypt },
+                        { (int)Algorithm.XTEA + AlgoNumber, CypherXTEA.Decrypt },
+                        { (int)Algorithm.OFB + AlgoNumber, CypherOFB.Decrypt },
+                        { (int)Algorithm.Knapsack + AlgoNumber, CypherKnapsack.Decrypt }
+                    };
+        }
+
+        private static void LimitCheck(byte[] arr)
+        {
+            try
+            {
+                if (arr.Length > Limit)
+                    throw new ArgumentException("File size is over the maximum limit");
+            }
+            catch (ArgumentException ex)
+            {
+                throw new FaultException(ex.Message);
+            }
         }
 
         #endregion
@@ -72,19 +123,8 @@ namespace CryptoWCFService
         {
             try
             {
-                switch (a)
-                {
-                    case Algorithm.DoubleTranposition:
-                        return CypherDoubleTransposition.Crypt(input);
-                    case Algorithm.XTEA:
-                        return CypherXTEA.Crypt(input);
-                    case Algorithm.OFB:
-                        return CypherOFB.Crypt(input);
-                    case Algorithm.Knapsack:
-                        return CypherKnapsack.Crypt(input);
-                    default:
-                        return CypherMD5.Crypt(input);
-                }
+                LimitCheck(input);
+                return EncryptionDictionary[(int)a](input);
             }
             catch (Exception exception)
             {
@@ -96,19 +136,7 @@ namespace CryptoWCFService
         {
             try
             {
-                switch (a)
-                {
-                    case Algorithm.DoubleTranposition:
-                        return CypherDoubleTransposition.Decrypt(input);
-                    case Algorithm.XTEA:
-                        return CypherXTEA.Decrypt(input);
-                    case Algorithm.OFB:
-                        return CypherOFB.Decrypt(input);
-                    case Algorithm.Knapsack:
-                        return CypherKnapsack.Decrypt(input);
-                    default:
-                        return CypherMD5.Decrypt(input);
-                }
+                return EncryptionDictionary[(int) a + AlgoNumber](input);
             }
             catch (Exception exception)
             {
@@ -120,6 +148,7 @@ namespace CryptoWCFService
         {
             try
             {
+                LimitCheck(input);
                 switch (a)
                 {
                     case Algorithm.DoubleTranposition:
@@ -136,7 +165,7 @@ namespace CryptoWCFService
             }
             catch (Exception exception)
             {
-                return false;
+                throw new FaultException(exception.Message);
             }
         }
 
@@ -147,6 +176,7 @@ namespace CryptoWCFService
 
         public bool SetIV(byte[] input)
         {
+            LimitCheck(input);
             throw new NotImplementedException();
         }
 

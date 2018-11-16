@@ -146,7 +146,7 @@ namespace CryptoApp
             }
             catch(Exception e)
             {
-                return false;
+                throw new ArgumentException(e.Message);
             }
         }
 
