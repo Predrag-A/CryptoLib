@@ -62,8 +62,8 @@ namespace CryptoLib
         public byte[] GenerateRandomKey()
         {
             var rand = new Random();
-            var k1 = new string(Enumerable.Repeat(CHARS, rand.Next(20)).Select(s => s[rand.Next(s.Length)]).ToArray());
-            var k2 = new string(Enumerable.Repeat(CHARS, rand.Next(20)).Select(s => s[rand.Next(s.Length)]).ToArray());
+            var k1 = new string(Enumerable.Repeat(CHARS, rand.Next(3, 20)).Select(s => s[rand.Next(s.Length)]).ToArray());
+            var k2 = new string(Enumerable.Repeat(CHARS, rand.Next(3, 20)).Select(s => s[rand.Next(s.Length)]).ToArray());
             var key = string.Join(",", k1, k2);
             return Encoding.ASCII.GetBytes(key);
         }

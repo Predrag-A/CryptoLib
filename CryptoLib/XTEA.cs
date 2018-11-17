@@ -101,8 +101,6 @@ namespace CryptoLib
         // Can be used to set key and round numbers
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
-            if (specArguments.ContainsKey("key"))
-                SetKey(specArguments["key"]);
             if (specArguments.ContainsKey("rounds"))
                 _rounds = Convert.ToUInt32(specArguments["rounds"]);
 

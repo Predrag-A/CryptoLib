@@ -39,7 +39,7 @@ namespace CryptoApp.Classes
         public Algorithm Algo { get; set; }
 
         [XmlElement("Process_Closed_Date")]
-        public DateTime Date { get; set; }
+        public DateTime ProcessClosedDate { get; set; }
 
         [XmlElement("DT_Column_Key")]
         public string DTColKey { get; set; }
@@ -51,13 +51,19 @@ namespace CryptoApp.Classes
         public string XTEAKey { get; set; }
 
         [XmlElement("XTEA_Rounds")]
-        public int XTEARounds { get; set; }
+        public uint XTEARounds { get; set; }
 
-        [XmlElement("Knapsack_Public_Key")]
-        public string KSPublicKey { get; set; }
+        [XmlArray("Knapsack_Private_Key")]
+        public uint[] KSPrivateKey { get; set; }
 
-        [XmlElement("Knapsack_Private_Key")]
-        public string KSPrivateKey { get; set; }
+        [XmlElement("Knapsack_Multiplier")]
+        public uint KSm { get; set; }
+
+        [XmlElement("Knapsack_Multiplier_Inverse")]
+        public uint KSmInverse { get; set; }
+
+        [XmlElement("Knapsack_Array_Continuation")]
+        public uint KSn { get; set; }
 
         #endregion
 
@@ -70,13 +76,15 @@ namespace CryptoApp.Classes
             FswInput = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             FswOutput = string.Copy(FswInput);
             Algo = Algorithm.DoubleTranposition;
-            Date = DateTime.Now;
+            ProcessClosedDate = DateTime.Now;
             DTColKey = "POTATO";
             DTRowKey = "SPARTA";
             XTEAKey = "a1b2c3d4e5f6g7h8";
             XTEARounds = 32;
-            KSPublicKey = "TO DO";
-            KSPrivateKey = "TO DO";
+            KSPrivateKey = new uint[] { 2, 3, 7, 14, 30, 57, 120, 251 };
+            KSn = 491;
+            KSm = 41;
+            KSmInverse = 12;
         }
 
         public bool Save(string path)
@@ -99,13 +107,15 @@ namespace CryptoApp.Classes
                 FswInput = temp.FswInput;
                 FswOutput = temp.FswOutput;
                 Algo = temp.Algo;
-                Date = temp.Date;
+                ProcessClosedDate = temp.ProcessClosedDate;
                 DTColKey = temp.DTColKey;
                 DTRowKey = temp.DTRowKey;
                 XTEAKey = temp.XTEAKey;
                 XTEARounds = temp.XTEARounds;
-                KSPublicKey = temp.KSPublicKey;
                 KSPrivateKey = temp.KSPrivateKey;
+                KSn = temp.KSn;
+                KSm = temp.KSm;
+                KSmInverse = temp.KSmInverse;
             }
 
             return true;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using CryptoApp.Classes;
@@ -142,6 +143,9 @@ namespace CryptoApp
                 // Set XTEA Key
                 _proxy.SetKey(Encoding.ASCII.GetBytes(Settings.Instance.XTEAKey), Algorithm.XTEA);
 
+                // Set Knapsack Key
+
+
                 return true;
             }
             catch(Exception e)
@@ -157,7 +161,7 @@ namespace CryptoApp
             var directory = new DirectoryInfo(Settings.Instance.FswInput);
             var current = DateTime.Now;
             var files = directory.GetFiles()
-                .Where(file => file.CreationTime >= Settings.Instance.Date && file.CreationTime <= current);
+                .Where(file => file.CreationTime >= Settings.Instance.ProcessClosedDate && file.CreationTime <= current);
             foreach (var file in files)
                 _processor.EnqueueFileName(file.FullName);
         }
@@ -174,7 +178,7 @@ namespace CryptoApp
         
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Settings.Instance.FswEnabled) Settings.Instance.Date = DateTime.Now;
+            if (Settings.Instance.FswEnabled) Settings.Instance.ProcessClosedDate = DateTime.Now;
             Settings.Instance.Save("settings.xml");
             _watcher?.Dispose();
             _processor?.Dispose();
@@ -187,7 +191,7 @@ namespace CryptoApp
             Settings.Instance.FswEnabled = !Settings.Instance.FswEnabled;
             _watcher.EnableRaisingEvents = Settings.Instance.FswEnabled;
             if(Settings.Instance.FswEnabled) GetFiles();
-            else Settings.Instance.Date = DateTime.Now;
+            else Settings.Instance.ProcessClosedDate = DateTime.Now;
         }
         
         private void doubleTranspositionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -240,10 +244,12 @@ namespace CryptoApp
         {
             try
             {
+                // NEED TO REFACTOR THIS
                 if (IsEmpty(inputText) && Settings.Instance.Algo != Algorithm.MD5) return;
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 var outputBytes = _proxy.Crypt(inputBytes, Settings.Instance.Algo);
-                if (Settings.Instance.Algo == Algorithm.DoubleTranposition)
+                if (Settings.Instance.Algo == Algorithm.DoubleTranposition || 
+                    Settings.Instance.Algo == Algorithm.Knapsack)
                     outputText.Text = Encoding.ASCII.GetString(outputBytes);
                 else
                 {
@@ -262,7 +268,8 @@ namespace CryptoApp
             {
                 if (IsEmpty(inputText)) return;
                 byte[] inputBytes;
-                if (Settings.Instance.Algo == Algorithm.DoubleTranposition)
+                if (Settings.Instance.Algo == Algorithm.DoubleTranposition ||
+                    Settings.Instance.Algo == Algorithm.Knapsack)
                     inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 else
                 {

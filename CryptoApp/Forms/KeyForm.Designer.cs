@@ -48,11 +48,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.labelTBD = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.numKS7 = new System.Windows.Forms.NumericUpDown();
+            this.numKS6 = new System.Windows.Forms.NumericUpDown();
+            this.numKS5 = new System.Windows.Forms.NumericUpDown();
+            this.numKS4 = new System.Windows.Forms.NumericUpDown();
+            this.numKS3 = new System.Windows.Forms.NumericUpDown();
+            this.numKS2 = new System.Windows.Forms.NumericUpDown();
+            this.numKS1 = new System.Windows.Forms.NumericUpDown();
+            this.numKS0 = new System.Windows.Forms.NumericUpDown();
             this.btnKeyKS = new System.Windows.Forms.Button();
-            this.txtKeyPrivateKS = new System.Windows.Forms.TextBox();
-            this.txtKeyPublicKS = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnRandom = new System.Windows.Forms.Button();
@@ -61,6 +66,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numRoundsXTEA)).BeginInit();
             this.groupOFB.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS0)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -256,22 +269,123 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.numKS7);
+            this.groupBox1.Controls.Add(this.numKS6);
+            this.groupBox1.Controls.Add(this.numKS5);
+            this.groupBox1.Controls.Add(this.numKS4);
+            this.groupBox1.Controls.Add(this.numKS3);
+            this.groupBox1.Controls.Add(this.numKS2);
+            this.groupBox1.Controls.Add(this.numKS1);
+            this.groupBox1.Controls.Add(this.numKS0);
             this.groupBox1.Controls.Add(this.btnKeyKS);
-            this.groupBox1.Controls.Add(this.txtKeyPrivateKS);
-            this.groupBox1.Controls.Add(this.txtKeyPublicKS);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Location = new System.Drawing.Point(13, 302);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(598, 91);
+            this.groupBox1.Size = new System.Drawing.Size(598, 137);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Knapsack";
             // 
+            // numKS7
+            // 
+            this.numKS7.Location = new System.Drawing.Point(443, 19);
+            this.numKS7.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numKS7.Name = "numKS7";
+            this.numKS7.Size = new System.Drawing.Size(47, 20);
+            this.numKS7.TabIndex = 12;
+            // 
+            // numKS6
+            // 
+            this.numKS6.Location = new System.Drawing.Point(390, 19);
+            this.numKS6.Maximum = new decimal(new int[] {
+            4999,
+            0,
+            0,
+            0});
+            this.numKS6.Name = "numKS6";
+            this.numKS6.Size = new System.Drawing.Size(47, 20);
+            this.numKS6.TabIndex = 11;
+            // 
+            // numKS5
+            // 
+            this.numKS5.Location = new System.Drawing.Point(337, 19);
+            this.numKS5.Maximum = new decimal(new int[] {
+            2499,
+            0,
+            0,
+            0});
+            this.numKS5.Name = "numKS5";
+            this.numKS5.Size = new System.Drawing.Size(47, 20);
+            this.numKS5.TabIndex = 10;
+            // 
+            // numKS4
+            // 
+            this.numKS4.Location = new System.Drawing.Point(284, 19);
+            this.numKS4.Maximum = new decimal(new int[] {
+            1249,
+            0,
+            0,
+            0});
+            this.numKS4.Name = "numKS4";
+            this.numKS4.Size = new System.Drawing.Size(47, 20);
+            this.numKS4.TabIndex = 9;
+            // 
+            // numKS3
+            // 
+            this.numKS3.Location = new System.Drawing.Point(231, 19);
+            this.numKS3.Maximum = new decimal(new int[] {
+            624,
+            0,
+            0,
+            0});
+            this.numKS3.Name = "numKS3";
+            this.numKS3.Size = new System.Drawing.Size(47, 20);
+            this.numKS3.TabIndex = 8;
+            // 
+            // numKS2
+            // 
+            this.numKS2.Location = new System.Drawing.Point(178, 19);
+            this.numKS2.Maximum = new decimal(new int[] {
+            311,
+            0,
+            0,
+            0});
+            this.numKS2.Name = "numKS2";
+            this.numKS2.Size = new System.Drawing.Size(47, 20);
+            this.numKS2.TabIndex = 7;
+            // 
+            // numKS1
+            // 
+            this.numKS1.Location = new System.Drawing.Point(125, 19);
+            this.numKS1.Maximum = new decimal(new int[] {
+            155,
+            0,
+            0,
+            0});
+            this.numKS1.Name = "numKS1";
+            this.numKS1.Size = new System.Drawing.Size(47, 20);
+            this.numKS1.TabIndex = 6;
+            // 
+            // numKS0
+            // 
+            this.numKS0.Location = new System.Drawing.Point(72, 19);
+            this.numKS0.Maximum = new decimal(new int[] {
+            77,
+            0,
+            0,
+            0});
+            this.numKS0.Name = "numKS0";
+            this.numKS0.Size = new System.Drawing.Size(47, 20);
+            this.numKS0.TabIndex = 5;
+            // 
             // btnKeyKS
             // 
             this.btnKeyKS.Enabled = false;
-            this.btnKeyKS.Location = new System.Drawing.Point(496, 37);
+            this.btnKeyKS.Location = new System.Drawing.Point(495, 16);
             this.btnKeyKS.Name = "btnKeyKS";
             this.btnKeyKS.Size = new System.Drawing.Size(90, 23);
             this.btnKeyKS.TabIndex = 4;
@@ -279,47 +393,22 @@
             this.btnKeyKS.UseVisualStyleBackColor = true;
             this.btnKeyKS.Click += new System.EventHandler(this.btnKeyKS_Click);
             // 
-            // txtKeyPrivateKS
-            // 
-            this.txtKeyPrivateKS.Enabled = false;
-            this.txtKeyPrivateKS.Location = new System.Drawing.Point(115, 57);
-            this.txtKeyPrivateKS.Name = "txtKeyPrivateKS";
-            this.txtKeyPrivateKS.Size = new System.Drawing.Size(375, 20);
-            this.txtKeyPrivateKS.TabIndex = 3;
-            // 
-            // txtKeyPublicKS
-            // 
-            this.txtKeyPublicKS.Enabled = false;
-            this.txtKeyPublicKS.Location = new System.Drawing.Point(115, 25);
-            this.txtKeyPublicKS.Name = "txtKeyPublicKS";
-            this.txtKeyPublicKS.Size = new System.Drawing.Size(375, 20);
-            this.txtKeyPublicKS.TabIndex = 2;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 57);
+            this.label5.Location = new System.Drawing.Point(6, 19);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 1;
             this.label5.Text = "Private Key";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 25);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Public Key";
-            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLbl});
-            this.statusStrip.Location = new System.Drawing.Point(0, 429);
+            this.statusStrip.Location = new System.Drawing.Point(0, 471);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(619, 22);
+            this.statusStrip.Size = new System.Drawing.Size(621, 22);
             this.statusStrip.TabIndex = 8;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -332,7 +421,7 @@
             // btnRandom
             // 
             this.btnRandom.Enabled = false;
-            this.btnRandom.Location = new System.Drawing.Point(509, 399);
+            this.btnRandom.Location = new System.Drawing.Point(512, 445);
             this.btnRandom.Name = "btnRandom";
             this.btnRandom.Size = new System.Drawing.Size(99, 23);
             this.btnRandom.TabIndex = 9;
@@ -344,7 +433,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 451);
+            this.ClientSize = new System.Drawing.Size(621, 493);
             this.Controls.Add(this.btnRandom);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
@@ -363,6 +452,14 @@
             this.groupOFB.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKS0)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -393,12 +490,17 @@
         private System.Windows.Forms.Label labelTBD;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnKeyKS;
-        private System.Windows.Forms.TextBox txtKeyPrivateKS;
-        private System.Windows.Forms.TextBox txtKeyPublicKS;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLbl;
         private System.Windows.Forms.Button btnRandom;
+        private System.Windows.Forms.NumericUpDown numKS7;
+        private System.Windows.Forms.NumericUpDown numKS6;
+        private System.Windows.Forms.NumericUpDown numKS5;
+        private System.Windows.Forms.NumericUpDown numKS4;
+        private System.Windows.Forms.NumericUpDown numKS3;
+        private System.Windows.Forms.NumericUpDown numKS2;
+        private System.Windows.Forms.NumericUpDown numKS1;
+        private System.Windows.Forms.NumericUpDown numKS0;
     }
 }

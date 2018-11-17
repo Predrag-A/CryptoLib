@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using CryptoApp.Classes;
@@ -13,6 +14,10 @@ namespace CryptoApp.Forms
         #region Fields
 
         private readonly ICryptoService _proxy;
+
+        // Array of knapsack key numerics
+        private NumericUpDown[] _numerics;
+        private Dictionary<string, byte[]> _params = new Dictionary<string, byte[]>();
 
         #endregion
 
@@ -31,17 +36,27 @@ namespace CryptoApp.Forms
 
         private void Initialize()
         {
+            // Initialize array of numerics
+            _numerics = new[] { numKS0, numKS1, numKS2, numKS3, numKS4, numKS5, numKS6, numKS7 };
+
+            // Initialize key values and parameters
             txtKeyColumnDT.Text = Settings.Instance.DTColKey;
             txtKeyRowDT.Text = Settings.Instance.DTRowKey;
             txtKeyXTEA.Text = Settings.Instance.XTEAKey;
             numRoundsXTEA.Value = Settings.Instance.XTEARounds;
-            txtKeyPrivateKS.Text = Settings.Instance.KSPrivateKey;
-            txtKeyPublicKS.Text = Settings.Instance.KSPublicKey;
+            for (var i = 0; i < _numerics.Length; i++)
+                _numerics[i].Value = Settings.Instance.KSPrivateKey[i];
+
+            // Initialize dictionary values
+            _params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
+
         }
 
         #endregion
 
         #region Form Methods
+
+        #region Double Transposition
 
         private void btnKeyDT_Click(object sender, EventArgs e)
         {
@@ -65,6 +80,10 @@ namespace CryptoApp.Forms
             }
         }
 
+        #endregion
+
+        #region XTEA
+
         private void btnKeyXTEA_Click(object sender, EventArgs e)
         {
             try
@@ -86,15 +105,37 @@ namespace CryptoApp.Forms
             }
         }
 
-        private void btnKeyKS_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnParamXTEA_Click(object sender, EventArgs e)
         {
+            try
+            {
+                _params["rounds"] = BitConverter.GetBytes(Convert.ToUInt32(numRoundsXTEA.Value));
+                if (_proxy.SetProperties(_params))
+                {
 
+                }
+                else
+                {
+                    statusLbl.Text = "Status: Unable to set XTEA properties";
+                }
+            }
+            catch (Exception exception)
+            {
+                statusLbl.Text = "Status: " + exception.Message;
+            }
         }
+
+        #endregion
+
+
+        #region Knapsack
+
+        private void btnKeyKS_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        #endregion
 
         private void btnRandom_Click(object sender, EventArgs e)
         {
@@ -108,7 +149,7 @@ namespace CryptoApp.Forms
             if (!char.IsLetterOrDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
-
+        
         #endregion
 
     }
