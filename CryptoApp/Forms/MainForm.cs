@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using CryptoApp.Classes;
@@ -144,7 +144,19 @@ namespace CryptoApp
                 _proxy.SetKey(Encoding.ASCII.GetBytes(Settings.Instance.XTEAKey), Algorithm.XTEA);
 
                 // Set Knapsack Key
+                byte[] byteArray = Settings.Instance.KSPrivateKey.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
+                _proxy.SetKey(byteArray, Algorithm.Knapsack);
 
+                // Generate Property Dictionary
+                var Params = new Dictionary<string, byte[]>();
+                Params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
+                Params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
+                Params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
+                Params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
+
+                // Set properties
+                _proxy.SetProperties(Params, Algorithm.XTEA);
+                _proxy.SetProperties(Params, Algorithm.Knapsack);
 
                 return true;
             }

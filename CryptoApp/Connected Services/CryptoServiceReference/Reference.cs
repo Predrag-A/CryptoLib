@@ -34,10 +34,10 @@ namespace CryptoApp.CryptoServiceReference {
         System.Threading.Tasks.Task<bool> SetKeyAsync(byte[] input, CryptoLib.Algorithm a);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetProperties", ReplyAction="http://tempuri.org/ICryptoService/SetPropertiesResponse")]
-        bool SetProperties(System.Collections.Generic.Dictionary<string, byte[]> specArguments);
+        bool SetProperties(System.Collections.Generic.Dictionary<string, byte[]> specArguments, CryptoLib.Algorithm a);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetProperties", ReplyAction="http://tempuri.org/ICryptoService/SetPropertiesResponse")]
-        System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments);
+        System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments, CryptoLib.Algorithm a);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetIV", ReplyAction="http://tempuri.org/ICryptoService/SetIVResponse")]
         bool SetIV(byte[] input);
@@ -133,12 +133,12 @@ namespace CryptoApp.CryptoServiceReference {
             return base.Channel.SetKeyAsync(input, a);
         }
         
-        public bool SetProperties(System.Collections.Generic.Dictionary<string, byte[]> specArguments) {
-            return base.Channel.SetProperties(specArguments);
+        public bool SetProperties(System.Collections.Generic.Dictionary<string, byte[]> specArguments, CryptoLib.Algorithm a) {
+            return base.Channel.SetProperties(specArguments, a);
         }
         
-        public System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments) {
-            return base.Channel.SetPropertiesAsync(specArguments);
+        public System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments, CryptoLib.Algorithm a) {
+            return base.Channel.SetPropertiesAsync(specArguments, a);
         }
         
         public bool SetIV(byte[] input) {

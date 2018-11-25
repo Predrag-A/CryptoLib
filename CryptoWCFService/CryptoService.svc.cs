@@ -31,6 +31,8 @@ namespace CryptoWCFService
 
         // Delegate Dictionary for encryption/decryption methods
         private static Dictionary<int, Func<byte[], byte[]>> EncryptionDictionary;
+        private static Dictionary<int, Func<byte[], bool>> KeyDictionary;
+        private static Dictionary<int, Func<IDictionary<string, byte[]>, bool>> PropertyDictionary;
 
         #endregion
 
@@ -85,18 +87,45 @@ namespace CryptoWCFService
                 EncryptionDictionary
                     = new Dictionary<int, Func<byte[], byte[]>>()
                     {
-                        // Encryption algorithms
+                        // Encryption methods
                         { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.Crypt },
                         { (int)Algorithm.XTEA, CypherXTEA.Crypt },
                         { (int)Algorithm.OFB, CypherOFB.Crypt },
                         { (int)Algorithm.Knapsack, CypherKnapsack.Crypt },
                         { (int)Algorithm.MD5, CypherMD5.Crypt },
 
-                        // Decryption algorithms, enum value + number of algorithms
+                        // Decryption methods, enum value + number of algorithms
                         { (int)Algorithm.DoubleTranposition + AlgoNumber, CypherDoubleTransposition.Decrypt },
                         { (int)Algorithm.XTEA + AlgoNumber, CypherXTEA.Decrypt },
                         { (int)Algorithm.OFB + AlgoNumber, CypherOFB.Decrypt },
-                        { (int)Algorithm.Knapsack + AlgoNumber, CypherKnapsack.Decrypt }
+                        { (int)Algorithm.Knapsack + AlgoNumber, CypherKnapsack.Decrypt },
+                        { (int)Algorithm.MD5 + AlgoNumber, CypherKnapsack.Decrypt }
+                    };
+            
+            // Initializing key dictionary
+            if(KeyDictionary == null)
+                KeyDictionary
+                    = new Dictionary<int, Func<byte[], bool>>()
+                    {
+                        // Set Key methods
+                        { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.SetKey },
+                        { (int)Algorithm.XTEA, CypherXTEA.SetKey },
+                        { (int)Algorithm.OFB, CypherOFB.SetKey },
+                        { (int)Algorithm.Knapsack, CypherKnapsack.SetKey },
+                        { (int)Algorithm.MD5, CypherMD5.SetKey }
+                    };
+
+            // Initializing property dictionary
+            if(PropertyDictionary == null)
+                PropertyDictionary
+                    = new Dictionary<int, Func<IDictionary<string, byte[]>, bool>>()
+                    {
+                        // Set Property methods
+                        { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.SetAlgorithmProperties },
+                        { (int)Algorithm.XTEA, CypherXTEA.SetAlgorithmProperties },
+                        { (int)Algorithm.OFB, CypherOFB.SetAlgorithmProperties },
+                        { (int)Algorithm.Knapsack, CypherKnapsack.SetAlgorithmProperties },
+                        { (int)Algorithm.MD5, CypherMD5.SetAlgorithmProperties },
                     };
         }
 
@@ -149,19 +178,7 @@ namespace CryptoWCFService
             try
             {
                 LimitCheck(input);
-                switch (a)
-                {
-                    case Algorithm.DoubleTranposition:
-                        return CypherDoubleTransposition.SetKey(input);
-                    case Algorithm.XTEA:
-                        return CypherXTEA.SetKey(input);
-                    case Algorithm.OFB:
-                        return CypherOFB.SetKey(input);
-                    case Algorithm.Knapsack:
-                        return CypherKnapsack.SetKey(input);
-                    default:
-                        return true;
-                }
+                return KeyDictionary[(int)a](input);
             }
             catch (Exception exception)
             {
@@ -169,9 +186,16 @@ namespace CryptoWCFService
             }
         }
 
-        public bool SetProperties(IDictionary<string, byte[]> specArguments)
+        public bool SetProperties(IDictionary<string, byte[]> specArguments, Algorithm a)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return PropertyDictionary[(int) a](specArguments);
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
+            }
         }
 
         public bool SetIV(byte[] input)

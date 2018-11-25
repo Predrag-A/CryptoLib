@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CryptoLib
@@ -40,31 +41,79 @@ namespace CryptoLib
 
         #endregion
 
+        #region Methods
+
+        private void ResetPublicKey()
+        {
+            for (int i = 0; i < DataLength; i++)
+                _publicKey[i] = (_privateKey[i] * _m) % _n;
+        }
+
+        #endregion
+
         #region Interface Methods
 
         public bool SetKey(byte[] input)
         {
-            throw new NotImplementedException();
+            // Convert input into uint array
+            uint[] temp = new uint[DataLength];
+            Buffer.BlockCopy(input, 0, temp, 0, input.Length);
+
+            // Check if the array is superrising
+            float sum = 0;
+            for (int i = 0; i < DataLength; i++)
+            {
+                if (temp[i] <= sum)
+                    throw new ArgumentException("Knapsack key needs to be superincreasing");
+                sum += temp[i];
+            }
+
+            // Set private key
+            _privateKey = temp;
+
+            // Set public key
+            ResetPublicKey();
+
+            return true;
+
         }
 
         public byte[] GenerateRandomKey()
         {
-            throw new NotImplementedException();
+            uint[] temp = new uint[DataLength];
+            var sum = _n;
+            for (int i = DataLength; i >= 0; i++)
+            {
+                sum -= 1;
+                sum /= 2;
+                temp[i] = sum;
+            }
+
+            return temp.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
         }
 
         public bool SetIV(byte[] input)
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("Knapsack does not use an initialization vector.");
         }
 
         public byte[] GenerateRandomIV()
         {
-            throw new NotImplementedException();
+            throw new ArgumentException("Knapsack does not use an initialization vector.");
         }
 
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
-            throw new NotImplementedException();
+            if (specArguments.ContainsKey("m"))
+                _m = BitConverter.ToUInt32(specArguments["m"], 0);
+
+            if (specArguments.ContainsKey("n"))
+                _n = BitConverter.ToUInt32(specArguments["n"], 0);
+
+            if (specArguments.ContainsKey("invm"))
+                _mInverse = BitConverter.ToUInt32(specArguments["invm"], 0);
+
+            return true;
         }
 
         public byte[] Crypt(byte[] input)

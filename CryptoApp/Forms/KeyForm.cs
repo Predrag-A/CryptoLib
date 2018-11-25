@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CryptoApp.Classes;
@@ -44,11 +45,17 @@ namespace CryptoApp.Forms
             txtKeyRowDT.Text = Settings.Instance.DTRowKey;
             txtKeyXTEA.Text = Settings.Instance.XTEAKey;
             numRoundsXTEA.Value = Settings.Instance.XTEARounds;
+            numKSN.Value = Settings.Instance.KSn;
+            numKSM.Value = Settings.Instance.KSm;
+            numKSInvM.Value = Settings.Instance.KSmInverse;
             for (var i = 0; i < _numerics.Length; i++)
                 _numerics[i].Value = Settings.Instance.KSPrivateKey[i];
 
             // Initialize dictionary values
             _params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
+            _params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
+            _params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
+            _params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
 
         }
 
@@ -110,9 +117,10 @@ namespace CryptoApp.Forms
             try
             {
                 _params["rounds"] = BitConverter.GetBytes(Convert.ToUInt32(numRoundsXTEA.Value));
-                if (_proxy.SetProperties(_params))
+                if (_proxy.SetProperties(_params, Algorithm.XTEA))
                 {
-
+                    Settings.Instance.XTEARounds = (uint)numRoundsXTEA.Value;
+                    statusLbl.Text = "Status: XTEA properties successfully set";
                 }
                 else
                 {
@@ -126,16 +134,65 @@ namespace CryptoApp.Forms
         }
 
         #endregion
-
-
+        
         #region Knapsack
 
         private void btnKeyKS_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+
+                // Get array of values from numeric inputs
+                uint[] values = _numerics.Select(s => (uint) s.Value).ToArray();
+
+                // Get byte array from values
+                byte[] byteArray = values.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
+
+                if (_proxy.SetKey(byteArray, Algorithm.Knapsack))
+                {
+                    Settings.Instance.KSPrivateKey = values;
+                    statusLbl.Text = "Status: Knapsack key successfully set";
+                }
+                else
+                {
+                    statusLbl.Text = "Status: Unable to set Knapsack key";
+                }
+
+            }
+            catch (Exception exception)
+            {
+                statusLbl.Text = "Status: " + exception.Message;
+            }
+        }
+
+        private void btnParamKS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _params["n"] = BitConverter.GetBytes(Convert.ToUInt32(numKSN.Value));
+                _params["m"] = BitConverter.GetBytes(Convert.ToUInt32(numKSM.Value));
+                _params["invm"] = BitConverter.GetBytes(Convert.ToUInt32(numKSInvM.Value));
+                if (_proxy.SetProperties(_params, Algorithm.Knapsack))
+                {
+                    Settings.Instance.KSn = (uint)numKSN.Value;
+                    Settings.Instance.KSm = (uint)numKSM.Value;
+                    Settings.Instance.KSmInverse = (uint)numKSInvM.Value;
+                    statusLbl.Text = "Status: Knapsack properties successfully set";
+                }
+                else
+                {
+                    statusLbl.Text = "Status: Unable to set Knapsack properties";
+                }
+            }
+            catch (Exception exception)
+            {
+                statusLbl.Text = "Status: " + exception.Message;
+            }
         }
 
         #endregion
+
+        #region Other
 
         private void btnRandom_Click(object sender, EventArgs e)
         {
@@ -149,8 +206,9 @@ namespace CryptoApp.Forms
             if (!char.IsLetterOrDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
-        
+
         #endregion
 
+        #endregion
     }
 }

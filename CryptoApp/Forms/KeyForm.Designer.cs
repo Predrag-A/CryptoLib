@@ -48,6 +48,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.labelTBD = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnParamKS = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numKSInvM = new System.Windows.Forms.NumericUpDown();
+            this.numKSM = new System.Windows.Forms.NumericUpDown();
+            this.numKSN = new System.Windows.Forms.NumericUpDown();
             this.numKS7 = new System.Windows.Forms.NumericUpDown();
             this.numKS6 = new System.Windows.Forms.NumericUpDown();
             this.numKS5 = new System.Windows.Forms.NumericUpDown();
@@ -66,6 +73,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numRoundsXTEA)).BeginInit();
             this.groupOFB.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numKSInvM)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKSM)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKSN)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKS7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKS6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKS5)).BeginInit();
@@ -173,7 +183,6 @@
             // 
             // btnParamXTEA
             // 
-            this.btnParamXTEA.Enabled = false;
             this.btnParamXTEA.Location = new System.Drawing.Point(496, 55);
             this.btnParamXTEA.Name = "btnParamXTEA";
             this.btnParamXTEA.Size = new System.Drawing.Size(91, 23);
@@ -269,6 +278,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnParamKS);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.numKSInvM);
+            this.groupBox1.Controls.Add(this.numKSM);
+            this.groupBox1.Controls.Add(this.numKSN);
             this.groupBox1.Controls.Add(this.numKS7);
             this.groupBox1.Controls.Add(this.numKS6);
             this.groupBox1.Controls.Add(this.numKS5);
@@ -281,10 +297,83 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(13, 302);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(598, 137);
+            this.groupBox1.Size = new System.Drawing.Size(598, 81);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Knapsack";
+            // 
+            // btnParamKS
+            // 
+            this.btnParamKS.Location = new System.Drawing.Point(496, 45);
+            this.btnParamKS.Name = "btnParamKS";
+            this.btnParamKS.Size = new System.Drawing.Size(91, 23);
+            this.btnParamKS.TabIndex = 8;
+            this.btnParamKS.Text = "Set  Parameters";
+            this.btnParamKS.UseVisualStyleBackColor = true;
+            this.btnParamKS.Click += new System.EventHandler(this.btnParamKS_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(353, 52);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "InvM";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(209, 52);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(16, 13);
+            this.label7.TabIndex = 17;
+            this.label7.Text = "M";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(51, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(15, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "N";
+            // 
+            // numKSInvM
+            // 
+            this.numKSInvM.Location = new System.Drawing.Point(390, 45);
+            this.numKSInvM.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numKSInvM.Name = "numKSInvM";
+            this.numKSInvM.Size = new System.Drawing.Size(99, 20);
+            this.numKSInvM.TabIndex = 15;
+            // 
+            // numKSM
+            // 
+            this.numKSM.Location = new System.Drawing.Point(231, 45);
+            this.numKSM.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numKSM.Name = "numKSM";
+            this.numKSM.Size = new System.Drawing.Size(100, 20);
+            this.numKSM.TabIndex = 14;
+            // 
+            // numKSN
+            // 
+            this.numKSN.Location = new System.Drawing.Point(72, 45);
+            this.numKSN.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numKSN.Name = "numKSN";
+            this.numKSN.Size = new System.Drawing.Size(100, 20);
+            this.numKSN.TabIndex = 13;
             // 
             // numKS7
             // 
@@ -384,7 +473,6 @@
             // 
             // btnKeyKS
             // 
-            this.btnKeyKS.Enabled = false;
             this.btnKeyKS.Location = new System.Drawing.Point(495, 16);
             this.btnKeyKS.Name = "btnKeyKS";
             this.btnKeyKS.Size = new System.Drawing.Size(90, 23);
@@ -406,9 +494,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLbl});
-            this.statusStrip.Location = new System.Drawing.Point(0, 471);
+            this.statusStrip.Location = new System.Drawing.Point(0, 421);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(621, 22);
+            this.statusStrip.Size = new System.Drawing.Size(620, 22);
             this.statusStrip.TabIndex = 8;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -421,7 +509,7 @@
             // btnRandom
             // 
             this.btnRandom.Enabled = false;
-            this.btnRandom.Location = new System.Drawing.Point(512, 445);
+            this.btnRandom.Location = new System.Drawing.Point(512, 389);
             this.btnRandom.Name = "btnRandom";
             this.btnRandom.Size = new System.Drawing.Size(99, 23);
             this.btnRandom.TabIndex = 9;
@@ -433,7 +521,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(621, 493);
+            this.ClientSize = new System.Drawing.Size(620, 443);
             this.Controls.Add(this.btnRandom);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
@@ -452,6 +540,9 @@
             this.groupOFB.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numKSInvM)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKSM)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKSN)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKS7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKS6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKS5)).EndInit();
@@ -502,5 +593,12 @@
         private System.Windows.Forms.NumericUpDown numKS2;
         private System.Windows.Forms.NumericUpDown numKS1;
         private System.Windows.Forms.NumericUpDown numKS0;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numKSInvM;
+        private System.Windows.Forms.NumericUpDown numKSM;
+        private System.Windows.Forms.NumericUpDown numKSN;
+        private System.Windows.Forms.Button btnParamKS;
     }
 }

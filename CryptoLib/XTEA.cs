@@ -102,7 +102,7 @@ namespace CryptoLib
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
             if (specArguments.ContainsKey("rounds"))
-                _rounds = Convert.ToUInt32(specArguments["rounds"]);
+                _rounds = BitConverter.ToUInt32(specArguments["rounds"], 0);
 
             return true;
         }

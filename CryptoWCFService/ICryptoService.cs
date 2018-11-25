@@ -21,7 +21,7 @@ namespace CryptoWCFService
         bool SetKey(byte[] input, Algorithm a);
 
         [OperationContract]
-        bool SetProperties(IDictionary<string, byte[]> specArguments);
+        bool SetProperties(IDictionary<string, byte[]> specArguments, Algorithm a);
 
         [OperationContract]
         bool SetIV(byte[] input);
