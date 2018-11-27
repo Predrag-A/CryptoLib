@@ -72,10 +72,17 @@ namespace CryptoApp
 
             // Process unprocessed files if any, if FSW is enabled
             if (Settings.Instance.FswEnabled) GetFiles();
+            
 
             // Set keys from settings
-            while(!SetKeys())
-                Thread.Sleep(100);
+            while (!SetKeys())
+            {
+
+                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?", 
+                        "Reconnect", MessageBoxButtons.YesNo))
+                    return;
+                Thread.Sleep(1000);
+            }
         }
         
         private bool IsEmpty(TextBox t)

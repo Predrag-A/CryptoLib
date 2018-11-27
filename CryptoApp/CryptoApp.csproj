@@ -49,7 +49,13 @@
   <ItemGroup>
     <Compile Include="Classes\FileCypher.cs" />
     <Compile Include="Classes\FileProcessor.cs" />
+    <Compile Include="Classes\ProgressStream.cs" />
     <Compile Include="Classes\Settings.cs" />
+    <Compile Include="Connected Services\CloudServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\CryptoServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,6 +99,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Connected Services\CloudServiceReference\CloudService.wsdl" />
+    <None Include="Connected Services\CloudServiceReference\CloudService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CloudServiceReference\CloudService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CloudServiceReference\CloudService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CloudServiceReference\CloudService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CloudServiceReference\CryptoApp.CloudServiceReference.RemoteFileInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\CloudServiceReference\CryptoApp.CloudServiceReference.UploadReply.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\CryptoServiceReference\CryptoService.wsdl" />
     <None Include="Connected Services\CryptoServiceReference\CryptoService.xsd">
       <SubType>Designer</SubType>
@@ -129,6 +154,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\CloudServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\CryptoServiceReference\" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +168,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\CryptoServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CloudServiceReference\CloudService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CloudServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CloudServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CloudServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="CryptoWCFService.CloudService" CodeBehind="CloudService.svc.cs" %>

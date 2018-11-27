@@ -61,13 +61,18 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CloudService.svc" />
     <Content Include="CryptoService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudService.svc.cs">
+      <DependentUpon>CloudService.svc</DependentUpon>
+    </Compile>
     <Compile Include="CryptoService.svc.cs">
       <DependentUpon>CryptoService.svc</DependentUpon>
     </Compile>
+    <Compile Include="ICloudService.cs" />
     <Compile Include="ICryptoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

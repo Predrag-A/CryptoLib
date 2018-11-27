@@ -36,6 +36,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.fbd = new System.Windows.Forms.FolderBrowserDialog();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 273);
+            this.statusStrip.Location = new System.Drawing.Point(0, 306);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(554, 22);
             this.statusStrip.TabIndex = 1;
@@ -93,15 +94,19 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // ofd
+            // progressBar
             // 
-            this.ofd.FileName = "openFileDialog1";
+            this.progressBar.Location = new System.Drawing.Point(13, 273);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(529, 23);
+            this.progressBar.TabIndex = 5;
             // 
             // CloudForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(554, 295);
+            this.ClientSize = new System.Drawing.Size(554, 328);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.btnUpload);
@@ -127,5 +132,6 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.FolderBrowserDialog fbd;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }

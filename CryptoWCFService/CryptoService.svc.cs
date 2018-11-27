@@ -27,9 +27,9 @@ namespace CryptoWCFService
         private static XTEA CloudCypherXTEA;
         private const string StoragePath = "C://Remote//";
         private const int Limit = 6400000;
-        private const int AlgoNumber = 5;
 
         // Delegate Dictionary for encryption/decryption methods
+        private const int AlgoNumber = 5;
         private static Dictionary<int, Func<byte[], byte[]>> EncryptionDictionary;
         private static Dictionary<int, Func<byte[], bool>> KeyDictionary;
         private static Dictionary<int, Func<IDictionary<string, byte[]>, bool>> PropertyDictionary;

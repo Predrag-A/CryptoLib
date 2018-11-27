@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using CryptoApp.Classes;
+using CryptoApp.CloudServiceReference;
 using CryptoApp.CryptoServiceReference;
+using CryptoLib;
 
 namespace CryptoApp.Forms
 {
@@ -38,10 +41,15 @@ namespace CryptoApp.Forms
 
             try
             {
+
+                var cloudProxy = new CloudServiceClient();
+
                 // Getting only file names
-                _fileList = new List<string>(_proxy.GetFileList().Select(Path.GetFileName));
+                _fileList = new List<string>(cloudProxy.GetFileList().Select(Path.GetFileName));
                 _bindingSource.DataSource = _fileList;
                 fileListBox.DataSource = _bindingSource;
+
+                cloudProxy.Close();
             }
             catch (Exception e)
             {
@@ -55,35 +63,121 @@ namespace CryptoApp.Forms
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             try
             {
                 // Getting file name for upload
                 if (ofd.ShowDialog() != DialogResult.OK) return;
-                var result = _proxy.UploadFile(ofd.FileName);
 
-                // Adding file name to list instead of invoking GetFileList
-                if (result > 0)
+                var fileInfo = new FileInfo(ofd.FileName);
+                var fileName = fileInfo.Name;
+
+                // Uploading file
+                using (var stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read))
                 {
-                    var extension = Path.GetExtension(ofd.FileName);
-                    var name = Path.GetFileNameWithoutExtension(ofd.FileName);
-                    _fileList.Add(name + "(" + result + ")" + extension);
-                }
-                else
-                    _fileList.Add(Path.GetFileName(ofd.FileName));
+                    using (var uploadStream = new ProgressStream(stream))
+                    {
+                        // Adding event handler
+                        uploadStream.ProgressChanged += uploadStream_ProgressChanged;
 
-                _bindingSource.ResetBindings(false);
-                lblStatus.Text = "Status: File successfully uploaded";
+                        // Initializing service proxy
+                        var cloudProxy = new CloudServiceClient();
+                        
+                        cloudProxy.UploadFile(ref fileName, fileInfo.Length, stream);
+
+                        // Adding file name to list instead of invoking GetFileList
+                        _fileList.Add(fileName);
+                        _bindingSource.ResetBindings(false);
+
+                        lblStatus.Text = "Status: File successfully uploaded";
+
+                        // Closing service
+                        cloudProxy.Close();
+                    }
+                }
+                
             }
             catch (Exception exception)
             {
                 lblStatus.Text = "Status: " + exception.Message;
             }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             try
             {
+
+                // Return if no files are available
+                if (_fileList.Count == 0) return;
+
+                // Getting folder path for storing the downloaded file
+                if (fbd.ShowDialog() != DialogResult.OK) return;
+
+                // Initializing service proxy
+                var cloudProxy = new CloudServiceClient();
+
+                // Initializing client-side decryption
+                var ClientCypher = new XTEA();
+
+                // Getting decryption key
+                ClientCypher.SetKey(Encoding.ASCII.GetBytes(cloudProxy.GetKey()));
+
+                // Getting stream from the service
+                var fileName = fileListBox.SelectedItem.ToString();
+                Stream inputStream;
+                long length = cloudProxy.DownloadFile(ref fileName, out inputStream);
+
+                // Storing file locally
+                var name = Path.GetFileNameWithoutExtension(fileName);
+                var extension = Path.GetExtension(fileName);
+                var fullPath = fbd.SelectedPath + "//" + fileName;
+                var newFullPath = fullPath;
+                var count = 1;
+
+                // Check if file exists as to not overwrite file
+                while (File.Exists(newFullPath))
+                {
+                    count++;
+                    newFullPath = fbd.SelectedPath + "//" + name + "(" + count + ")" + extension;
+                }
+
+                // Write stream to disk
+                using (var writeStream = new FileStream(newFullPath, FileMode.CreateNew, FileAccess.Write))
+                {
+                    int chunkSize = 2048;
+                    byte[] buffer = new byte[chunkSize];
+
+                    do
+                    {
+                        // Read bytes from input stream
+                        int bytesRead = inputStream.Read(buffer, 0, chunkSize);
+                        if (bytesRead == 0) break;
+
+
+                        var decryptedBuffer = ClientCypher.Decrypt(buffer);
+                        // Write bytes to output stream
+                        writeStream.Write(decryptedBuffer, 0, decryptedBuffer.Length);
+
+                        // Update progress bar
+                        progressBar.Value = (int) (writeStream.Position * 100 / length);
+                    } while (true);
+
+                    writeStream.Close();
+                }
+
+                // Close service proxy and deallocate stream
+                inputStream.Dispose();
+                cloudProxy.Close();
+
+
+                /*
+                // Old Method
                 // Return if no files are available
                 if (_fileList.Count == 0) return;
 
@@ -111,11 +205,16 @@ namespace CryptoApp.Forms
                 File.WriteAllText(newFullPath, Encoding.ASCII.GetString(result));
 
                 lblStatus.Text = "Status: File successfully downloaded";
+                */
 
             }
             catch (Exception exception)
             {
                 lblStatus.Text = "Status: " + exception.Message;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
 
@@ -148,6 +247,12 @@ namespace CryptoApp.Forms
             {
                 lblStatus.Text = "Status: " + exception.Message;
             }
+        }
+
+        void uploadStream_ProgressChanged(object sender, ProgressStream.ProgressChangedEventArgs e)
+        {
+            if (e.Length != 0)
+                progressBar.Value = (int)(e.BytesRead * 100 / e.Length);
         }
 
         #endregion
