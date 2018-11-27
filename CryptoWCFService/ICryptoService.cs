@@ -31,19 +31,7 @@ namespace CryptoWCFService
 
         [OperationContract]
         byte[] RandomizeIV();
-
-        [OperationContract]
-        string[] GetFileList();
-
-        [OperationContract]
-        bool DeleteFile(string fileName);
-
-        [OperationContract]
-        byte[] DownloadFile(string fileName);
-
-        [OperationContract]
-        int UploadFile(string fileName);
-
+        
         #endregion
 
     }

@@ -56,30 +56,6 @@ namespace CryptoApp.CryptoServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeIV", ReplyAction="http://tempuri.org/ICryptoService/RandomizeIVResponse")]
         System.Threading.Tasks.Task<byte[]> RandomizeIVAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/GetFileList", ReplyAction="http://tempuri.org/ICryptoService/GetFileListResponse")]
-        string[] GetFileList();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/GetFileList", ReplyAction="http://tempuri.org/ICryptoService/GetFileListResponse")]
-        System.Threading.Tasks.Task<string[]> GetFileListAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DeleteFile", ReplyAction="http://tempuri.org/ICryptoService/DeleteFileResponse")]
-        bool DeleteFile(string fileName);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DeleteFile", ReplyAction="http://tempuri.org/ICryptoService/DeleteFileResponse")]
-        System.Threading.Tasks.Task<bool> DeleteFileAsync(string fileName);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DownloadFile", ReplyAction="http://tempuri.org/ICryptoService/DownloadFileResponse")]
-        byte[] DownloadFile(string fileName);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/DownloadFile", ReplyAction="http://tempuri.org/ICryptoService/DownloadFileResponse")]
-        System.Threading.Tasks.Task<byte[]> DownloadFileAsync(string fileName);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/UploadFile", ReplyAction="http://tempuri.org/ICryptoService/UploadFileResponse")]
-        int UploadFile(string fileName);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/UploadFile", ReplyAction="http://tempuri.org/ICryptoService/UploadFileResponse")]
-        System.Threading.Tasks.Task<int> UploadFileAsync(string fileName);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -163,38 +139,6 @@ namespace CryptoApp.CryptoServiceReference {
         
         public System.Threading.Tasks.Task<byte[]> RandomizeIVAsync() {
             return base.Channel.RandomizeIVAsync();
-        }
-        
-        public string[] GetFileList() {
-            return base.Channel.GetFileList();
-        }
-        
-        public System.Threading.Tasks.Task<string[]> GetFileListAsync() {
-            return base.Channel.GetFileListAsync();
-        }
-        
-        public bool DeleteFile(string fileName) {
-            return base.Channel.DeleteFile(fileName);
-        }
-        
-        public System.Threading.Tasks.Task<bool> DeleteFileAsync(string fileName) {
-            return base.Channel.DeleteFileAsync(fileName);
-        }
-        
-        public byte[] DownloadFile(string fileName) {
-            return base.Channel.DownloadFile(fileName);
-        }
-        
-        public System.Threading.Tasks.Task<byte[]> DownloadFileAsync(string fileName) {
-            return base.Channel.DownloadFileAsync(fileName);
-        }
-        
-        public int UploadFile(string fileName) {
-            return base.Channel.UploadFile(fileName);
-        }
-        
-        public System.Threading.Tasks.Task<int> UploadFileAsync(string fileName) {
-            return base.Channel.UploadFileAsync(fileName);
         }
     }
 }

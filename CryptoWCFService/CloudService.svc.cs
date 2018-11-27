@@ -17,6 +17,7 @@ namespace CryptoWCFService
         private static byte[] CryptedCloudKey;
         private static XTEA CloudCypherXTEA;
         private const string StoragePath = "C://Remote//";
+        private const int ChunkSize = 2048;
 
 
         #endregion
@@ -66,29 +67,23 @@ namespace CryptoWCFService
 
                 // Check if file exists
                 if (!fileInfo.Exists) throw new FileNotFoundException("File not found", request.FileName);
-
+                
+                // Open stream
+                // After returning to the client the download starts.
+                // Stream remains open and on the server and the client reads it.
+                // Files will be decrypted client-side
                 var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 
+                // Delete temp file
+                // File.Delete(tempFilePath);
 
+                // Return stream
                 return new RemoteFileInfo
                 {
                     FileName = request.FileName,
                     Length = fileInfo.Length,
                     FileByteStream = stream
                 };
-                
-
-                /*
-                // Create decrypted version of the file
-                var buff = File.ReadAllBytes(filePath);
-                var outputBytes = CloudCypherXTEA.Decrypt(buff);
-                File.WriteAllText(tempFilePath, Encoding.ASCII.GetString(outputBytes));
-                */
-
-                // Open stream
-                // After returning to the client the download starts.
-                // Stream remains open and on the server and the client reads it.
-                //var stream = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read);
             }
             catch (Exception exception)
             {
@@ -114,26 +109,23 @@ namespace CryptoWCFService
                     newFullPath = StoragePath + "//" + name + "(" + count + ")" + extension;
                 }
 
-                // Initializing buffer
-                int chunkSize = 2048;
-                long chunkNumber = request.Length / chunkSize;
-                long current = 0;
-                int lastChunkSize = (int)(request.Length - chunkSize * chunkNumber);
-
                 using (var writeStream = new FileStream(newFullPath, FileMode.CreateNew, FileAccess.Write))
                 {
                     do
                     {
+
+                        // Initializing buffer
                         var buffer = new byte[2048];
+
                         // Read bytes from the input stream
-                        int bytesRead = request.FileByteStream.Read(buffer, 0, chunkSize);
+                        int bytesRead = request.FileByteStream.Read(buffer, 0, ChunkSize);
                         if (bytesRead == 0) break;
 
                         // If the last chunk is being processed
-                        if (current == chunkNumber)
+                        if (bytesRead < ChunkSize)
                         {
-                            var temp = new byte[lastChunkSize];
-                            Array.Copy(buffer, temp, lastChunkSize);
+                            var temp = new byte[bytesRead];
+                            Array.Copy(buffer, temp, bytesRead);
                             buffer = temp;
                         }
 
@@ -142,7 +134,7 @@ namespace CryptoWCFService
 
                         // Write bytes to the output stream
                         writeStream.Write(cryptedBuffer, 0, cryptedBuffer.Length);
-                        current++;
+
                     } while (true);
 
                     writeStream.Close();

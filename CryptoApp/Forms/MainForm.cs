@@ -73,16 +73,6 @@ namespace CryptoApp
             // Process unprocessed files if any, if FSW is enabled
             if (Settings.Instance.FswEnabled) GetFiles();
             
-
-            // Set keys from settings
-            while (!SetKeys())
-            {
-
-                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?", 
-                        "Reconnect", MessageBoxButtons.YesNo))
-                    return;
-                Thread.Sleep(1000);
-            }
         }
         
         private bool IsEmpty(TextBox t)
@@ -169,7 +159,13 @@ namespace CryptoApp
             }
             catch(Exception e)
             {
-                throw new ArgumentException(e.Message);
+                // Attempt to reconnect if the service cannot be accessed
+                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?",
+                        "Reconnect", MessageBoxButtons.YesNo))
+                    Close();
+                Thread.Sleep(1000);
+                SetKeys();
+                return false;
             }
         }
 
@@ -327,10 +323,16 @@ namespace CryptoApp
 
         private void cloudToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cloudForm = new CloudForm(_proxy);
+            var cloudForm = new CloudForm();
             cloudForm.ShowDialog();
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            SetKeys();
+        }
+
         #endregion
+
     }
 }

@@ -50,30 +50,6 @@
   <wsdl:message name="ICryptoService_RandomizeIV_OutputMessage">
     <wsdl:part name="parameters" element="tns:RandomizeIVResponse" />
   </wsdl:message>
-  <wsdl:message name="ICryptoService_GetFileList_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetFileList" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_GetFileList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetFileListResponse" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_DeleteFile_InputMessage">
-    <wsdl:part name="parameters" element="tns:DeleteFile" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_DeleteFile_OutputMessage">
-    <wsdl:part name="parameters" element="tns:DeleteFileResponse" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_DownloadFile_InputMessage">
-    <wsdl:part name="parameters" element="tns:DownloadFile" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_DownloadFile_OutputMessage">
-    <wsdl:part name="parameters" element="tns:DownloadFileResponse" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_UploadFile_InputMessage">
-    <wsdl:part name="parameters" element="tns:UploadFile" />
-  </wsdl:message>
-  <wsdl:message name="ICryptoService_UploadFile_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UploadFileResponse" />
-  </wsdl:message>
   <wsdl:portType name="ICryptoService">
     <wsdl:operation name="Crypt">
       <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/Crypt" message="tns:ICryptoService_Crypt_InputMessage" />
@@ -102,22 +78,6 @@
     <wsdl:operation name="RandomizeIV">
       <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/RandomizeIV" message="tns:ICryptoService_RandomizeIV_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/RandomizeIVResponse" message="tns:ICryptoService_RandomizeIV_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetFileList">
-      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/GetFileList" message="tns:ICryptoService_GetFileList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/GetFileListResponse" message="tns:ICryptoService_GetFileList_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="DeleteFile">
-      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/DeleteFile" message="tns:ICryptoService_DeleteFile_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/DeleteFileResponse" message="tns:ICryptoService_DeleteFile_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="DownloadFile">
-      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/DownloadFile" message="tns:ICryptoService_DownloadFile_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/DownloadFileResponse" message="tns:ICryptoService_DownloadFile_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="UploadFile">
-      <wsdl:input wsaw:Action="http://tempuri.org/ICryptoService/UploadFile" message="tns:ICryptoService_UploadFile_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/ICryptoService/UploadFileResponse" message="tns:ICryptoService_UploadFile_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICryptoService" type="tns:ICryptoService">
@@ -178,42 +138,6 @@
     </wsdl:operation>
     <wsdl:operation name="RandomizeIV">
       <soap:operation soapAction="http://tempuri.org/ICryptoService/RandomizeIV" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetFileList">
-      <soap:operation soapAction="http://tempuri.org/ICryptoService/GetFileList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DeleteFile">
-      <soap:operation soapAction="http://tempuri.org/ICryptoService/DeleteFile" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DownloadFile">
-      <soap:operation soapAction="http://tempuri.org/ICryptoService/DownloadFile" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="UploadFile">
-      <soap:operation soapAction="http://tempuri.org/ICryptoService/UploadFile" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

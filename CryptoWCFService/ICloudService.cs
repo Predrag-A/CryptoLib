@@ -3,6 +3,9 @@ using System.ServiceModel;
 
 namespace CryptoWCFService
 {
+
+    #region Service Contracts
+
     [ServiceContract]
     public interface ICloudService
     {
@@ -22,6 +25,10 @@ namespace CryptoWCFService
         bool DeleteFile(string fileName);
         
     }
+
+    #endregion
+
+    #region Message Contracts
 
     [MessageContract]
     public class DownloadRequest
@@ -54,5 +61,8 @@ namespace CryptoWCFService
             FileByteStream = null;
         }
     }
+
+    #endregion
+
 }
 
