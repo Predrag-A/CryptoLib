@@ -8,8 +8,16 @@ namespace CryptoApp.Classes
     /// Code is provided to be used freely but without any warranty of any kind
     public class ProgressStream : Stream
     {
+
+        #region Fields
+
         private readonly FileStream file;
         private readonly long length;
+        private long bytesRead;
+
+        #endregion
+
+        #region Helper Classes
 
         public class ProgressChangedEventArgs : EventArgs
         {
@@ -23,9 +31,15 @@ namespace CryptoApp.Classes
             }
         }
 
+        #endregion
+
+        #region Event Handlers
+
         public event EventHandler<ProgressChangedEventArgs> ProgressChanged;
 
-        private long bytesRead;
+        #endregion
+
+        #region Constructors
 
         public ProgressStream(FileStream file)
         {
@@ -34,6 +48,10 @@ namespace CryptoApp.Classes
             bytesRead = 0;
             if (ProgressChanged != null) ProgressChanged(this, new ProgressChangedEventArgs(bytesRead, length));
         }
+
+        #endregion
+
+        #region Methods
 
         public double GetProgress()
         {
@@ -90,5 +108,8 @@ namespace CryptoApp.Classes
         {
             throw new Exception("The method or operation is not implemented.");
         }
+
+        #endregion
+
     }
 }

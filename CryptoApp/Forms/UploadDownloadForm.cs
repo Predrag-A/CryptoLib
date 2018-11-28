@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using CryptoApp.Classes;
 using CryptoApp.CloudServiceReference;
@@ -10,10 +9,6 @@ using CryptoLib;
 
 namespace CryptoApp.Forms
 {
-
-    // Progress delegate to avoid cross-thread operation errors
-    public delegate void ProgressDelegate(int value);
-
     public partial class UploadDownloadForm : Form
     {
 
@@ -32,9 +27,6 @@ namespace CryptoApp.Forms
 
         // Encrypted data chunk size
         private const int ChunkSize = 2056;
-
-        // Thread as a field so it can be aborted via cancel
-        private Thread _thread;
         
         #endregion
 
@@ -76,19 +68,14 @@ namespace CryptoApp.Forms
         {
             try
             {
-                ControlBox = false;
-
                 // Set window title
                 Text = _upload ? "File Upload" : "File Download";
                 
                 // Set label
                 lblStatus.Text = (_upload ? "Uploading " : "Downloading ") + Path.GetFileName(_localFilePath);
 
-                // Set thread method
-                _thread = _upload ? new Thread(Upload) : new Thread(Download);
-
-                // Start thread
-                _thread.Start();
+                // Start backgroundWorker
+                backgroundWorker.RunWorkerAsync();
             }
             catch (Exception exception)
             {
@@ -133,9 +120,6 @@ namespace CryptoApp.Forms
             {
                 // Closing service proxy
                 cloudProxy.Close();
-
-                // Close the form
-                Invoke(new MethodInvoker(Close));
             }
         }
 
@@ -189,10 +173,9 @@ namespace CryptoApp.Forms
 
                         // Update progress bar
                         if (lastChunk)
-                            progressBar.Invoke(new ProgressDelegate(UpdateProgress), 100);
+                            backgroundWorker.ReportProgress(100);
                         else
-                            progressBar.Invoke(new ProgressDelegate(UpdateProgress), 
-                                (int)(writeStream.Position * 100 / length));
+                            backgroundWorker.ReportProgress((int)(writeStream.Position * 100 / length));
 
                     } while (!lastChunk);
 
@@ -211,38 +194,52 @@ namespace CryptoApp.Forms
             {
                 // Close service proxy
                 cloudProxy.Close();
-
-                // Close the form using invoke to avoid cross-thread operation errors
-                Invoke(new MethodInvoker(Close));
             }
+        }
+        
+        private void uploadStream_ProgressChanged(object sender, ProgressStream.ProgressChangedEventArgs e)
+        {
+            if (e.Length == 0) return;
+            backgroundWorker.ReportProgress((int)(e.BytesRead * 100 / e.Length));
         }
 
         #endregion
 
-        #region Delegate Methods
+        #region Backgroundworker Methods
+
+        private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            // Invoke method depending on bool value
+            if(_upload)
+                Upload();
+            else
+                Download();
+        }
         
 
-        private void uploadStream_ProgressChanged(object sender, ProgressStream.ProgressChangedEventArgs e)
+        private void backgroundWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            if (e.Length == 0) return;
-            progressBar.Invoke(new ProgressDelegate(UpdateProgress), (int)(e.BytesRead * 100 / e.Length));
-        }
-
-        private void UpdateProgress(int value)
-        {
-            // Counteracting animation lag
-            if (value == progressBar.Maximum)
+            // Update progress bar
+            if (e.ProgressPercentage == progressBar.Maximum)
             {
-                progressBar.Maximum = value + 1;
-                progressBar.Value = value + 1;
-                progressBar.Maximum = value;
+                // Counteracting animation lag
+                progressBar.Maximum = e.ProgressPercentage + 1;
+                progressBar.Value = e.ProgressPercentage + 1;
+                progressBar.Maximum = e.ProgressPercentage;
             }
             else
-                progressBar.Value = value + 1;
-
-            lblProgress.Text = value + "% Done";
+                progressBar.Value = e.ProgressPercentage + 1;
+                
+            // Update progress label
+            lblProgress.Text = e.ProgressPercentage + "% Done";
         }
 
+        private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            // Close form when work completes
+            Close();
+        }
+        
         #endregion
 
     }
