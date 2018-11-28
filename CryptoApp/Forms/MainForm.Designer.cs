@@ -41,7 +41,6 @@
             this.algorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doubleTranspositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xTEAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oFBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.knapsackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mD5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -135,7 +134,6 @@
             this.algorithmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.doubleTranspositionToolStripMenuItem,
             this.xTEAToolStripMenuItem,
-            this.oFBToolStripMenuItem,
             this.knapsackToolStripMenuItem,
             this.mD5ToolStripMenuItem,
             this.toolStripMenuItem3,
@@ -157,13 +155,6 @@
             this.xTEAToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.xTEAToolStripMenuItem.Text = "XTEA";
             this.xTEAToolStripMenuItem.Click += new System.EventHandler(this.xTEAToolStripMenuItem_Click);
-            // 
-            // oFBToolStripMenuItem
-            // 
-            this.oFBToolStripMenuItem.Name = "oFBToolStripMenuItem";
-            this.oFBToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.oFBToolStripMenuItem.Text = "OFB";
-            this.oFBToolStripMenuItem.Click += new System.EventHandler(this.oFBToolStripMenuItem_Click);
             // 
             // knapsackToolStripMenuItem
             // 
@@ -305,7 +296,6 @@
         private System.Windows.Forms.ToolStripMenuItem algorithmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem doubleTranspositionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xTEAToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oFBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem knapsackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mD5ToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog fbdInput;

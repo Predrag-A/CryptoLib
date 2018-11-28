@@ -41,12 +41,6 @@
             this.btnKeyXTEA = new System.Windows.Forms.Button();
             this.txtKeyXTEA = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.groupOFB = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.labelTBD = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnParamKS = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
@@ -68,10 +62,13 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnRandom = new System.Windows.Forms.Button();
+            this.checkOFB = new System.Windows.Forms.CheckBox();
+            this.txtIVXTEA = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnIVXTEA = new System.Windows.Forms.Button();
             this.groupDT.SuspendLayout();
             this.groupXTEA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRoundsXTEA)).BeginInit();
-            this.groupOFB.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numKSInvM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKSM)).BeginInit();
@@ -94,9 +91,10 @@
             this.groupDT.Controls.Add(this.txtKeyColumnDT);
             this.groupDT.Controls.Add(this.label2);
             this.groupDT.Controls.Add(this.label1);
-            this.groupDT.Location = new System.Drawing.Point(13, 13);
+            this.groupDT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupDT.Location = new System.Drawing.Point(0, 0);
             this.groupDT.Name = "groupDT";
-            this.groupDT.Size = new System.Drawing.Size(598, 91);
+            this.groupDT.Size = new System.Drawing.Size(620, 91);
             this.groupDT.TabIndex = 0;
             this.groupDT.TabStop = false;
             this.groupDT.Text = "Double Transposition";
@@ -147,15 +145,20 @@
             // 
             // groupXTEA
             // 
+            this.groupXTEA.Controls.Add(this.btnIVXTEA);
+            this.groupXTEA.Controls.Add(this.label3);
+            this.groupXTEA.Controls.Add(this.txtIVXTEA);
+            this.groupXTEA.Controls.Add(this.checkOFB);
             this.groupXTEA.Controls.Add(this.lbl3);
             this.groupXTEA.Controls.Add(this.numRoundsXTEA);
             this.groupXTEA.Controls.Add(this.btnParamXTEA);
             this.groupXTEA.Controls.Add(this.btnKeyXTEA);
             this.groupXTEA.Controls.Add(this.txtKeyXTEA);
             this.groupXTEA.Controls.Add(this.label4);
-            this.groupXTEA.Location = new System.Drawing.Point(12, 110);
+            this.groupXTEA.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupXTEA.Location = new System.Drawing.Point(0, 91);
             this.groupXTEA.Name = "groupXTEA";
-            this.groupXTEA.Size = new System.Drawing.Size(599, 89);
+            this.groupXTEA.Size = new System.Drawing.Size(620, 121);
             this.groupXTEA.TabIndex = 5;
             this.groupXTEA.TabStop = false;
             this.groupXTEA.Text = "XTEA";
@@ -163,7 +166,7 @@
             // lbl3
             // 
             this.lbl3.AutoSize = true;
-            this.lbl3.Location = new System.Drawing.Point(6, 55);
+            this.lbl3.Location = new System.Drawing.Point(6, 60);
             this.lbl3.Name = "lbl3";
             this.lbl3.Size = new System.Drawing.Size(44, 13);
             this.lbl3.TabIndex = 7;
@@ -171,14 +174,14 @@
             // 
             // numRoundsXTEA
             // 
-            this.numRoundsXTEA.Location = new System.Drawing.Point(116, 55);
+            this.numRoundsXTEA.Location = new System.Drawing.Point(116, 58);
             this.numRoundsXTEA.Maximum = new decimal(new int[] {
             64,
             0,
             0,
             0});
             this.numRoundsXTEA.Name = "numRoundsXTEA";
-            this.numRoundsXTEA.Size = new System.Drawing.Size(374, 20);
+            this.numRoundsXTEA.Size = new System.Drawing.Size(109, 20);
             this.numRoundsXTEA.TabIndex = 6;
             // 
             // btnParamXTEA
@@ -218,64 +221,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Key";
             // 
-            // groupOFB
-            // 
-            this.groupOFB.Controls.Add(this.button1);
-            this.groupOFB.Controls.Add(this.textBox1);
-            this.groupOFB.Controls.Add(this.textBox2);
-            this.groupOFB.Controls.Add(this.label3);
-            this.groupOFB.Controls.Add(this.labelTBD);
-            this.groupOFB.Location = new System.Drawing.Point(13, 205);
-            this.groupOFB.Name = "groupOFB";
-            this.groupOFB.Size = new System.Drawing.Size(598, 91);
-            this.groupOFB.TabIndex = 6;
-            this.groupOFB.TabStop = false;
-            this.groupOFB.Text = "OFB Mode";
-            // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(496, 25);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Set IV";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(115, 57);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(375, 20);
-            this.textBox1.TabIndex = 3;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(115, 25);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(375, 20);
-            this.textBox2.TabIndex = 2;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 57);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "TBD";
-            // 
-            // labelTBD
-            // 
-            this.labelTBD.AutoSize = true;
-            this.labelTBD.Location = new System.Drawing.Point(6, 25);
-            this.labelTBD.Name = "labelTBD";
-            this.labelTBD.Size = new System.Drawing.Size(95, 13);
-            this.labelTBD.TabIndex = 0;
-            this.labelTBD.Text = "Initialization Vector";
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnParamKS);
@@ -295,9 +240,10 @@
             this.groupBox1.Controls.Add(this.numKS0);
             this.groupBox1.Controls.Add(this.btnKeyKS);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(13, 302);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 212);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(598, 81);
+            this.groupBox1.Size = new System.Drawing.Size(620, 81);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Knapsack";
@@ -494,7 +440,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLbl});
-            this.statusStrip.Location = new System.Drawing.Point(0, 421);
+            this.statusStrip.Location = new System.Drawing.Point(0, 324);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(620, 22);
             this.statusStrip.TabIndex = 8;
@@ -509,7 +455,7 @@
             // btnRandom
             // 
             this.btnRandom.Enabled = false;
-            this.btnRandom.Location = new System.Drawing.Point(512, 389);
+            this.btnRandom.Location = new System.Drawing.Point(509, 299);
             this.btnRandom.Name = "btnRandom";
             this.btnRandom.Size = new System.Drawing.Size(99, 23);
             this.btnRandom.TabIndex = 9;
@@ -517,15 +463,51 @@
             this.btnRandom.UseVisualStyleBackColor = true;
             this.btnRandom.Click += new System.EventHandler(this.btnRandom_Click);
             // 
+            // checkOFB
+            // 
+            this.checkOFB.AutoSize = true;
+            this.checkOFB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkOFB.Location = new System.Drawing.Point(350, 59);
+            this.checkOFB.Name = "checkOFB";
+            this.checkOFB.Size = new System.Drawing.Size(139, 17);
+            this.checkOFB.TabIndex = 9;
+            this.checkOFB.Text = "Output Feedback Mode";
+            this.checkOFB.UseVisualStyleBackColor = true;
+            // 
+            // txtIVXTEA
+            // 
+            this.txtIVXTEA.Location = new System.Drawing.Point(114, 87);
+            this.txtIVXTEA.Name = "txtIVXTEA";
+            this.txtIVXTEA.Size = new System.Drawing.Size(375, 20);
+            this.txtIVXTEA.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 90);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Initialization Vector";
+            // 
+            // btnIVXTEA
+            // 
+            this.btnIVXTEA.Location = new System.Drawing.Point(495, 84);
+            this.btnIVXTEA.Name = "btnIVXTEA";
+            this.btnIVXTEA.Size = new System.Drawing.Size(91, 23);
+            this.btnIVXTEA.TabIndex = 12;
+            this.btnIVXTEA.Text = "Set  IV";
+            this.btnIVXTEA.UseVisualStyleBackColor = true;
+            this.btnIVXTEA.Click += new System.EventHandler(this.btnIVXTEA_Click);
+            // 
             // KeyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 443);
+            this.ClientSize = new System.Drawing.Size(620, 346);
             this.Controls.Add(this.btnRandom);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.groupOFB);
             this.Controls.Add(this.groupXTEA);
             this.Controls.Add(this.groupDT);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -537,8 +519,6 @@
             this.groupXTEA.ResumeLayout(false);
             this.groupXTEA.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRoundsXTEA)).EndInit();
-            this.groupOFB.ResumeLayout(false);
-            this.groupOFB.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numKSInvM)).EndInit();
@@ -574,12 +554,6 @@
         private System.Windows.Forms.NumericUpDown numRoundsXTEA;
         private System.Windows.Forms.Button btnParamXTEA;
         private System.Windows.Forms.Label lbl3;
-        private System.Windows.Forms.GroupBox groupOFB;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label labelTBD;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnKeyKS;
         private System.Windows.Forms.Label label5;
@@ -601,5 +575,9 @@
         private System.Windows.Forms.NumericUpDown numKSM;
         private System.Windows.Forms.NumericUpDown numKSN;
         private System.Windows.Forms.Button btnParamKS;
+        private System.Windows.Forms.CheckBox checkOFB;
+        private System.Windows.Forms.Button btnIVXTEA;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtIVXTEA;
     }
 }

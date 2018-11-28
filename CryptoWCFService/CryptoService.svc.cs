@@ -15,15 +15,14 @@ namespace CryptoWCFService
         // Crypto Service Variables
         private static DoubleTransposition CypherDoubleTransposition;
         private static XTEA CypherXTEA;
-        private static OFB CypherOFB;
         private static Knapsack CypherKnapsack;
         private static MD5 CypherMD5;
         private const int Limit = 6400000;
 
         // Delegate Dictionary for encryption/decryption methods
-        private const int AlgoNumber = 5;
+        private const int AlgoNumber = 4;
         private static Dictionary<int, Func<byte[], byte[]>> EncryptionDictionary;
-        private static Dictionary<int, Func<byte[], bool>> KeyDictionary;
+        private static Dictionary<int, Func<byte[], bool>> KeyIVDictionary;
         private static Dictionary<int, Func<IDictionary<string, byte[]>, bool>> PropertyDictionary;
 
         #endregion
@@ -47,10 +46,6 @@ namespace CryptoWCFService
 
             if (CypherXTEA == null)
                 CypherXTEA = new XTEA();
-            
-
-            if (CypherOFB == null)
-                CypherOFB = new OFB();
 
             if (CypherKnapsack == null)
                 CypherKnapsack = new Knapsack();
@@ -66,29 +61,32 @@ namespace CryptoWCFService
                         // Encryption methods
                         { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.Crypt },
                         { (int)Algorithm.XTEA, CypherXTEA.Crypt },
-                        { (int)Algorithm.OFB, CypherOFB.Crypt },
                         { (int)Algorithm.Knapsack, CypherKnapsack.Crypt },
                         { (int)Algorithm.MD5, CypherMD5.Crypt },
 
                         // Decryption methods, enum value + number of algorithms
                         { (int)Algorithm.DoubleTranposition + AlgoNumber, CypherDoubleTransposition.Decrypt },
                         { (int)Algorithm.XTEA + AlgoNumber, CypherXTEA.Decrypt },
-                        { (int)Algorithm.OFB + AlgoNumber, CypherOFB.Decrypt },
                         { (int)Algorithm.Knapsack + AlgoNumber, CypherKnapsack.Decrypt },
                         { (int)Algorithm.MD5 + AlgoNumber, CypherKnapsack.Decrypt }
                     };
             
-            // Initializing key dictionary
-            if(KeyDictionary == null)
-                KeyDictionary
+            // Initializing key and IV dictionary
+            if(KeyIVDictionary == null)
+                KeyIVDictionary
                     = new Dictionary<int, Func<byte[], bool>>()
                     {
                         // Set Key methods
                         { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.SetKey },
                         { (int)Algorithm.XTEA, CypherXTEA.SetKey },
-                        { (int)Algorithm.OFB, CypherOFB.SetKey },
                         { (int)Algorithm.Knapsack, CypherKnapsack.SetKey },
-                        { (int)Algorithm.MD5, CypherMD5.SetKey }
+                        { (int)Algorithm.MD5, CypherMD5.SetKey },
+
+                        // Set IV methods, enum value + number of algorithms
+                        { (int)Algorithm.DoubleTranposition + AlgoNumber, CypherDoubleTransposition.SetIV },
+                        { (int)Algorithm.XTEA + AlgoNumber, CypherXTEA.SetIV },
+                        { (int)Algorithm.Knapsack + AlgoNumber, CypherKnapsack.SetIV },
+                        { (int)Algorithm.MD5 + AlgoNumber, CypherMD5.SetIV }
                     };
 
             // Initializing property dictionary
@@ -99,7 +97,6 @@ namespace CryptoWCFService
                         // Set Property methods
                         { (int)Algorithm.DoubleTranposition, CypherDoubleTransposition.SetAlgorithmProperties },
                         { (int)Algorithm.XTEA, CypherXTEA.SetAlgorithmProperties },
-                        { (int)Algorithm.OFB, CypherOFB.SetAlgorithmProperties },
                         { (int)Algorithm.Knapsack, CypherKnapsack.SetAlgorithmProperties },
                         { (int)Algorithm.MD5, CypherMD5.SetAlgorithmProperties },
                     };
@@ -153,7 +150,7 @@ namespace CryptoWCFService
             try
             {
                 LimitCheck(input);
-                return KeyDictionary[(int)a](input);
+                return KeyIVDictionary[(int)a](input);
             }
             catch (Exception exception)
             {
@@ -173,10 +170,18 @@ namespace CryptoWCFService
             }
         }
 
-        public bool SetIV(byte[] input)
+        public bool SetIV(byte[] input, Algorithm a)
         {
-            LimitCheck(input);
-            throw new NotImplementedException();
+            try
+            {
+                LimitCheck(input);
+                return KeyIVDictionary[(int) a + AlgoNumber](input);
+            }
+            catch (Exception exception)
+            {
+                throw new FaultException(exception.Message);
+            }
+
         }
 
         public byte[][] RandomizeKeys()

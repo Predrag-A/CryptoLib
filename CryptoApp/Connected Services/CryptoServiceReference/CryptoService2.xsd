@@ -4,7 +4,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="DoubleTranposition" />
       <xs:enumeration value="XTEA" />
-      <xs:enumeration value="OFB" />
       <xs:enumeration value="Knapsack" />
       <xs:enumeration value="MD5" />
     </xs:restriction>

@@ -24,7 +24,7 @@ namespace CryptoWCFService
         bool SetProperties(IDictionary<string, byte[]> specArguments, Algorithm a);
 
         [OperationContract]
-        bool SetIV(byte[] input);
+        bool SetIV(byte[] input, Algorithm a);
 
         [OperationContract]
         byte[][] RandomizeKeys();

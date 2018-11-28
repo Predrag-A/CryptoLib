@@ -18,11 +18,17 @@ namespace CryptoLib
         // Key used for encrypting/decrypting data
         private byte[] _key;
 
+        // Initialization vector used for OFB mode
+        private byte[] _iv;
+
         // Contains delta value used for encrypting data
         private const uint DELTA = 0x9E377989;
 
         // Contains recommended rounds value
         private const uint ROUNDS = 32;
+
+        // Flag determining whether OFB mode is on
+        private bool _outputFeedbackMode = false;
 
         #endregion
 
@@ -32,6 +38,7 @@ namespace CryptoLib
         {
             _rounds = ROUNDS;
             _key = GenerateRandomKey();
+            _iv = GenerateRandomIV();
         }
 
         #endregion
@@ -87,15 +94,22 @@ namespace CryptoLib
             return b;
         }
 
-        // XTEA does not use an initialization vector
+        // Sets 64-bit initialization vector for OFB mode
         public bool SetIV(byte[] input)
         {
-            throw new ArgumentException("XTEA does not use an initialization vector.");
+            if (input.Length != 8)
+                return false;
+            _iv = input;
+            return true;
         }
 
+        // Generates random 64-bit initialization vector
         public byte[] GenerateRandomIV()
         {
-            throw new ArgumentException("XTEA does not use an initialization vector.");
+            var rand = new Random();
+            var b = new byte[8];
+            rand.NextBytes(b);
+            return b;
         }
 
         // Can be used to set key and round numbers
@@ -103,6 +117,8 @@ namespace CryptoLib
         {
             if (specArguments.ContainsKey("rounds"))
                 _rounds = BitConverter.ToUInt32(specArguments["rounds"], 0);
+            if (specArguments.ContainsKey("ofbMode"))
+                _outputFeedbackMode = BitConverter.ToBoolean(specArguments["ofbMode"], 0);
 
             return true;
         }

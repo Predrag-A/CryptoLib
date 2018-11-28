@@ -53,6 +53,12 @@ namespace CryptoApp.Classes
         [XmlElement("XTEA_Rounds")]
         public uint XTEARounds { get; set; }
 
+        [XmlElement("XTEA_Output_FeedbackMode")]
+        public bool XTEAOutputFeedback { get; set; }
+
+        [XmlElement("XTEA_Initialization_Vector")]
+        public string XTEAIV { get; set; }
+
         [XmlArray("Knapsack_Private_Key")]
         public uint[] KSPrivateKey { get; set; }
 
@@ -81,6 +87,8 @@ namespace CryptoApp.Classes
             DTRowKey = "SPARTA";
             XTEAKey = "a1b2c3d4e5f6g7h8";
             XTEARounds = 32;
+            XTEAOutputFeedback = false;
+            XTEAIV = "a1b2c3d4";
             KSPrivateKey = new uint[] { 2, 3, 7, 14, 30, 57, 120, 251 };
             KSn = 491;
             KSm = 41;
@@ -112,6 +120,8 @@ namespace CryptoApp.Classes
                 DTRowKey = temp.DTRowKey;
                 XTEAKey = temp.XTEAKey;
                 XTEARounds = temp.XTEARounds;
+                XTEAOutputFeedback = temp.XTEAOutputFeedback;
+                XTEAIV = temp.XTEAIV;
                 KSPrivateKey = temp.KSPrivateKey;
                 KSn = temp.KSn;
                 KSm = temp.KSm;

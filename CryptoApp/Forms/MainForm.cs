@@ -90,10 +90,6 @@ namespace CryptoApp
                     doubleTranspositionToolStripMenuItem.Checked = true;
                     break;
 
-                case Algorithm.OFB:
-                    oFBToolStripMenuItem.Checked = true;
-                    break;
-
                 case Algorithm.XTEA:
                     xTEAToolStripMenuItem.Checked = true;
                     break;
@@ -112,7 +108,6 @@ namespace CryptoApp
         private void UncheckAlgo()
         {
             doubleTranspositionToolStripMenuItem.Checked = false;
-            oFBToolStripMenuItem.Checked = false;
             xTEAToolStripMenuItem.Checked = false;
             mD5ToolStripMenuItem.Checked = false;
             knapsackToolStripMenuItem.Checked = false;
@@ -137,8 +132,9 @@ namespace CryptoApp
                 var DTKey = Settings.Instance.DTColKey + "," + Settings.Instance.DTRowKey;
                 _proxy.SetKey(Encoding.ASCII.GetBytes(DTKey), Algorithm.DoubleTranposition);
 
-                // Set XTEA Key
+                // Set XTEA Key and IV
                 _proxy.SetKey(Encoding.ASCII.GetBytes(Settings.Instance.XTEAKey), Algorithm.XTEA);
+                _proxy.SetIV(Encoding.ASCII.GetBytes(Settings.Instance.XTEAIV), Algorithm.XTEA);
 
                 // Set Knapsack Key
                 byte[] byteArray = Settings.Instance.KSPrivateKey.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
@@ -147,6 +143,7 @@ namespace CryptoApp
                 // Generate Property Dictionary
                 var Params = new Dictionary<string, byte[]>();
                 Params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
+                Params.Add("ofbMode", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
                 Params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
                 Params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
                 Params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
@@ -217,11 +214,6 @@ namespace CryptoApp
         private void xTEAToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetAlgo(Algorithm.XTEA);
-        }
-
-        private void oFBToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetAlgo(Algorithm.OFB);
         }
 
         private void knapsackToolStripMenuItem_Click(object sender, EventArgs e)

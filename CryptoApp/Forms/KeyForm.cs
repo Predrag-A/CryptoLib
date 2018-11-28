@@ -44,7 +44,9 @@ namespace CryptoApp.Forms
             txtKeyColumnDT.Text = Settings.Instance.DTColKey;
             txtKeyRowDT.Text = Settings.Instance.DTRowKey;
             txtKeyXTEA.Text = Settings.Instance.XTEAKey;
+            txtIVXTEA.Text = Settings.Instance.XTEAIV;
             numRoundsXTEA.Value = Settings.Instance.XTEARounds;
+            checkOFB.Checked = Settings.Instance.XTEAOutputFeedback;
             numKSN.Value = Settings.Instance.KSn;
             numKSM.Value = Settings.Instance.KSm;
             numKSInvM.Value = Settings.Instance.KSmInverse;
@@ -56,6 +58,7 @@ namespace CryptoApp.Forms
             _params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
             _params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
             _params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
+            _params.Add("ofbMode", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
 
         }
 
@@ -116,10 +119,12 @@ namespace CryptoApp.Forms
         {
             try
             {
+                _params["iv"] = BitConverter.GetBytes(Convert.ToBoolean(checkOFB.Checked));
                 _params["rounds"] = BitConverter.GetBytes(Convert.ToUInt32(numRoundsXTEA.Value));
                 if (_proxy.SetProperties(_params, Algorithm.XTEA))
                 {
                     Settings.Instance.XTEARounds = (uint)numRoundsXTEA.Value;
+                    Settings.Instance.XTEAOutputFeedback = checkOFB.Checked;
                     statusLbl.Text = "Status: XTEA properties successfully set";
                 }
                 else
@@ -133,8 +138,29 @@ namespace CryptoApp.Forms
             }
         }
 
+        private void btnIVXTEA_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var iv = Encoding.ASCII.GetBytes(txtIVXTEA.Text);
+                if (_proxy.SetIV(iv, Algorithm.XTEA))
+                {
+                    statusLbl.Text = "Status: XTEA initialization vector successfully set";
+                    Settings.Instance.XTEAIV = txtIVXTEA.Text;
+                }
+                else
+                {
+                    statusLbl.Text = "Status: Unable to set XTEA initialization vector";
+                }
+            }
+            catch (Exception exception)
+            {
+                statusLbl.Text = "Status: " + exception.Message;
+            }
+        }
+
         #endregion
-        
+
         #region Knapsack
 
         private void btnKeyKS_Click(object sender, EventArgs e)
@@ -210,5 +236,6 @@ namespace CryptoApp.Forms
         #endregion
 
         #endregion
+        
     }
 }

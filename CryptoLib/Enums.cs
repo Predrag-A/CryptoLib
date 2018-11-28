@@ -7,7 +7,6 @@
     {
         DoubleTranposition,
         XTEA,
-        OFB,
         Knapsack,
         MD5
     }

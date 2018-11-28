@@ -40,10 +40,10 @@ namespace CryptoApp.CryptoServiceReference {
         System.Threading.Tasks.Task<bool> SetPropertiesAsync(System.Collections.Generic.Dictionary<string, byte[]> specArguments, CryptoLib.Algorithm a);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetIV", ReplyAction="http://tempuri.org/ICryptoService/SetIVResponse")]
-        bool SetIV(byte[] input);
+        bool SetIV(byte[] input, CryptoLib.Algorithm a);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetIV", ReplyAction="http://tempuri.org/ICryptoService/SetIVResponse")]
-        System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input);
+        System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input, CryptoLib.Algorithm a);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeKeys", ReplyAction="http://tempuri.org/ICryptoService/RandomizeKeysResponse")]
         byte[][] RandomizeKeys();
@@ -117,12 +117,12 @@ namespace CryptoApp.CryptoServiceReference {
             return base.Channel.SetPropertiesAsync(specArguments, a);
         }
         
-        public bool SetIV(byte[] input) {
-            return base.Channel.SetIV(input);
+        public bool SetIV(byte[] input, CryptoLib.Algorithm a) {
+            return base.Channel.SetIV(input, a);
         }
         
-        public System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input) {
-            return base.Channel.SetIVAsync(input);
+        public System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input, CryptoLib.Algorithm a) {
+            return base.Channel.SetIVAsync(input, a);
         }
         
         public byte[][] RandomizeKeys() {
