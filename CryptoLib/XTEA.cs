@@ -133,6 +133,12 @@ namespace CryptoLib
                 BitConverter.ToUInt32(_key, 12)
             };
 
+            // Creating IV uint buffer
+            var ivUintBuffer = new uint[2];
+
+            // Converting IV to uint
+            Buffer.BlockCopy(_iv, 0, ivUintBuffer, 0, _iv.Length);
+
             // Array that contains two 32-bit values
             var blockBuffer = new uint[2];
 
@@ -153,9 +159,26 @@ namespace CryptoLib
                         // First 32 bits of the block into v0, second 32 bits into v1
                         blockBuffer[0] = BitConverter.ToUInt32(result, i);
                         blockBuffer[1] = BitConverter.ToUInt32(result, i + 4);
+
+                        // If OFB mode is enabled
+                        if (_outputFeedbackMode)
+                        {
+
+                            // Encrypt the IV buffer
+                            Crypt(ivUintBuffer, keyBuffer);
+
+                            // Apply XOR to plaintext
+                            blockBuffer[0] ^= ivUintBuffer[0];
+                            blockBuffer[1] ^= ivUintBuffer[1];
+                        }
+
+                        // Encrypt plaintext or encrypted plaintext if OFB mode is on
                         Crypt(blockBuffer, keyBuffer);
+
+                        // Write to result
                         writer.Write(blockBuffer[0]);
                         writer.Write(blockBuffer[1]);
+                        
                     }
                 }
             }
@@ -178,6 +201,12 @@ namespace CryptoLib
             // Array that contains two 32-bit values
             var blockBuffer = new uint[2];
 
+            // Creating IV uint buffer
+            var ivUintBuffer = new uint[2];
+
+            // Converting IV to uint
+            Buffer.BlockCopy(_iv, 0, ivUintBuffer, 0, _iv.Length);
+
             // Placing the byte array into a buffer
             var buffer = new byte[output.Length];
             Array.Copy(output, buffer, output.Length);
@@ -190,7 +219,22 @@ namespace CryptoLib
                     {
                         blockBuffer[0] = BitConverter.ToUInt32(buffer, i);
                         blockBuffer[1] = BitConverter.ToUInt32(buffer, i + 4);
+                        
+                        // Decrypt to plaintext or to encrypted plaintext if OFB Mode is on
                         Decrypt(blockBuffer, keyBuffer);
+
+                        // If OFB mode is enabled
+                        if (_outputFeedbackMode)
+                        {
+
+                            // Encrypt the IV buffer
+                            Crypt(ivUintBuffer, keyBuffer);
+
+                            // Apply XOR to encrypted text
+                            blockBuffer[0] ^= ivUintBuffer[0];
+                            blockBuffer[1] ^= ivUintBuffer[1];
+                        }
+
                         writer.Write(blockBuffer[0]);
                         writer.Write(blockBuffer[1]);
                     }
