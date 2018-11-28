@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CloudForm));
             this.fileListBox = new System.Windows.Forms.ListBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -36,7 +37,6 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.fbd = new System.Windows.Forms.FolderBrowserDialog();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +52,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 306);
+            this.statusStrip.Location = new System.Drawing.Point(0, 269);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(554, 22);
             this.statusStrip.TabIndex = 1;
@@ -94,27 +94,22 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(13, 273);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(529, 23);
-            this.progressBar.TabIndex = 5;
-            // 
             // CloudForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(554, 328);
-            this.Controls.Add(this.progressBar);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(554, 291);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.btnUpload);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.fileListBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "CloudForm";
-            this.Text = "CloudForm";
+            this.Text = "Cloud Client";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -132,6 +127,5 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.FolderBrowserDialog fbd;
-        private System.Windows.Forms.ProgressBar progressBar;
     }
 }

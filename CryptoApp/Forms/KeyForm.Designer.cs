@@ -529,6 +529,7 @@
             this.Controls.Add(this.groupXTEA);
             this.Controls.Add(this.groupDT);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "KeyForm";
             this.Text = "Algorithm Parameters";
             this.groupDT.ResumeLayout(false);

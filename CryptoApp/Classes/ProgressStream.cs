@@ -3,6 +3,7 @@ using System.IO;
 
 namespace CryptoApp.Classes
 {
+    /// <inheritdoc />
     /// Notice : Code written by Dimitris Papadimitriou - http://www.papadi.gr
     /// Code is provided to be used freely but without any warranty of any kind
     public class ProgressStream : Stream

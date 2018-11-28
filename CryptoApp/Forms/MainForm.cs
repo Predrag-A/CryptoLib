@@ -157,7 +157,7 @@ namespace CryptoApp
 
                 return true;
             }
-            catch(Exception e)
+            catch
             {
                 // Attempt to reconnect if the service cannot be accessed
                 if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?",
