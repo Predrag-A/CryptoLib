@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace CryptoApp.Forms
         
         private List<string> _fileList;
         private BindingSource _bindingSource;
-        private const int ChunkSize = 2056;
+        private bool _expandLog;
 
         #endregion
 
@@ -42,13 +43,16 @@ namespace CryptoApp.Forms
                 // Getting file names from cloud server
                 _fileList = new List<string>(cloudProxy.GetFileList().Select(Path.GetFileName));
 
+                // Logging
+                Log("Connected to cloud, " + _fileList.Count + " files available");
+
                 // Setting data source for the listbox control
                 _bindingSource.DataSource = _fileList;
                 fileListBox.DataSource = _bindingSource;
             }
             catch (Exception e)
             {
-                lblStatus.Text = "Status: " + e.Message;
+                Log(e.Message);
             }
             finally
             {
@@ -62,15 +66,16 @@ namespace CryptoApp.Forms
             try
             {
                 var udf = new UploadDownloadForm(_fileList, _bindingSource, localFilePath);
+                Log("Uploading " + Path.GetFileName(localFilePath));
+
                 udf.Show();
 
-                lblStatus.Text = "Status: File " + Path.GetFileName(localFilePath) + " successfully uploaded";
+                //Log("File " + Path.GetFileName(localFilePath) + " successfully uploaded");
                 
-
             }
             catch (Exception exception)
             {
-                lblStatus.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
@@ -80,14 +85,16 @@ namespace CryptoApp.Forms
             try
             {
                 var udf = new UploadDownloadForm(_fileList, _bindingSource, localFilePath, cloudFileName);
+                Log("Downloading " + cloudFileName);
+
                 udf.Show();
 
-                lblStatus.Text = "Status: File " + cloudFileName + " successfully downloaded";
+                //Log("File " + cloudFileName + " successfully downloaded");
                 
             }
             catch (Exception exception)
             {
-                lblStatus.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
@@ -100,24 +107,29 @@ namespace CryptoApp.Forms
             {
                 if (cloudProxy.DeleteFile(cloudFileName))
                 {
-                    lblStatus.Text = "Status: File successfully deleted";
+                    Log("File " + cloudFileName + " deleted");
                     _fileList.RemoveAt(fileListBox.SelectedIndex);
                     _bindingSource.ResetBindings(false);
                 }
                 else
                 {
-                    lblStatus.Text = "Status: Error deleting the file";
+                    Log("Error deleting the file");
                 }
             }
             catch (Exception exception)
             {
-                lblStatus.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
             finally
             {
                 // Close service proxy
                 cloudProxy.Close();
             }
+        }
+
+        private void Log(string msg)
+        {
+            txtLog.Text = DateTime.Now.ToString("T") + "  " + msg + "\r\n" + txtLog.Text;
         }
 
         #endregion
@@ -173,14 +185,36 @@ namespace CryptoApp.Forms
                 MessageBox.Show("Are you sure you want to delete the file from the server?",
                     "Warning", MessageBoxButtons.YesNo)) return;
 
-            // Deleting file on the service
+            // Getting file name
             var fileName = fileListBox.SelectedItem.ToString();
 
             // Delete the file
             Delete(fileName);
         }
+        
+        private void btnExpand_Click(object sender, EventArgs e)
+        {
+            _expandLog = !_expandLog;
+            if (_expandLog)
+            {
+                // Change text log size
+                txtLog.ScrollBars = ScrollBars.Vertical;
+                txtLog.Size = new Size(txtLog.Size.Width, txtLog.Size.Height + 100);
+
+                // Enable
+                txtLog.Enabled = true;
+            }
+            else
+            {
+                // Change text log size
+                txtLog.ScrollBars = ScrollBars.None;
+                txtLog.Size = new Size(txtLog.Size.Width, txtLog.Size.Height - 100);
+
+                // Disable
+                txtLog.Enabled = false;
+            }
+        }
 
         #endregion
-
     }
 }

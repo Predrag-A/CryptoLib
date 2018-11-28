@@ -30,43 +30,27 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CloudForm));
             this.fileListBox = new System.Windows.Forms.ListBox();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnUpload = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.fbd = new System.Windows.Forms.FolderBrowserDialog();
-            this.statusStrip.SuspendLayout();
+            this.txtLog = new System.Windows.Forms.TextBox();
+            this.btnExpand = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fileListBox
             // 
+            this.fileListBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.fileListBox.FormattingEnabled = true;
-            this.fileListBox.Location = new System.Drawing.Point(12, 12);
+            this.fileListBox.Location = new System.Drawing.Point(0, 0);
             this.fileListBox.Name = "fileListBox";
-            this.fileListBox.Size = new System.Drawing.Size(530, 225);
+            this.fileListBox.Size = new System.Drawing.Size(554, 225);
             this.fileListBox.TabIndex = 0;
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 269);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(554, 22);
-            this.statusStrip.TabIndex = 1;
-            this.statusStrip.Text = "statusStrip";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(39, 17);
-            this.lblStatus.Text = "Status";
             // 
             // btnUpload
             // 
-            this.btnUpload.Location = new System.Drawing.Point(12, 243);
+            this.btnUpload.Location = new System.Drawing.Point(10, 229);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(75, 23);
             this.btnUpload.TabIndex = 2;
@@ -76,7 +60,7 @@
             // 
             // btnDownload
             // 
-            this.btnDownload.Location = new System.Drawing.Point(93, 243);
+            this.btnDownload.Location = new System.Drawing.Point(98, 231);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(75, 23);
             this.btnDownload.TabIndex = 3;
@@ -86,7 +70,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(467, 243);
+            this.btnDelete.Location = new System.Drawing.Point(467, 231);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 4;
@@ -94,24 +78,44 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // txtLog
+            // 
+            this.txtLog.Enabled = false;
+            this.txtLog.Location = new System.Drawing.Point(98, 260);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.Size = new System.Drawing.Size(456, 23);
+            this.txtLog.TabIndex = 5;
+            // 
+            // btnExpand
+            // 
+            this.btnExpand.Location = new System.Drawing.Point(10, 260);
+            this.btnExpand.Name = "btnExpand";
+            this.btnExpand.Size = new System.Drawing.Size(75, 23);
+            this.btnExpand.TabIndex = 6;
+            this.btnExpand.Text = "Expand Log";
+            this.btnExpand.UseVisualStyleBackColor = true;
+            this.btnExpand.Click += new System.EventHandler(this.btnExpand_Click);
+            // 
             // CloudForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(554, 291);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(554, 296);
+            this.Controls.Add(this.btnExpand);
+            this.Controls.Add(this.txtLog);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.btnUpload);
-            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.fileListBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "CloudForm";
             this.Text = "Cloud Client";
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,12 +124,12 @@
         #endregion
 
         private System.Windows.Forms.ListBox fileListBox;
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.Button btnUpload;
         private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.FolderBrowserDialog fbd;
+        private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Button btnExpand;
     }
 }
