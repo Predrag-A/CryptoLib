@@ -32,6 +32,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // progressBar
@@ -69,11 +70,22 @@
             this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
             this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(317, 22);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 3;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // UploadDownloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 81);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.progressBar);
@@ -81,6 +93,7 @@
             this.MaximizeBox = false;
             this.Name = "UploadDownloadForm";
             this.Text = "UploadDownloadForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UploadDownloadForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -92,5 +105,6 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblProgress;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -83,7 +83,15 @@ namespace CryptoApp.Forms
             }
         }
 
-        private void Upload()
+        private void uploadStream_ProgressChanged(object sender, ProgressStream.ProgressChangedEventArgs e)
+        {
+            if (e.Length == 0) return;
+            backgroundWorker.ReportProgress((int)(e.BytesRead * 100 / e.Length));
+        }
+
+        #region Upload
+
+        private void Upload(System.ComponentModel.DoWorkEventArgs e)
         {
 
             // Initializing service proxy
@@ -106,9 +114,18 @@ namespace CryptoApp.Forms
                         // Invoking service method
                         cloudProxy.UploadFile(ref fileName, fileInfo.Length, uploadStream);
 
+                        // Check for cancellation
+                        if (backgroundWorker.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            _cloudFileName = fileName;
+                            return;
+                        }
+
                         // Adding file name to list instead of invoking GetFileList
                         _fileList.Add(fileName);
                         _bindingSource.ResetBindings(false);
+
                     }
                 }
             }
@@ -123,7 +140,11 @@ namespace CryptoApp.Forms
             }
         }
 
-        private void Download()
+        #endregion
+
+        #region Download
+
+        private void Download(System.ComponentModel.DoWorkEventArgs e)
         {
 
             // Initializing service proxy
@@ -177,6 +198,13 @@ namespace CryptoApp.Forms
                         else
                             backgroundWorker.ReportProgress((int)(writeStream.Position * 100 / length));
 
+                        // Check for cancellation
+                        if (!backgroundWorker.CancellationPending) continue;
+
+                        e.Cancel = true;
+                        inputStream.Dispose();
+                        return;
+
                     } while (!lastChunk);
 
                     writeStream.Close();
@@ -184,7 +212,6 @@ namespace CryptoApp.Forms
                 
                 // Deallocate stream
                 inputStream.Dispose();
-                cloudProxy.Close();
             }
             catch (Exception exception)
             {
@@ -196,12 +223,9 @@ namespace CryptoApp.Forms
                 cloudProxy.Close();
             }
         }
+
+        #endregion
         
-        private void uploadStream_ProgressChanged(object sender, ProgressStream.ProgressChangedEventArgs e)
-        {
-            if (e.Length == 0) return;
-            backgroundWorker.ReportProgress((int)(e.BytesRead * 100 / e.Length));
-        }
 
         #endregion
 
@@ -211,9 +235,9 @@ namespace CryptoApp.Forms
         {
             // Invoke method depending on bool value
             if(_upload)
-                Upload();
+                Upload(e);
             else
-                Download();
+                Download(e);
         }
         
 
@@ -236,11 +260,63 @@ namespace CryptoApp.Forms
 
         private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            // Close form when work completes
-            Close();
+            // Operation was cancelled
+            if (e.Cancelled)
+            {
+                // If uploading delete file server-side
+                if (_upload)
+                {
+                    // Initializing service proxy
+                    var cloudProxy = new CloudServiceClient();
+
+                    // Deleting file server-side
+                    cloudProxy.DeleteFile(_cloudFileName);
+
+                    // Closing service proxy
+                    cloudProxy.Close();
+
+                }
+                // If downloading delete file locally
+                else
+                {
+                    if(File.Exists(_localFilePath))
+                        File.Delete(_localFilePath);
+                }
+                
+            }
+            // Error
+            else if (e.Error != null)
+            {
+                Close();
+                MessageBox.Show("There has been an error in the process: " + e.Error.Message, 
+                    "Error", MessageBoxButtons.OK);
+            }
+            // Operation completed
+            else
+            {
+                // Close form when work completes
+                Close();
+            }
         }
-        
+
         #endregion
 
+
+        #region Form Methods
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            // Close form
+            Close();
+        }
+
+        private void UploadDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Cancel backgroundworker if it is not completed
+            if (backgroundWorker.IsBusy)
+                backgroundWorker.CancelAsync();
+        }
+
+        #endregion
     }
 }
