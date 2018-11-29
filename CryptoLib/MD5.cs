@@ -46,6 +46,7 @@ namespace CryptoLib
 
         #region Methods
 
+        // Rotates x by c bits to the left
         private static uint LeftRotate(uint x, int c)
         {
             return (x << c) | (x >> (32 - c));

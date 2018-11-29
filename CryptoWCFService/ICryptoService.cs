@@ -4,12 +4,11 @@ using CryptoLib;
 
 namespace CryptoWCFService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
+    #region Service Contracts
+
     [ServiceContract]
     public interface ICryptoService
     {
-
-        #region Methods
 
         [OperationContract]
         byte[] Crypt(byte[] input, Algorithm a);
@@ -25,15 +24,9 @@ namespace CryptoWCFService
 
         [OperationContract]
         bool SetIV(byte[] input, Algorithm a);
-
-        [OperationContract]
-        byte[][] RandomizeKeys();
-
-        [OperationContract]
-        byte[] RandomizeIV();
         
-        #endregion
-
     }
+
+    #endregion
 
 }

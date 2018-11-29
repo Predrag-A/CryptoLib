@@ -11,9 +11,9 @@ namespace CryptoApp.Classes
 
         #region Fields
 
-        private readonly FileStream file;
-        private readonly long length;
-        private long bytesRead;
+        private readonly FileStream _file;
+        private readonly long _length;
+        private long _bytesRead;
 
         #endregion
 
@@ -24,17 +24,18 @@ namespace CryptoApp.Classes
             public long BytesRead;
             public long Length;
 
-            public ProgressChangedEventArgs(long BytesRead, long Length)
+            public ProgressChangedEventArgs(long bytesRead, long length)
             {
-                this.BytesRead = BytesRead;
-                this.Length = Length;
+                BytesRead = bytesRead;
+                Length = length;
             }
         }
 
         #endregion
 
-        #region Event Handlers
+        #region Events
 
+        // Used to invoke attached method when progress changes
         public event EventHandler<ProgressChangedEventArgs> ProgressChanged;
 
         #endregion
@@ -43,54 +44,42 @@ namespace CryptoApp.Classes
 
         public ProgressStream(FileStream file)
         {
-            this.file = file;
-            length = file.Length;
-            bytesRead = 0;
-            if (ProgressChanged != null) ProgressChanged(this, new ProgressChangedEventArgs(bytesRead, length));
+            _file = file;
+            _length = file.Length;
+            _bytesRead = 0;
+            ProgressChanged?.Invoke(this, new ProgressChangedEventArgs(_bytesRead, _length));
         }
 
         #endregion
 
         #region Methods
 
-        public double GetProgress()
-        {
-            return ((double)bytesRead) / file.Length;
-        }
+        public override bool CanRead => true;
 
-        public override bool CanRead
-        {
-            get { return true; }
-        }
+        public override bool CanSeek => false;
 
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
-
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
+        public override bool CanWrite => false;
 
         public override void Flush() { }
 
-        public override long Length
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
+        public override long Length => throw new Exception("The method or operation is not implemented.");
 
         public override long Position
         {
-            get { return bytesRead; }
-            set { throw new Exception("The method or operation is not implemented."); }
+            get => _bytesRead;
+            set => throw new Exception("The method or operation is not implemented.");
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int result = file.Read(buffer, offset, count);
-            bytesRead += result;
-            if (ProgressChanged != null) ProgressChanged(this, new ProgressChangedEventArgs(bytesRead, length));
+            // Read file
+            var result = _file.Read(buffer, offset, count);
+
+            // Increase amount of bytes read
+            _bytesRead += result;
+
+            // Invoke event handler
+            ProgressChanged?.Invoke(this, new ProgressChangedEventArgs(_bytesRead, _length));
             return result;
         }
 

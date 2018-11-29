@@ -83,6 +83,7 @@ namespace CryptoApp.Forms
             }
         }
 
+        // Event handler for ProgressChanged event in ProgressStream
         private void uploadStream_ProgressChanged(object sender, ProgressStream.ProgressChangedEventArgs e)
         {
             if (e.Length == 0) return;

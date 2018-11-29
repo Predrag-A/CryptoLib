@@ -89,7 +89,7 @@ namespace CryptoLib
                 temp[i] = sum;
             }
 
-            return temp.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
+            return temp.SelectMany(BitConverter.GetBytes).ToArray();
         }
 
         public bool SetIV(byte[] input)

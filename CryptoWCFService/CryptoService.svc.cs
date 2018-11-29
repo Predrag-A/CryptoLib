@@ -182,20 +182,6 @@ namespace CryptoWCFService
             }
 
         }
-
-        public byte[][] RandomizeKeys()
-        {
-            var keys = new byte[2][];
-            keys[0] = CypherDoubleTransposition.GenerateRandomKey();
-            keys[1] = CypherXTEA.GenerateRandomKey();
-
-            return keys;
-        }
-
-        public byte[] RandomizeIV()
-        {
-            throw new NotImplementedException();
-        }
         
         #endregion
 

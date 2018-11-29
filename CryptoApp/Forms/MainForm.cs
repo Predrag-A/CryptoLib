@@ -29,6 +29,7 @@ namespace CryptoApp
         {
             InitializeComponent();
 
+            // Load settings from file
             Settings.Instance.Load("settings.xml");
             Initialize();
         }
@@ -39,14 +40,18 @@ namespace CryptoApp
 
         private void Initialize()
         {
+            // Select FSW Input path to file browser
             fbdInput.SelectedPath = Settings.Instance.FswInput;
             fSWInputFolderToolStripMenuItem.ToolTipText = Settings.Instance.FswInput;
 
+            // Select FSW Output path to file browser
             fbdOutput.SelectedPath = Settings.Instance.FswOutput;
             fSWOutputFolderToolStripMenuItem.ToolTipText = Settings.Instance.FswOutput;
 
+            // Check if FSW is enabled
             fSWOnOffToolStripMenuItem.Checked = Settings.Instance.FswEnabled;
 
+            // Check appropriate algorithm
             CheckAlgo(Settings.Instance.Algo);
 
             encryptToolStripMenuItem.Checked = !Settings.Instance.FswDecrypt;
@@ -75,14 +80,15 @@ namespace CryptoApp
             
         }
         
-        // Checks if the textbox is empty
-        private bool IsEmpty(TextBox t)
+        // Checks if the control text is empty
+        private static bool IsEmpty(Control t)
         {
             if (!string.IsNullOrEmpty(t.Text)) return false;
             MessageBox.Show("Fill out the text that you want to encrypt or decrypt.");
             return true;
         }
 
+        // Checks algorithm in toolstrip menu
         private void CheckAlgo(Algorithm a)
         {
             switch (a)
@@ -103,9 +109,12 @@ namespace CryptoApp
                 case Algorithm.Knapsack:
                     knapsackToolStripMenuItem.Checked = true;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(a), a, null);
             }
         }
 
+        // Unckecks all algorithms in toolstrip menu
         private void UncheckAlgo()
         {
             doubleTranspositionToolStripMenuItem.Checked = false;
@@ -115,7 +124,7 @@ namespace CryptoApp
             decryptBtn.Enabled = true;
         }
 
-        // Sets the algorithm type in the Settings instance
+        // Sets the algorithm type in the Settings instance and toolstrip
         private void SetAlgo(Algorithm a)
         {
             if (Settings.Instance.Algo == a)
@@ -125,7 +134,7 @@ namespace CryptoApp
             CheckAlgo(a);
         }
 
-        // Sets keys and properties from the Settings on launch
+        // Sets keys and properties from Settings on launch
         private void SetKeys()
         {
             try
@@ -142,6 +151,7 @@ namespace CryptoApp
                 byte[] byteArray = Settings.Instance.KSPrivateKey.SelectMany(BitConverter.GetBytes).ToArray();
                 _proxy.SetKey(byteArray, Algorithm.Knapsack);
                 
+                // Initialize parameter dictionary
                 var Params = new Dictionary<string, byte[]>
                 {
                     {"ofbModeDT", BitConverter.GetBytes(Settings.Instance.DTOutputFeedback)},
@@ -161,8 +171,8 @@ namespace CryptoApp
             catch(Exception exception)
             {
                 // Attempt to reconnect if the service cannot be accessed
-                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?\r\nError: " + exception.Message,
-                        "Reconnect", MessageBoxButtons.YesNo))
+                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?\r\nError: " 
+                                                       + exception.Message, "Reconnect", MessageBoxButtons.YesNo))
                     Close();
                 Thread.Sleep(1000);
                 SetKeys();
@@ -191,6 +201,7 @@ namespace CryptoApp
 
         #region Form Methods
         
+        // Save settings on closing and dispose file watcher and file processor
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Settings.Instance.FswEnabled) Settings.Instance.ProcessClosedDate = DateTime.Now;
@@ -199,7 +210,7 @@ namespace CryptoApp
             _processor?.Dispose();
         }
         
-
+        // Toggle FSW Enabled in toolstrip
         private void fSWOnOffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fSWOnOffToolStripMenuItem.Checked = !fSWOnOffToolStripMenuItem.Checked;
@@ -209,6 +220,7 @@ namespace CryptoApp
             else Settings.Instance.ProcessClosedDate = DateTime.Now;
         }
         
+        // Set algorithms in toolstrip
         private void doubleTranspositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetAlgo(Algorithm.DoubleTranposition);
@@ -229,6 +241,7 @@ namespace CryptoApp
             SetAlgo(Algorithm.MD5);
         }
 
+        // Change FSW input folder path
         private void fSWInputFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fbdInput.ShowDialog() != DialogResult.OK) return;
@@ -237,6 +250,7 @@ namespace CryptoApp
             fSWInputFolderToolStripMenuItem.ToolTipText = fbdInput.SelectedPath;
         }
 
+        // Change FSW output folder path
         private void fSWOutputFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fbdOutput.ShowDialog() != DialogResult.OK) return;
@@ -244,6 +258,7 @@ namespace CryptoApp
             fSWOutputFolderToolStripMenuItem.ToolTipText = fbdOutput.SelectedPath;
         }
 
+        // Swap input and output text fields
         private void swapBtn_Click(object sender, EventArgs e)
         {
             inputText.Text = outputText.Text;
@@ -278,7 +293,7 @@ namespace CryptoApp
                 // Return if there is nothing to decrypt
                 if (IsEmpty(inputText)) return;
 
-                // Text is always displayed as hex values
+                // Get bytes from hex values
                 byte[] inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
                
                 // Decrypt data
@@ -291,6 +306,7 @@ namespace CryptoApp
             }
         }
 
+        // Toggle encrypt/decrypt
         private void encryptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Settings.Instance.FswDecrypt) return;
@@ -307,18 +323,21 @@ namespace CryptoApp
             decryptToolStripMenuItem.Checked = true;
         }
 
+        // Display KeyForm instance
         private void parametersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var keyForm = new KeyForm(_proxy);
             keyForm.ShowDialog();
         }
 
+        // Display CloudForm instance
         private void cloudToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var cloudForm = new CloudForm();
             cloudForm.ShowDialog();
         }
 
+        // On loading set keys and parameters to service
         private void MainForm_Load(object sender, EventArgs e)
         {
             SetKeys();

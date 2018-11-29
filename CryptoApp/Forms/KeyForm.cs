@@ -18,7 +18,7 @@ namespace CryptoApp.Forms
 
         // Array of knapsack key numerics
         private NumericUpDown[] _numerics;
-        private Dictionary<string, byte[]> _params = new Dictionary<string, byte[]>();
+        private readonly Dictionary<string, byte[]> _params = new Dictionary<string, byte[]>();
 
         #endregion
 
@@ -37,19 +37,21 @@ namespace CryptoApp.Forms
 
         private void Initialize()
         {
-            // Initialize array of numerics
+            // Initialize array of numerics to more easily access Knapsack key
             _numerics = new[] { numKS0, numKS1, numKS2, numKS3, numKS4, numKS5, numKS6, numKS7 };
 
-            // Initialize key values and parameters
+            // Initialize Double Transposition values
             txtKeyColumnDT.Text = Settings.Instance.DTColKey;
             txtKeyRowDT.Text = Settings.Instance.DTRowKey;
             checkOFBDT.Checked = Settings.Instance.DTOutputFeedback;
 
+            // Initialize XTEA values
             txtKeyXTEA.Text = Settings.Instance.XTEAKey;
             txtIVXTEA.Text = Settings.Instance.XTEAIV;
             numRoundsXTEA.Value = Settings.Instance.XTEARounds;
             checkOFBXTEA.Checked = Settings.Instance.XTEAOutputFeedback;
 
+            // Initialize Knapsack values
             numKSN.Value = Settings.Instance.KSn;
             numKSM.Value = Settings.Instance.KSm;
             numKSInvM.Value = Settings.Instance.KSmInverse;
@@ -57,6 +59,7 @@ namespace CryptoApp.Forms
                 _numerics[i].Value = Settings.Instance.KSPrivateKey[i];
 
             // Initialize dictionary values
+            _params.Add("ofbModeDT", BitConverter.GetBytes(Settings.Instance.DTOutputFeedback));
             _params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
             _params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
             _params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
@@ -76,6 +79,7 @@ namespace CryptoApp.Forms
 
         #region Double Transposition
 
+        // Set Double Transposition key
         private void btnKeyDT_Click(object sender, EventArgs e)
         {
             try
@@ -98,6 +102,7 @@ namespace CryptoApp.Forms
             }
         }
 
+        // Set Double Transposition properties
         private void btnParamDT_Click(object sender, EventArgs e)
         {
             try
@@ -123,6 +128,7 @@ namespace CryptoApp.Forms
 
         #region XTEA
 
+        // Set XTEA key
         private void btnKeyXTEA_Click(object sender, EventArgs e)
         {
             try
@@ -144,6 +150,7 @@ namespace CryptoApp.Forms
             }
         }
 
+        // Set XTEA properties
         private void btnParamXTEA_Click(object sender, EventArgs e)
         {
             try
@@ -167,6 +174,7 @@ namespace CryptoApp.Forms
             }
         }
 
+        // Set XTEA initialization vector
         private void btnIVXTEA_Click(object sender, EventArgs e)
         {
             try
@@ -192,6 +200,7 @@ namespace CryptoApp.Forms
 
         #region Knapsack
 
+        // Set Knapsack key
         private void btnKeyKS_Click(object sender, EventArgs e)
         {
             try
@@ -201,7 +210,7 @@ namespace CryptoApp.Forms
                 uint[] values = _numerics.Select(s => (uint) s.Value).ToArray();
 
                 // Get byte array from values
-                byte[] byteArray = values.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
+                byte[] byteArray = values.SelectMany(BitConverter.GetBytes).ToArray();
 
                 if (_proxy.SetKey(byteArray, Algorithm.Knapsack))
                 {
@@ -220,6 +229,7 @@ namespace CryptoApp.Forms
             }
         }
 
+        // Set Knapsack properties
         private void btnParamKS_Click(object sender, EventArgs e)
         {
             try
@@ -249,6 +259,7 @@ namespace CryptoApp.Forms
 
         #region Other
 
+        // Allow only letters, digits and control characters
         private void txtDT_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetterOrDigit(e.KeyChar) && !char.IsControl(e.KeyChar))

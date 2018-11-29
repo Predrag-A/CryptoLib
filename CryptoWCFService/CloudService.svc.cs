@@ -11,16 +11,14 @@ namespace CryptoWCFService
     {
 
         #region Fields
-
-
+        
         // Cloud Service Variables
         private const string CloudKey = "This is the cloud server key";
         private static byte[] CryptedCloudKey;
         private static XTEA CloudCypherXTEA;
         private const string StoragePath = "C://Remote//";
         private const int ChunkSize = 2048;
-
-
+        
         #endregion
 
         #region Constructors
@@ -49,7 +47,7 @@ namespace CryptoWCFService
 
             // Initializing cloud key
             if (CryptedCloudKey != null) return;
-            MD5 CypherMD5 = new MD5();
+            var CypherMD5 = new MD5();
             CryptedCloudKey = CypherMD5.Crypt(Encoding.ASCII.GetBytes(CloudKey));
             CloudCypherXTEA.SetKey(CryptedCloudKey);
         }
@@ -178,6 +176,7 @@ namespace CryptoWCFService
         {
             try
             {
+                // Delete file from storage
                 var fullPath = StoragePath + "//" + fileName;
                 if (!File.Exists(fullPath)) return false;
 

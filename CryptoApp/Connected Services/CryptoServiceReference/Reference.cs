@@ -44,18 +44,6 @@ namespace CryptoApp.CryptoServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/SetIV", ReplyAction="http://tempuri.org/ICryptoService/SetIVResponse")]
         System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input, CryptoLib.Algorithm a);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeKeys", ReplyAction="http://tempuri.org/ICryptoService/RandomizeKeysResponse")]
-        byte[][] RandomizeKeys();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeKeys", ReplyAction="http://tempuri.org/ICryptoService/RandomizeKeysResponse")]
-        System.Threading.Tasks.Task<byte[][]> RandomizeKeysAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeIV", ReplyAction="http://tempuri.org/ICryptoService/RandomizeIVResponse")]
-        byte[] RandomizeIV();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICryptoService/RandomizeIV", ReplyAction="http://tempuri.org/ICryptoService/RandomizeIVResponse")]
-        System.Threading.Tasks.Task<byte[]> RandomizeIVAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -123,22 +111,6 @@ namespace CryptoApp.CryptoServiceReference {
         
         public System.Threading.Tasks.Task<bool> SetIVAsync(byte[] input, CryptoLib.Algorithm a) {
             return base.Channel.SetIVAsync(input, a);
-        }
-        
-        public byte[][] RandomizeKeys() {
-            return base.Channel.RandomizeKeys();
-        }
-        
-        public System.Threading.Tasks.Task<byte[][]> RandomizeKeysAsync() {
-            return base.Channel.RandomizeKeysAsync();
-        }
-        
-        public byte[] RandomizeIV() {
-            return base.Channel.RandomizeIV();
-        }
-        
-        public System.Threading.Tasks.Task<byte[]> RandomizeIVAsync() {
-            return base.Channel.RandomizeIVAsync();
         }
     }
 }

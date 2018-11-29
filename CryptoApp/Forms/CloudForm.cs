@@ -65,7 +65,9 @@ namespace CryptoApp.Forms
         {
             try
             {
+                // Initialize and show upload/download form for uploading
                 var udf = new UploadDownloadForm(_fileList, _bindingSource, localFilePath);
+
                 Log("Uploading " + Path.GetFileName(localFilePath));
 
                 udf.Show();
@@ -84,7 +86,9 @@ namespace CryptoApp.Forms
             
             try
             {
+                // Initialize and show upload/download form for uploading
                 var udf = new UploadDownloadForm(_fileList, _bindingSource, localFilePath, cloudFileName);
+
                 Log("Downloading " + cloudFileName);
 
                 udf.Show();

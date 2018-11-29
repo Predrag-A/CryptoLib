@@ -83,7 +83,7 @@ namespace CryptoApp.Classes
             FswEnabled = false;
             FswDecrypt = false;
             FswInput = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            FswOutput = string.Copy(FswInput);
+            FswOutput = string.Copy(FswInput ?? throw new InvalidOperationException()); // Throw exception if FswInput is somehow null
             Algo = Algorithm.DoubleTranposition;
             ProcessClosedDate = DateTime.Now;
 

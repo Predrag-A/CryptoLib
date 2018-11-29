@@ -9,11 +9,11 @@ namespace CryptoApp.Classes
 
         #region Fields
 
-        private EventWaitHandle _eventWaitHandle = new AutoResetEvent(false);
-        private Thread _worker;
+        private readonly EventWaitHandle _eventWaitHandle = new AutoResetEvent(false);
+        private readonly Thread _worker;
         private readonly object _locker = new object();
-        private Queue<string> _fileNamesQueue = new Queue<string>();
-        private FileCypher _cypher;
+        private readonly Queue<string> _fileNamesQueue = new Queue<string>();
+        private readonly FileCypher _cypher;
 
         #endregion
 
@@ -21,9 +21,11 @@ namespace CryptoApp.Classes
 
         public FileProcessor()
         {
+            // Initialize thread with Work method
             _worker = new Thread(Work);
             _cypher = new FileCypher();
             
+            // Start thread
             _worker.Start();
 
         }
@@ -37,6 +39,7 @@ namespace CryptoApp.Classes
             // Enqueue file name and lock the queue to prevent other threads from accessing it
             lock(_locker)
                 _fileNamesQueue.Enqueue(fileName);
+
             // Signal that the file name is enqueued and can be processed
             _eventWaitHandle.Set();
         }
