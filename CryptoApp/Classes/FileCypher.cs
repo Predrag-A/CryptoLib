@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CryptoApp.CryptoServiceReference;
 
@@ -21,7 +22,7 @@ namespace CryptoApp.Classes
         {
             try
             {
-                using (FileStream inputStream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.None))
+                using (var inputStream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.None))
                     return inputStream.Length > 0;
             }
             catch (Exception)
@@ -37,7 +38,7 @@ namespace CryptoApp.Classes
             {
                 var buff = File.ReadAllBytes(filename);
                 var outputBytes = _proxy.Crypt(buff, Settings.Instance.Algo);
-                var newFileName = Path.GetFileNameWithoutExtension(filename) + "_" + Guid.NewGuid() +
+                var newFileName = Guid.NewGuid() + Path.GetFileNameWithoutExtension(filename) +
                                   Path.GetExtension(filename);
                 File.WriteAllBytes(Settings.Instance.FswOutput + "//" + newFileName, outputBytes);
                 return true;
@@ -55,10 +56,13 @@ namespace CryptoApp.Classes
             {
                 var buff = File.ReadAllBytes(filename);
                 var outputBytes = _proxy.DeCrypt(buff, Settings.Instance.Algo);
-                var name = Path.GetFileNameWithoutExtension(filename).Split('_')[0];
-                var newFileName = name + Path.GetExtension(filename);
-                File.WriteAllText(Settings.Instance.FswOutput + "//" + newFileName,
-                    Encoding.ASCII.GetString(outputBytes));
+                var name = Path.GetFileName(filename);
+
+                // Remove GUID from name
+                var newFileName = name.Substring(36);
+
+                File.WriteAllBytes(Settings.Instance.FswOutput + "//" + newFileName,
+                    outputBytes);
                 return true;
             }
             catch (Exception exception)

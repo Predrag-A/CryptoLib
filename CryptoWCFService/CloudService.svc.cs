@@ -6,6 +6,7 @@ using CryptoLib;
 
 namespace CryptoWCFService
 {
+    [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]
     public class CloudService : ICloudService
     {
 
@@ -73,9 +74,6 @@ namespace CryptoWCFService
                 // Stream remains open and on the server and the client reads it.
                 // Files will be decrypted client-side
                 var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                
-                // Delete temp file
-                // File.Delete(tempFilePath);
 
                 // Return stream
                 return new RemoteFileInfo

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -13,11 +14,20 @@ namespace CryptoLib
         // Key represented by two strings
         private string[] _key;
 
+        // Initialization vector used for OFB mode
+        private byte[] _iv;
+
         // Temporary matrix to use for transposition
-        private char[][] _matrix;
+        private byte[][] _matrix;
 
         // Array containing alphanumeric characters for generating random keys
         private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        // Flag determining whether OFB mode is on
+        private bool _outputFeedbackMode = true;
+
+        // Flag determining whether IV is being crypted to avoid infinite recursion
+        private bool _cryptingIV;
 
         #endregion
 
@@ -26,6 +36,7 @@ namespace CryptoLib
         public DoubleTransposition()
         {
             SetKey(GenerateRandomKey());
+            _iv = GenerateRandomIV();
 ;        }
 
         #endregion
@@ -33,7 +44,7 @@ namespace CryptoLib
         #region Methods
 
         // Function that swaps columns of a jagged array matrix
-        public static void SwapColumns(int col1, int col2, char[][] matrix)
+        public static void SwapColumns(int col1, int col2, byte[][] matrix)
         {
             foreach (var t in matrix)
             {
@@ -41,6 +52,19 @@ namespace CryptoLib
                 t[col1] = t[col2];
                 t[col2] = temp;
             }
+        }
+
+        private byte[] CryptIV(byte[] iv)
+        {
+
+            _cryptingIV = true;
+
+            // Since the IV is the size of the matrix it will work fine
+            var result = Crypt(iv);
+
+            _cryptingIV = false;
+
+            return result;
         }
 
         #endregion
@@ -68,32 +92,38 @@ namespace CryptoLib
             return Encoding.ASCII.GetBytes(key);
         }
 
-        // Double Transposition does not use an initialization vector
+        // Sets the initialization vector for OFB mode
         public bool SetIV(byte[] input)
         {
-            throw new ArgumentException("Double Transposition does not use an initialization vector.");
+            if (_key[0].Length * _key[1].Length != input.Length)
+                return false;
+            _iv = input;
+            return true;
         }
 
+        // Generates random initialization vector depending on the size of the matrix
         public byte[] GenerateRandomIV()
         {
-            throw new ArgumentException("Double Transposition does not use an initialization vector.");
+            var matrixSize = _key[0].Length * _key[1].Length;
+            var rand = new Random();
+            var b = new byte[matrixSize];
+            rand.NextBytes(b);
+            return b;
         }
 
-        // Double Transposition has no properties to set
+        // Can be used to enable ofb mode
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
+
+            if (specArguments.ContainsKey("ofbModeDT"))
+                _outputFeedbackMode = BitConverter.ToBoolean(specArguments["ofbModeDT"], 0);
+
             return true;
         }
 
 
         public byte[] Crypt(byte[] input)
         {
-            // Get input as string without spaces
-            var inputString = Encoding.ASCII.GetString(input).Replace(" ", string.Empty).ToUpper();
-
-            // Initialize StringBuilder object to contain output string
-            var sb = new StringBuilder();
-
             // Initialize rows and columns
             var columns = _key[0].Length;
             var rows = _key[1].Length;
@@ -102,66 +132,98 @@ namespace CryptoLib
             var matrixSize = rows * columns;
             
             // Determining number of blocks
-            var blockNum = (inputString.Length % matrixSize == 0) ? inputString.Length/matrixSize : inputString.Length/matrixSize + 1;
-            
+            var blockNum = (input.Length % matrixSize == 0) ? input.Length/matrixSize : input.Length/matrixSize + 1;
 
-            // Main loop
-            for (var i = 0; i < blockNum; i++)
+            // Result byte array
+            var result = new byte[matrixSize * blockNum];
+
+            // TEMPORARY
+            SetIV(GenerateRandomIV());
+
+            // IV buffer
+            byte[] ivBuffer = _iv.Clone() as byte[];
+
+            using (var stream = new MemoryStream(result))
             {
-                var colKey = _key[0].ToCharArray();
-                var rowKey = _key[1].ToCharArray();
-
-                // Initialize matrix
-                _matrix = new char[rows][];
-                for (var j = 0; j < rows; j++)
-                    _matrix[j] = new char[columns];
-
-                // Forming matrix
-                for (var j = 0; j < rows; j++)
-                for (var k = 0; k < columns; k++)
+                using (var writer = new BinaryWriter(stream))
                 {
-                    var index = i * matrixSize + j * columns + k;
-                    if (index > inputString.Length - 1) break;
-                    _matrix[j][k] = inputString[index];
+                    // Main loop
+                    for (var i = 0; i < blockNum; i++)
+                    {
+                        // Encrypt IV at the start of each block
+                        if (_outputFeedbackMode && !_cryptingIV)
+                            ivBuffer = CryptIV(ivBuffer);
+
+                        var colKey = _key[0].ToCharArray();
+                        var rowKey = _key[1].ToCharArray();
+
+                        // Initialize matrix
+                        _matrix = new byte[rows][];
+                        for (var j = 0; j < rows; j++)
+                            _matrix[j] = new byte[columns];
+
+                        // Forming matrix
+                        for (var j = 0; j < rows; j++)
+                        for (var k = 0; k < columns; k++)
+                        {
+                            var index = i * matrixSize + j * columns + k;
+
+                            // If OFB mode is enabled
+                            if (_outputFeedbackMode && !_cryptingIV)
+                            {
+                                if (index > input.Length - 1)
+                                // Value to fill everything else
+                                    _matrix[j][k] = (byte) (32 ^ ivBuffer[j * columns + k]);
+                                else
+                                    _matrix[j][k] = (byte) (input[index] ^ ivBuffer[j * columns + k]);
+                                
+                            }
+                            else
+                            {
+                                if (index > input.Length - 1)
+                                    // Value to fill everything else
+                                    _matrix[j][k] = 32;
+                                else
+                                    _matrix[j][k] = input[index];
+                            }
+
+                        }
+
+                        // Sorting key and transposing by columns
+                        for (var j = 0; j < columns - 1; j++)
+                        {
+                            var min = j;
+
+                            for (var index = j + 1; index < columns; index++)
+                                if (colKey[index] < colKey[min])
+                                    min = index;
+                            if (min == j) continue;
+
+                            // Swapping key characters
+                            var temp = colKey[j];
+                            colKey[j] = colKey[min];
+                            colKey[min] = temp;
+
+                            // Swaping columns
+                            SwapColumns(j, min, _matrix);
+                        }
+
+                        // Sorting key and transposing by rows
+                        Array.Sort(rowKey, _matrix);
+
+                        // Writing bytes to result
+                        for (var j = 0; j < rows; j++)
+                        for (var k = 0; k < columns; k++)
+                            writer.Write(_matrix[j][k]);
+                    }
                 }
-
-                // Sorting key and transposing by columns
-                for (var j = 0; j < columns - 1; j++)
-                {
-                    var min = j;
-
-                    for (var index = j + 1; index < columns; index++)
-                        if (colKey[index] < colKey[min])
-                            min = index;
-                    if (min == j) continue;
-                    
-                    // Swapping key characters
-                    var temp = colKey[j];
-                    colKey[j] = colKey[min];
-                    colKey[min] = temp;
-
-                    // Swaping columns
-                    SwapColumns(j, min, _matrix);
-                }
-
-                // Sorting key and transposing by rows
-                Array.Sort(rowKey, _matrix);
-
-                // Forming output string
-                for (var j = 0; j < rows; j++)
-                for (var k = 0; k < columns; k++)
-                    sb.Append(_matrix[j][k]);
             }
 
-            var outputString = sb.ToString();
-
-            return Encoding.ASCII.GetBytes(outputString.Replace("\0", " "));
+            return result;
         }
 
         public byte[] Decrypt(byte[] output)
         {
-            // Get input as string without spaces
-            var inputString = Encoding.ASCII.GetString(output);
             
             // Initialize rows and columns
             var columns = _key[0].Length;
@@ -170,7 +232,7 @@ namespace CryptoLib
             // Size of matrix to determine block size
             var matrixSize = rows * columns;
 
-            if(inputString.Length % matrixSize != 0) throw 
+            if(output.Length % matrixSize != 0) throw 
                 new ArgumentException("Encrypted data must be able to fit in the matrix formed by the keys of Double Transposition.");
 
 
@@ -178,84 +240,115 @@ namespace CryptoLib
             var sb = new StringBuilder();
             
             // Determining number of blocks
-            var blockNum = inputString.Length / matrixSize;
+            var blockNum = output.Length / matrixSize;
 
+            // Result byte array
+            var result = new byte[blockNum * matrixSize];
+
+            // IV buffer
+            byte[] ivBuffer = _iv.Clone() as byte[]; ;
 
             // Main loop
-            for (var i = 0; i < blockNum; i++)
+            using (var stream = new MemoryStream(result))
             {
-                var colKey = _key[0].ToCharArray();
-                var rowKey = _key[1].ToCharArray();
-
-                // Generating temporary numeric keys
-                var colNumericKey = Enumerable.Range(1, columns).ToArray();
-                var rowNumericKey = Enumerable.Range(1, rows).ToArray();
-
-                // Initialize matrix
-                _matrix = new char[rows][];
-                for (var j = 0; j < rows; j++)
-                    _matrix[j] = new char[columns];
-
-                // Forming matrix
-                for (var j = 0; j < rows; j++)
-                    for (var k = 0; k < columns; k++)
+                using (var writer = new BinaryWriter(stream))
+                {
+                    for (var i = 0; i < blockNum; i++)
                     {
-                        var index = i * matrixSize + j * columns + k;
-                        if (index > inputString.Length - 1) break;
-                        _matrix[j][k] = inputString[index];
+                        // Encrypt IV at the start of each block
+                        if (_outputFeedbackMode)
+                            ivBuffer = CryptIV(ivBuffer);
+
+
+                        var colKey = _key[0].ToCharArray();
+                        var rowKey = _key[1].ToCharArray();
+
+                        // Generating temporary numeric keys
+                        var colNumericKey = Enumerable.Range(1, columns).ToArray();
+                        var rowNumericKey = Enumerable.Range(1, rows).ToArray();
+
+                        // Initialize matrix
+                        _matrix = new byte[rows][];
+                        for (var j = 0; j < rows; j++)
+                            _matrix[j] = new byte[columns];
+
+                        // Forming matrix
+                        for (var j = 0; j < rows; j++)
+                        for (var k = 0; k < columns; k++)
+                        {
+                            var index = i * matrixSize + j * columns + k;
+                            if (index > output.Length - 1) break;
+                            _matrix[j][k] = output[index];
+                        }
+
+                        // Sorting keys to get equivalent numeric keys
+                        for (var j = 0; j < columns - 1; j++)
+                        {
+                            var min = j;
+                            for (var index = j + 1; index < columns; index++)
+                                if (colKey[index] < colKey[min])
+                                    min = index;
+                            if (min == j) continue;
+
+                            var temp1 = colKey[j];
+                            colKey[j] = colKey[min];
+                            colKey[min] = temp1;
+
+                            var temp2 = colNumericKey[j];
+                            colNumericKey[j] = colNumericKey[min];
+                            colNumericKey[min] = temp2;
+                        }
+
+                        Array.Sort(rowKey, rowNumericKey);
+
+                        // Sorting numeric key and transposing by rows
+                        Array.Sort(rowNumericKey, _matrix);
+
+                        // Sorting numeric key and transposing by columns
+                        for (var j = 0; j < columns - 1; j++)
+                        {
+                            var min = j;
+
+                            for (var index = j + 1; index < columns; index++)
+                                if (colNumericKey[index] < colNumericKey[min])
+                                    min = index;
+                            if (min == j) continue;
+
+                            // Swapping key characters
+                            var temp = colNumericKey[j];
+                            colNumericKey[j] = colNumericKey[min];
+                            colNumericKey[min] = temp;
+
+                            // Swaping columns
+                            SwapColumns(j, min, _matrix);
+                        }
+
+                        // Writing bytes to result
+                        for (var j = 0; j < rows; j++)
+                        for (var k = 0; k < columns; k++)
+                        {
+                            // If OFB mode is enabled
+                            if (_outputFeedbackMode)
+                            {
+                                writer.Write((byte)(_matrix[j][k] ^ ivBuffer[j * columns + k]));
+
+                            }
+                            else
+                                writer.Write(_matrix[j][k]);
+                        }
                     }
-
-                // Sorting keys to get equivalent numeric keys
-                for (var j = 0; j < columns - 1; j++)
-                {
-                    var min = j;
-                    for(var index = j + 1; index < columns; index++)
-                        if (colKey[index] < colKey[min])
-                            min = index;
-                    if (min == j) continue;
-
-                    var temp1 = colKey[j];
-                    colKey[j] = colKey[min];
-                    colKey[min] = temp1;
-
-                    var temp2 = colNumericKey[j];
-                    colNumericKey[j] = colNumericKey[min];
-                    colNumericKey[min] = temp2;
                 }
-
-                Array.Sort(rowKey, rowNumericKey);
-
-                // Sorting numeric key and transposing by rows
-               Array.Sort(rowNumericKey, _matrix);
-
-                // Sorting numeric key and transposing by columns
-                for (var j = 0; j < columns - 1; j++)
-                {
-                    var min = j;
-
-                    for (var index = j + 1; index < columns; index++)
-                        if (colNumericKey[index] < colNumericKey[min])
-                            min = index;
-                    if (min == j) continue;
-
-                    // Swapping key characters
-                    var temp = colNumericKey[j];
-                    colNumericKey[j] = colNumericKey[min];
-                    colNumericKey[min] = temp;
-
-                    // Swaping columns
-                    SwapColumns(j, min, _matrix);
-                }
-
-                // Forming output string
-                for (var j = 0; j < rows; j++)
-                    for (var k = 0; k < columns; k++)
-                        sb.Append(_matrix[j][k]);
             }
 
-            var outputString = sb.ToString();
+            // Create result with no extra spaces
+            var pos = result.Length - 1;
+            while (result[pos] == 32)
+                pos--;
 
-            return Encoding.ASCII.GetBytes(outputString.Replace(" ", ""));
+            var finalResult = new byte[pos + 1];
+            Array.Copy(result, finalResult, pos + 1);
+
+            return finalResult;
         }
 
         #endregion

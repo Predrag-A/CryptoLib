@@ -75,6 +75,7 @@ namespace CryptoApp
             
         }
         
+        // Checks if the textbox is empty
         private bool IsEmpty(TextBox t)
         {
             if (!string.IsNullOrEmpty(t.Text)) return false;
@@ -124,7 +125,8 @@ namespace CryptoApp
             CheckAlgo(a);
         }
 
-        private bool SetKeys()
+        // Sets keys and properties from the Settings on launch
+        private void SetKeys()
         {
             try
             {
@@ -143,16 +145,14 @@ namespace CryptoApp
                 // Generate Property Dictionary
                 var Params = new Dictionary<string, byte[]>();
                 Params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
-                Params.Add("ofbMode", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
+                Params.Add("ofbModeXTEA", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
                 Params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
                 Params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
                 Params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
 
                 // Set properties
                 _proxy.SetProperties(Params, Algorithm.XTEA);
-                _proxy.SetProperties(Params, Algorithm.Knapsack);
-
-                return true;
+                _proxy.SetProperties(Params, Algorithm.Knapsack);                
             }
             catch
             {
@@ -162,7 +162,6 @@ namespace CryptoApp
                     Close();
                 Thread.Sleep(1000);
                 SetKeys();
-                return false;
             }
         }
 
@@ -251,17 +250,16 @@ namespace CryptoApp
         {
             try
             {
-                // NEED TO REFACTOR THIS
+                // Do not allow encryption if input is empty unless MD5 is used
                 if (IsEmpty(inputText) && Settings.Instance.Algo != Algorithm.MD5) return;
+
+                // Encrypt data
                 var inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
                 var outputBytes = _proxy.Crypt(inputBytes, Settings.Instance.Algo);
-                if (Settings.Instance.Algo == Algorithm.DoubleTranposition || 
-                    Settings.Instance.Algo == Algorithm.Knapsack)
-                    outputText.Text = Encoding.ASCII.GetString(outputBytes);
-                else
-                {
-                    outputText.Text = BitConverter.ToString(outputBytes);
-                }
+                
+                // Display text as hex values
+                outputText.Text = BitConverter.ToString(outputBytes);
+                
             }
             catch (Exception exception)
             {
@@ -273,15 +271,14 @@ namespace CryptoApp
         {
             try
             {
+                // Return if there is nothing to decrypt
                 if (IsEmpty(inputText)) return;
-                byte[] inputBytes;
-                if (Settings.Instance.Algo == Algorithm.DoubleTranposition ||
-                    Settings.Instance.Algo == Algorithm.Knapsack)
-                    inputBytes = Encoding.ASCII.GetBytes(inputText.Text);
-                else
-                {
-                    inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
-                }
+
+                // Text is always displayed as hex values
+                byte[] inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
+               
+
+                // Decrypt data
                 var outputBytes = _proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = Encoding.ASCII.GetString(outputBytes);
             }

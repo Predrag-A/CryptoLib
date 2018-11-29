@@ -28,7 +28,7 @@ namespace CryptoLib
         private const uint ROUNDS = 32;
 
         // Flag determining whether OFB mode is on
-        private bool _outputFeedbackMode = false;
+        private bool _outputFeedbackMode;
 
         #endregion
 
@@ -112,13 +112,13 @@ namespace CryptoLib
             return b;
         }
 
-        // Can be used to set key and round numbers
+        // Can be used to set round numbers and enable ofb mode
         public bool SetAlgorithmProperties(IDictionary<string, byte[]> specArguments)
         {
             if (specArguments.ContainsKey("rounds"))
                 _rounds = BitConverter.ToUInt32(specArguments["rounds"], 0);
-            if (specArguments.ContainsKey("ofbMode"))
-                _outputFeedbackMode = BitConverter.ToBoolean(specArguments["ofbMode"], 0);
+            if (specArguments.ContainsKey("ofbModeXTEA"))
+                _outputFeedbackMode = BitConverter.ToBoolean(specArguments["ofbModeXTEA"], 0);
 
             return true;
         }

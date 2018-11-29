@@ -58,7 +58,7 @@ namespace CryptoApp.Forms
             _params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
             _params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
             _params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
-            _params.Add("ofbMode", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
+            _params.Add("ofbModeXTEA", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
 
         }
 
@@ -119,7 +119,7 @@ namespace CryptoApp.Forms
         {
             try
             {
-                _params["ofbMode"] = BitConverter.GetBytes(Convert.ToBoolean(checkOFB.Checked));
+                _params["ofbModeXTEA"] = BitConverter.GetBytes(Convert.ToBoolean(checkOFB.Checked));
                 _params["rounds"] = BitConverter.GetBytes(Convert.ToUInt32(numRoundsXTEA.Value));
                 if (_proxy.SetProperties(_params, Algorithm.XTEA))
                 {
