@@ -43,10 +43,13 @@ namespace CryptoApp.Forms
             // Initialize key values and parameters
             txtKeyColumnDT.Text = Settings.Instance.DTColKey;
             txtKeyRowDT.Text = Settings.Instance.DTRowKey;
+            checkOFBDT.Checked = Settings.Instance.DTOutputFeedback;
+
             txtKeyXTEA.Text = Settings.Instance.XTEAKey;
             txtIVXTEA.Text = Settings.Instance.XTEAIV;
             numRoundsXTEA.Value = Settings.Instance.XTEARounds;
-            checkOFB.Checked = Settings.Instance.XTEAOutputFeedback;
+            checkOFBXTEA.Checked = Settings.Instance.XTEAOutputFeedback;
+
             numKSN.Value = Settings.Instance.KSn;
             numKSM.Value = Settings.Instance.KSm;
             numKSInvM.Value = Settings.Instance.KSmInverse;
@@ -62,6 +65,11 @@ namespace CryptoApp.Forms
 
         }
 
+        private void Log(string str)
+        {
+            statusLbl.Text = "Status: " + str;
+        }
+
         #endregion
 
         #region Form Methods
@@ -75,18 +83,39 @@ namespace CryptoApp.Forms
                 var key = Encoding.ASCII.GetBytes(txtKeyColumnDT.Text + "," + txtKeyRowDT.Text);
                 if(_proxy.SetKey(key, Algorithm.DoubleTranposition))
                 {
-                    statusLbl.Text = "Status: Double Transposition keys successfully set";
+                   Log("Double Transposition keys successfully set");
                     Settings.Instance.DTColKey = txtKeyColumnDT.Text;
                     Settings.Instance.DTRowKey = txtKeyRowDT.Text;
                 }
                 else
                 {
-                    statusLbl.Text = "Status: Unable to set Double Transposition keys";
+                    Log("Unable to set Double Transposition keys");
                 }
             }
             catch (Exception exception)
             {
-                statusLbl.Text = "Status: " + exception.Message;
+                Log(exception.Message);
+            }
+        }
+
+        private void btnParamDT_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _params["ofbModeDT"] = BitConverter.GetBytes(Convert.ToBoolean(checkOFBDT.Checked));
+                if (_proxy.SetProperties(_params, Algorithm.DoubleTranposition))
+                {
+                    Settings.Instance.DTOutputFeedback = checkOFBDT.Checked;
+                    Log("Double Transposition properties successfully set");
+                }
+                else
+                {
+                    Log("Double Transposition to set XTEA properties");
+                }
+            }
+            catch (Exception exception)
+            {
+                Log(exception.Message);
             }
         }
 
@@ -101,17 +130,17 @@ namespace CryptoApp.Forms
                 var key = Encoding.ASCII.GetBytes(txtKeyXTEA.Text);
                 if (_proxy.SetKey(key, Algorithm.XTEA))
                 {
-                    statusLbl.Text = "Status: XTEA key successfully set";
+                    Log("XTEA key successfully set");
                     Settings.Instance.XTEAKey = txtKeyXTEA.Text;
                 }
                 else
                 {
-                    statusLbl.Text = "Status: Unable to set XTEA key";
+                    Log("Unable to set XTEA key");
                 }
             }
             catch (Exception exception)
             {
-                statusLbl.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
@@ -119,22 +148,22 @@ namespace CryptoApp.Forms
         {
             try
             {
-                _params["ofbModeXTEA"] = BitConverter.GetBytes(Convert.ToBoolean(checkOFB.Checked));
+                _params["ofbModeXTEA"] = BitConverter.GetBytes(Convert.ToBoolean(checkOFBXTEA.Checked));
                 _params["rounds"] = BitConverter.GetBytes(Convert.ToUInt32(numRoundsXTEA.Value));
                 if (_proxy.SetProperties(_params, Algorithm.XTEA))
                 {
                     Settings.Instance.XTEARounds = (uint)numRoundsXTEA.Value;
-                    Settings.Instance.XTEAOutputFeedback = checkOFB.Checked;
-                    statusLbl.Text = "Status: XTEA properties successfully set";
+                    Settings.Instance.XTEAOutputFeedback = checkOFBXTEA.Checked;
+                    Log("XTEA properties successfully set");
                 }
                 else
                 {
-                    statusLbl.Text = "Status: Unable to set XTEA properties";
+                    Log("Unable to set XTEA properties");
                 }
             }
             catch (Exception exception)
             {
-                statusLbl.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
@@ -145,17 +174,17 @@ namespace CryptoApp.Forms
                 var iv = Encoding.ASCII.GetBytes(txtIVXTEA.Text);
                 if (_proxy.SetIV(iv, Algorithm.XTEA))
                 {
-                    statusLbl.Text = "Status: XTEA initialization vector successfully set";
+                    Log("XTEA initialization vector successfully set");
                     Settings.Instance.XTEAIV = txtIVXTEA.Text;
                 }
                 else
                 {
-                    statusLbl.Text = "Status: Unable to set XTEA initialization vector";
+                    Log("Unable to set XTEA initialization vector");
                 }
             }
             catch (Exception exception)
             {
-                statusLbl.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
@@ -177,17 +206,17 @@ namespace CryptoApp.Forms
                 if (_proxy.SetKey(byteArray, Algorithm.Knapsack))
                 {
                     Settings.Instance.KSPrivateKey = values;
-                    statusLbl.Text = "Status: Knapsack key successfully set";
+                    Log("Knapsack key successfully set");
                 }
                 else
                 {
-                    statusLbl.Text = "Status: Unable to set Knapsack key";
+                    Log("Unable to set Knapsack key");
                 }
 
             }
             catch (Exception exception)
             {
-                statusLbl.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
@@ -203,29 +232,22 @@ namespace CryptoApp.Forms
                     Settings.Instance.KSn = (uint)numKSN.Value;
                     Settings.Instance.KSm = (uint)numKSM.Value;
                     Settings.Instance.KSmInverse = (uint)numKSInvM.Value;
-                    statusLbl.Text = "Status: Knapsack properties successfully set";
+                    Log("Knapsack properties successfully set");
                 }
                 else
                 {
-                    statusLbl.Text = "Status: Unable to set Knapsack properties";
+                    Log("Unable to set Knapsack properties");
                 }
             }
             catch (Exception exception)
             {
-                statusLbl.Text = "Status: " + exception.Message;
+                Log(exception.Message);
             }
         }
 
         #endregion
 
         #region Other
-
-        private void btnRandom_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.Yes ==
-                MessageBox.Show("Are you sure you want to randomize keys?", "Warning", MessageBoxButtons.YesNo))
-                statusLbl.Text = "Keys randomized";
-        }
 
         private void txtDT_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -236,6 +258,7 @@ namespace CryptoApp.Forms
         #endregion
 
         #endregion
+
         
     }
 }

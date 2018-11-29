@@ -47,6 +47,9 @@ namespace CryptoApp.Classes
         [XmlElement("DT_Row_Key")]
         public string DTRowKey { get; set; }
 
+        [XmlElement("DT_OutputFeedbackMode")]
+        public bool DTOutputFeedback { get; set; }
+
         [XmlElement("XTEA_Key")]
         public string XTEAKey { get; set; }
 
@@ -83,12 +86,16 @@ namespace CryptoApp.Classes
             FswOutput = string.Copy(FswInput);
             Algo = Algorithm.DoubleTranposition;
             ProcessClosedDate = DateTime.Now;
+
             DTColKey = "POTATO";
             DTRowKey = "SPARTA";
+            DTOutputFeedback = false;
+
             XTEAKey = "a1b2c3d4e5f6g7h8";
             XTEARounds = 32;
             XTEAOutputFeedback = false;
             XTEAIV = "a1b2c3d4";
+
             KSPrivateKey = new uint[] { 2, 3, 7, 14, 30, 57, 120, 251 };
             KSn = 491;
             KSm = 41;
@@ -116,12 +123,16 @@ namespace CryptoApp.Classes
                 FswOutput = temp.FswOutput;
                 Algo = temp.Algo;
                 ProcessClosedDate = temp.ProcessClosedDate;
+
                 DTColKey = temp.DTColKey;
                 DTRowKey = temp.DTRowKey;
+                DTOutputFeedback = temp.DTOutputFeedback;
+
                 XTEAKey = temp.XTEAKey;
                 XTEARounds = temp.XTEARounds;
                 XTEAOutputFeedback = temp.XTEAOutputFeedback;
                 XTEAIV = temp.XTEAIV;
+
                 KSPrivateKey = temp.KSPrivateKey;
                 KSn = temp.KSn;
                 KSm = temp.KSm;

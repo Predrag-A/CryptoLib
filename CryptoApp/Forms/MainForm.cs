@@ -62,7 +62,7 @@ namespace CryptoApp
             };
 
             // Adding event handlers
-            _watcher.Created += new FileSystemEventHandler(watcher_Created);
+            _watcher.Created += watcher_Created;
 
             // Turning on or off
             _watcher.EnableRaisingEvents = Settings.Instance.FswEnabled;
@@ -139,25 +139,29 @@ namespace CryptoApp
                 _proxy.SetIV(Encoding.ASCII.GetBytes(Settings.Instance.XTEAIV), Algorithm.XTEA);
 
                 // Set Knapsack Key
-                byte[] byteArray = Settings.Instance.KSPrivateKey.SelectMany(o => BitConverter.GetBytes(o)).ToArray();
+                byte[] byteArray = Settings.Instance.KSPrivateKey.SelectMany(BitConverter.GetBytes).ToArray();
                 _proxy.SetKey(byteArray, Algorithm.Knapsack);
-
-                // Generate Property Dictionary
-                var Params = new Dictionary<string, byte[]>();
-                Params.Add("rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds));
-                Params.Add("ofbModeXTEA", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback));
-                Params.Add("n", BitConverter.GetBytes(Settings.Instance.KSn));
-                Params.Add("m", BitConverter.GetBytes(Settings.Instance.KSm));
-                Params.Add("invm", BitConverter.GetBytes(Settings.Instance.KSmInverse));
-
+                
+                var Params = new Dictionary<string, byte[]>
+                {
+                    {"ofbModeDT", BitConverter.GetBytes(Settings.Instance.DTOutputFeedback)},
+                    {"rounds", BitConverter.GetBytes(Settings.Instance.XTEARounds)},
+                    {"ofbModeXTEA", BitConverter.GetBytes(Settings.Instance.XTEAOutputFeedback)},
+                    {"n", BitConverter.GetBytes(Settings.Instance.KSn)},
+                    {"m", BitConverter.GetBytes(Settings.Instance.KSm)},
+                    {"invm", BitConverter.GetBytes(Settings.Instance.KSmInverse)}
+                };
+                
                 // Set properties
+                _proxy.SetProperties(Params, Algorithm.DoubleTranposition);
                 _proxy.SetProperties(Params, Algorithm.XTEA);
-                _proxy.SetProperties(Params, Algorithm.Knapsack);                
+                _proxy.SetProperties(Params, Algorithm.Knapsack);     
+                
             }
-            catch
+            catch(Exception exception)
             {
                 // Attempt to reconnect if the service cannot be accessed
-                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?",
+                if (DialogResult.No == MessageBox.Show("Cannot connect to service. Try connecting again?\r\nError: " + exception.Message,
                         "Reconnect", MessageBoxButtons.YesNo))
                     Close();
                 Thread.Sleep(1000);
@@ -277,7 +281,6 @@ namespace CryptoApp
                 // Text is always displayed as hex values
                 byte[] inputBytes = inputText.Text.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
                
-
                 // Decrypt data
                 var outputBytes = _proxy.DeCrypt(inputBytes, Settings.Instance.Algo);
                 outputText.Text = Encoding.ASCII.GetString(outputBytes);

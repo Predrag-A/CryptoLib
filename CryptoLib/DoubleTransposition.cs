@@ -12,7 +12,7 @@ namespace CryptoLib
         #region Fields
 
         // Key represented by two strings
-        private string[] _key;
+        private string[] _key = {"Default", "Value"};
 
         // Initialization vector used for OFB mode
         private byte[] _iv;
@@ -24,10 +24,17 @@ namespace CryptoLib
         private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         // Flag determining whether OFB mode is on
-        private bool _outputFeedbackMode = true;
+        private bool _outputFeedbackMode;
 
         // Flag determining whether IV is being crypted to avoid infinite recursion
         private bool _cryptingIV;
+
+        #endregion
+
+        #region Properties
+
+        // Private property for current matrix size
+        private int MatrixSize => _key[0].Length * _key[1].Length;
 
         #endregion
 
@@ -80,12 +87,19 @@ namespace CryptoLib
                 new ArgumentException("Key provided is too short.");
 
             _key = keyArray;
+
+            // Generate IV depending on keys
+            var sb = new StringBuilder();
+            for (var i = 0; i < _key[0].Length; i++)
+                sb.Append(_key[1]);
+                
+            SetIV(Encoding.ASCII.GetBytes(sb.ToString()));
             return true;
         }
 
         public byte[] GenerateRandomKey()
         {
-            var rand = new Random();
+            var rand = new Random(MatrixSize);
             var k1 = new string(Enumerable.Repeat(CHARS, rand.Next(3, 20)).Select(s => s[rand.Next(s.Length)]).ToArray());
             var k2 = new string(Enumerable.Repeat(CHARS, rand.Next(3, 20)).Select(s => s[rand.Next(s.Length)]).ToArray());
             var key = string.Join(",", k1, k2);
@@ -95,7 +109,7 @@ namespace CryptoLib
         // Sets the initialization vector for OFB mode
         public bool SetIV(byte[] input)
         {
-            if (_key[0].Length * _key[1].Length != input.Length)
+            if (MatrixSize != input.Length)
                 return false;
             _iv = input;
             return true;
@@ -104,9 +118,8 @@ namespace CryptoLib
         // Generates random initialization vector depending on the size of the matrix
         public byte[] GenerateRandomIV()
         {
-            var matrixSize = _key[0].Length * _key[1].Length;
             var rand = new Random();
-            var b = new byte[matrixSize];
+            var b = new byte[MatrixSize];
             rand.NextBytes(b);
             return b;
         }
@@ -127,19 +140,13 @@ namespace CryptoLib
             // Initialize rows and columns
             var columns = _key[0].Length;
             var rows = _key[1].Length;
-
-            // Size of matrix to determine block size
-            var matrixSize = rows * columns;
             
             // Determining number of blocks
-            var blockNum = (input.Length % matrixSize == 0) ? input.Length/matrixSize : input.Length/matrixSize + 1;
+            var blockNum = (input.Length % MatrixSize == 0) ? input.Length/ MatrixSize : input.Length/MatrixSize + 1;
 
             // Result byte array
-            var result = new byte[matrixSize * blockNum];
-
-            // TEMPORARY
-            SetIV(GenerateRandomIV());
-
+            var result = new byte[MatrixSize * blockNum];
+            
             // IV buffer
             byte[] ivBuffer = _iv.Clone() as byte[];
 
@@ -166,7 +173,7 @@ namespace CryptoLib
                         for (var j = 0; j < rows; j++)
                         for (var k = 0; k < columns; k++)
                         {
-                            var index = i * matrixSize + j * columns + k;
+                            var index = i * MatrixSize + j * columns + k;
 
                             // If OFB mode is enabled
                             if (_outputFeedbackMode && !_cryptingIV)
@@ -228,11 +235,8 @@ namespace CryptoLib
             // Initialize rows and columns
             var columns = _key[0].Length;
             var rows = _key[1].Length;
-
-            // Size of matrix to determine block size
-            var matrixSize = rows * columns;
-
-            if(output.Length % matrixSize != 0) throw 
+            
+            if(output.Length % MatrixSize != 0) throw 
                 new ArgumentException("Encrypted data must be able to fit in the matrix formed by the keys of Double Transposition.");
 
 
@@ -240,10 +244,10 @@ namespace CryptoLib
             var sb = new StringBuilder();
             
             // Determining number of blocks
-            var blockNum = output.Length / matrixSize;
+            var blockNum = output.Length / MatrixSize;
 
             // Result byte array
-            var result = new byte[blockNum * matrixSize];
+            var result = new byte[blockNum * MatrixSize];
 
             // IV buffer
             byte[] ivBuffer = _iv.Clone() as byte[]; ;
@@ -276,7 +280,7 @@ namespace CryptoLib
                         for (var j = 0; j < rows; j++)
                         for (var k = 0; k < columns; k++)
                         {
-                            var index = i * matrixSize + j * columns + k;
+                            var index = i * MatrixSize + j * columns + k;
                             if (index > output.Length - 1) break;
                             _matrix[j][k] = output[index];
                         }

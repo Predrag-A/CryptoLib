@@ -35,6 +35,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupXTEA = new System.Windows.Forms.GroupBox();
+            this.btnIVXTEA = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtIVXTEA = new System.Windows.Forms.TextBox();
+            this.checkOFBXTEA = new System.Windows.Forms.CheckBox();
             this.lbl3 = new System.Windows.Forms.Label();
             this.numRoundsXTEA = new System.Windows.Forms.NumericUpDown();
             this.btnParamXTEA = new System.Windows.Forms.Button();
@@ -61,11 +65,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLbl = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnRandom = new System.Windows.Forms.Button();
-            this.checkOFB = new System.Windows.Forms.CheckBox();
-            this.txtIVXTEA = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnIVXTEA = new System.Windows.Forms.Button();
+            this.checkOFBDT = new System.Windows.Forms.CheckBox();
+            this.btnParamDT = new System.Windows.Forms.Button();
             this.groupDT.SuspendLayout();
             this.groupXTEA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRoundsXTEA)).BeginInit();
@@ -86,6 +87,8 @@
             // 
             // groupDT
             // 
+            this.groupDT.Controls.Add(this.checkOFBDT);
+            this.groupDT.Controls.Add(this.btnParamDT);
             this.groupDT.Controls.Add(this.btnKeyDT);
             this.groupDT.Controls.Add(this.txtKeyRowDT);
             this.groupDT.Controls.Add(this.txtKeyColumnDT);
@@ -94,7 +97,7 @@
             this.groupDT.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupDT.Location = new System.Drawing.Point(0, 0);
             this.groupDT.Name = "groupDT";
-            this.groupDT.Size = new System.Drawing.Size(620, 91);
+            this.groupDT.Size = new System.Drawing.Size(620, 110);
             this.groupDT.TabIndex = 0;
             this.groupDT.TabStop = false;
             this.groupDT.Text = "Double Transposition";
@@ -148,7 +151,7 @@
             this.groupXTEA.Controls.Add(this.btnIVXTEA);
             this.groupXTEA.Controls.Add(this.label3);
             this.groupXTEA.Controls.Add(this.txtIVXTEA);
-            this.groupXTEA.Controls.Add(this.checkOFB);
+            this.groupXTEA.Controls.Add(this.checkOFBXTEA);
             this.groupXTEA.Controls.Add(this.lbl3);
             this.groupXTEA.Controls.Add(this.numRoundsXTEA);
             this.groupXTEA.Controls.Add(this.btnParamXTEA);
@@ -156,12 +159,49 @@
             this.groupXTEA.Controls.Add(this.txtKeyXTEA);
             this.groupXTEA.Controls.Add(this.label4);
             this.groupXTEA.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupXTEA.Location = new System.Drawing.Point(0, 91);
+            this.groupXTEA.Location = new System.Drawing.Point(0, 110);
             this.groupXTEA.Name = "groupXTEA";
             this.groupXTEA.Size = new System.Drawing.Size(620, 121);
             this.groupXTEA.TabIndex = 5;
             this.groupXTEA.TabStop = false;
             this.groupXTEA.Text = "XTEA";
+            // 
+            // btnIVXTEA
+            // 
+            this.btnIVXTEA.Location = new System.Drawing.Point(495, 84);
+            this.btnIVXTEA.Name = "btnIVXTEA";
+            this.btnIVXTEA.Size = new System.Drawing.Size(91, 23);
+            this.btnIVXTEA.TabIndex = 12;
+            this.btnIVXTEA.Text = "Set  IV";
+            this.btnIVXTEA.UseVisualStyleBackColor = true;
+            this.btnIVXTEA.Click += new System.EventHandler(this.btnIVXTEA_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 90);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Initialization Vector";
+            // 
+            // txtIVXTEA
+            // 
+            this.txtIVXTEA.Location = new System.Drawing.Point(114, 87);
+            this.txtIVXTEA.Name = "txtIVXTEA";
+            this.txtIVXTEA.Size = new System.Drawing.Size(375, 20);
+            this.txtIVXTEA.TabIndex = 10;
+            // 
+            // checkOFBXTEA
+            // 
+            this.checkOFBXTEA.AutoSize = true;
+            this.checkOFBXTEA.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkOFBXTEA.Location = new System.Drawing.Point(350, 59);
+            this.checkOFBXTEA.Name = "checkOFBXTEA";
+            this.checkOFBXTEA.Size = new System.Drawing.Size(139, 17);
+            this.checkOFBXTEA.TabIndex = 9;
+            this.checkOFBXTEA.Text = "Output Feedback Mode";
+            this.checkOFBXTEA.UseVisualStyleBackColor = true;
             // 
             // lbl3
             // 
@@ -241,7 +281,7 @@
             this.groupBox1.Controls.Add(this.btnKeyKS);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(0, 212);
+            this.groupBox1.Location = new System.Drawing.Point(0, 231);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(620, 81);
             this.groupBox1.TabIndex = 7;
@@ -440,7 +480,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLbl});
-            this.statusStrip.Location = new System.Drawing.Point(0, 324);
+            this.statusStrip.Location = new System.Drawing.Point(0, 340);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(620, 22);
             this.statusStrip.TabIndex = 8;
@@ -452,60 +492,32 @@
             this.statusLbl.Size = new System.Drawing.Size(39, 17);
             this.statusLbl.Text = "Status";
             // 
-            // btnRandom
+            // checkOFBDT
             // 
-            this.btnRandom.Enabled = false;
-            this.btnRandom.Location = new System.Drawing.Point(509, 299);
-            this.btnRandom.Name = "btnRandom";
-            this.btnRandom.Size = new System.Drawing.Size(99, 23);
-            this.btnRandom.TabIndex = 9;
-            this.btnRandom.Text = "Randomize Keys";
-            this.btnRandom.UseVisualStyleBackColor = true;
-            this.btnRandom.Click += new System.EventHandler(this.btnRandom_Click);
+            this.checkOFBDT.AutoSize = true;
+            this.checkOFBDT.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkOFBDT.Location = new System.Drawing.Point(350, 85);
+            this.checkOFBDT.Name = "checkOFBDT";
+            this.checkOFBDT.Size = new System.Drawing.Size(139, 17);
+            this.checkOFBDT.TabIndex = 11;
+            this.checkOFBDT.Text = "Output Feedback Mode";
+            this.checkOFBDT.UseVisualStyleBackColor = true;
             // 
-            // checkOFB
+            // btnParamDT
             // 
-            this.checkOFB.AutoSize = true;
-            this.checkOFB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkOFB.Location = new System.Drawing.Point(350, 59);
-            this.checkOFB.Name = "checkOFB";
-            this.checkOFB.Size = new System.Drawing.Size(139, 17);
-            this.checkOFB.TabIndex = 9;
-            this.checkOFB.Text = "Output Feedback Mode";
-            this.checkOFB.UseVisualStyleBackColor = true;
-            // 
-            // txtIVXTEA
-            // 
-            this.txtIVXTEA.Location = new System.Drawing.Point(114, 87);
-            this.txtIVXTEA.Name = "txtIVXTEA";
-            this.txtIVXTEA.Size = new System.Drawing.Size(375, 20);
-            this.txtIVXTEA.TabIndex = 10;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 90);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Initialization Vector";
-            // 
-            // btnIVXTEA
-            // 
-            this.btnIVXTEA.Location = new System.Drawing.Point(495, 84);
-            this.btnIVXTEA.Name = "btnIVXTEA";
-            this.btnIVXTEA.Size = new System.Drawing.Size(91, 23);
-            this.btnIVXTEA.TabIndex = 12;
-            this.btnIVXTEA.Text = "Set  IV";
-            this.btnIVXTEA.UseVisualStyleBackColor = true;
-            this.btnIVXTEA.Click += new System.EventHandler(this.btnIVXTEA_Click);
+            this.btnParamDT.Location = new System.Drawing.Point(496, 81);
+            this.btnParamDT.Name = "btnParamDT";
+            this.btnParamDT.Size = new System.Drawing.Size(91, 23);
+            this.btnParamDT.TabIndex = 10;
+            this.btnParamDT.Text = "Set  Parameters";
+            this.btnParamDT.UseVisualStyleBackColor = true;
+            this.btnParamDT.Click += new System.EventHandler(this.btnParamDT_Click);
             // 
             // KeyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 346);
-            this.Controls.Add(this.btnRandom);
+            this.ClientSize = new System.Drawing.Size(620, 362);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupXTEA);
@@ -559,7 +571,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLbl;
-        private System.Windows.Forms.Button btnRandom;
         private System.Windows.Forms.NumericUpDown numKS7;
         private System.Windows.Forms.NumericUpDown numKS6;
         private System.Windows.Forms.NumericUpDown numKS5;
@@ -575,9 +586,11 @@
         private System.Windows.Forms.NumericUpDown numKSM;
         private System.Windows.Forms.NumericUpDown numKSN;
         private System.Windows.Forms.Button btnParamKS;
-        private System.Windows.Forms.CheckBox checkOFB;
+        private System.Windows.Forms.CheckBox checkOFBXTEA;
         private System.Windows.Forms.Button btnIVXTEA;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtIVXTEA;
+        private System.Windows.Forms.CheckBox checkOFBDT;
+        private System.Windows.Forms.Button btnParamDT;
     }
 }
